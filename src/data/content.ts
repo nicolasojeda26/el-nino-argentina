@@ -5,7 +5,7 @@ export const site = {
     "Estado actual, pronóstico, impactos por región e historia del fenómeno de El Niño y La Niña (ENSO) en Argentina. Datos oficiales de NOAA y el SMN.",
   url: "https://xn--elnio-rta.net.ar",
   domain: "elniño.net.ar",
-  adsenseClient: "", // ej: "ca-pub-0000000000000000" cuando se apruebe AdSense
+  adsenseClient: "ca-pub-2347772486638856",
   author: "El Niño Argentina",
 };
 

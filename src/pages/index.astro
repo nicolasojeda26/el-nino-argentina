@@ -46,8 +46,8 @@ const jsonLd = {
           el campo y los ríos de cada región del país.
         </p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="/pronostico">Ver pronóstico →</a>
-          <a class="btn btn-ghost" href="/impactos">Impactos por región</a>
+          <a class="btn btn-primary" href="/pronostico/">Ver pronóstico →</a>
+          <a class="btn btn-ghost" href="/impactos/">Impactos por región</a>
         </div>
       </div>
 
@@ -119,7 +119,7 @@ const jsonLd = {
           Aguas del Pacífico ecuatorial más cálidas de lo normal. En Argentina suele
           traducirse en <strong>más lluvias</strong> en el Litoral, el NEA y la región pampeana.
         </p>
-        <a class="more" href="/el-nino">Qué es El Niño →</a>
+        <a class="more" href="/el-nino/">Qué es El Niño →</a>
       </div>
       <div class="card">
         <div class="icon">🧊</div>
@@ -128,7 +128,7 @@ const jsonLd = {
           Aguas más frías de lo normal. Históricamente asociada a <strong>sequías</strong> y
           déficit de lluvias en el centro del país, con impacto directo en la producción agrícola.
         </p>
-        <a class="more" href="/la-nina">Qué es La Niña →</a>
+        <a class="more" href="/la-nina/">Qué es La Niña →</a>
       </div>
     </div>
   </section>
@@ -141,7 +141,7 @@ const jsonLd = {
         {o.items.map((item) => <li style="margin-bottom:10px;">{item}</li>)}
       </ul>
       <div class="hero-cta" style="margin-top:20px;">
-        <a class="btn btn-ghost" href="/pronostico">Pronóstico completo →</a>
+        <a class="btn btn-ghost" href="/pronostico/">Pronóstico completo →</a>
       </div>
     </div>
   </section>
@@ -159,7 +159,7 @@ const jsonLd = {
             <div class="icon">{r.icon}</div>
             <h3>{r.name}</h3>
             <p>{r.summary}</p>
-            <a class="more" href={`/impactos/${r.slug}`}>Ver detalle →</a>
+            <a class="more" href={`/impactos/${r.slug}/`}>Ver detalle →</a>
           </div>
         ))
       }
@@ -170,12 +170,12 @@ const jsonLd = {
     <p class="eyebrow">Notas</p>
     <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;">
       <h2 style="margin-bottom:0;">Últimas notas</h2>
-      <a class="more" href="/noticias">Ver todas →</a>
+      <a class="more" href="/noticias/">Ver todas →</a>
     </div>
     <div class="grid grid-3" style="margin-top:28px;">
       {
         notes.map((post) => (
-          <a class="card post-card" href={`/noticias/${post.id}`}>
+          <a class="card post-card" href={`/noticias/${post.id}/`}>
             <span class="tag">{post.data.tag}</span>
             <h3>{post.data.title}</h3>
             <p style="font-size:0.92rem;">{post.data.description}</p>

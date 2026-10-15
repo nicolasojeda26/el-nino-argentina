@@ -14,7 +14,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Blog",
   name: `Notas | ${site.name}`,
-  url: new URL("/noticias", Astro.site ?? site.url).href,
+  url: new URL("/noticias/", Astro.site ?? site.url).href,
   inLanguage: "es-AR",
 };
 ---
@@ -38,7 +38,7 @@ const jsonLd = {
     <div class="grid grid-3">
       {
         posts.map((post) => (
-          <a class="card post-card" href={`/noticias/${post.id}`}>
+          <a class="card post-card" href={`/noticias/${post.id}/`}>
             <span class="tag">{post.data.tag}</span>
             <h3>{post.data.title}</h3>
             <p style="font-size:0.92rem;">{post.data.description}</p>

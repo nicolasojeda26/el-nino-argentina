@@ -5,5 +5,6 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://xn--elnio-rta.net.ar',
+  trailingSlash: 'always',
   integrations: [sitemap()],
 });

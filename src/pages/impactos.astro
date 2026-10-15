@@ -31,7 +31,7 @@ const comparisons: { region: string; nino: string; nina: string }[] = [
     <div class="grid grid-3">
       {
         regions.map((r) => (
-          <a class="card" href={`/impactos/${r.slug}`}>
+          <a class="card" href={`/impactos/${r.slug}/`}>
             <div class="icon">{r.icon}</div>
             <h3>{r.name}</h3>
             <p style="font-size:0.9rem;">{r.summary}</p>

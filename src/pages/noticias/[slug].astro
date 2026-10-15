@@ -31,7 +31,7 @@ const jsonLd = {
 
 <Layout title={post.data.title} description={post.data.description} type="article" jsonLd={jsonLd}>
   <div class="container breadcrumbs">
-    <a href="/">Inicio</a> · <a href="/noticias">Notas</a> · {post.data.tag}
+    <a href="/">Inicio</a> · <a href="/noticias/">Notas</a> · {post.data.tag}
   </div>
 
   <article class="section container prose">
@@ -47,8 +47,8 @@ const jsonLd = {
     <AdSlot label="Publicidad" slot="noticia" />
 
     <div class="hero-cta" style="margin-top:36px;">
-      <a class="btn btn-ghost" href="/noticias">← Volver a las notas</a>
-      <a class="btn btn-primary" href="/pronostico">Ver pronóstico actual</a>
+      <a class="btn btn-ghost" href="/noticias/">← Volver a las notas</a>
+      <a class="btn btn-primary" href="/pronostico/">Ver pronóstico actual</a>
     </div>
   </article>
 </Layout>

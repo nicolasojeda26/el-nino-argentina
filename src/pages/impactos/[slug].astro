@@ -26,7 +26,7 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <div class="container breadcrumbs">
-    <a href="/">Inicio</a> · <a href="/impactos">Impactos</a> · {region.name}
+    <a href="/">Inicio</a> · <a href="/impactos/">Impactos</a> · {region.name}
   </div>
 
   <section class="section container">
@@ -66,7 +66,7 @@ const jsonLd = {
     <div class="grid grid-3" style="margin-top:20px;">
       {
         others.map((r) => (
-          <a class="card" href={`/impactos/${r.slug}`}>
+          <a class="card" href={`/impactos/${r.slug}/`}>
             <div class="icon">{r.icon}</div>
             <h3>{r.name}</h3>
             <p style="font-size:0.9rem;">{r.provinces}</p>

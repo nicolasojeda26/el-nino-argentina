@@ -16,14 +16,14 @@ export interface NavItem {
 
 export const nav: NavItem[] = [
   { href: "/", label: "Inicio" },
-  { href: "/pronostico", label: "Pronóstico" },
-  { href: "/impactos", label: "Impactos" },
-  { href: "/noticias", label: "Notas" },
-  { href: "/el-nino", label: "El Niño" },
-  { href: "/la-nina", label: "La Niña" },
-  { href: "/historia", label: "Historia" },
-  { href: "/preguntas", label: "Preguntas" },
-  { href: "/contacto", label: "Contacto" },
+  { href: "/pronostico/", label: "Pronóstico" },
+  { href: "/impactos/", label: "Impactos" },
+  { href: "/noticias/", label: "Notas" },
+  { href: "/el-nino/", label: "El Niño" },
+  { href: "/la-nina/", label: "La Niña" },
+  { href: "/historia/", label: "Historia" },
+  { href: "/preguntas/", label: "Preguntas" },
+  { href: "/contacto/", label: "Contacto" },
 ];
 
 export interface Region {

@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { site } from "../../data/content";
+
+const all = await getCollection("noticias", ({ data }) => !data.draft);
+const posts = all.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmt = (d: Date) =>
+  new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "long", year: "numeric" }).format(d);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: `Notas | ${site.name}`,
+  url: new URL("/noticias", Astro.site ?? site.url).href,
+  inLanguage: "es-AR",
+};
+---
+
+<Layout
+  title="Notas y análisis sobre El Niño"
+  description="Artículos y análisis sobre El Niño, La Niña y sus impactos en Argentina: agro, ríos, clima y conceptos."
+  jsonLd={jsonLd}
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · Notas</div>
+
+  <section class="section container">
+    <p class="eyebrow">Análisis</p>
+    <h1>Notas sobre El Niño</h1>
+    <p class="lead">
+      Artículos para entender el fenómeno y su impacto en el agro, los ríos y el clima del país.
+    </p>
+  </section>
+
+  <section class="section container">
+    <div class="grid grid-3">
+      {
+        posts.map((post) => (
+          <a class="card post-card" href={`/noticias/${post.id}`}>
+            <span class="tag">{post.data.tag}</span>
+            <h3>{post.data.title}</h3>
+            <p style="font-size:0.92rem;">{post.data.description}</p>
+            <div class="post-meta">
+              <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <AdSlot label="Publicidad" slot="noticias" />
+</Layout>

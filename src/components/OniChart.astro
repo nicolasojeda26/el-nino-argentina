@@ -1,0 +1,111 @@
+---
+import type { OniPoint } from "../data/oni";
+import { formatAnomaly, seasonLabel } from "../data/oni";
+
+interface Props {
+  points: OniPoint[];
+  count?: number;
+  height?: number;
+}
+
+const { points, count = 72, height = 320 } = Astro.props;
+const data = points.slice(-count);
+
+const W = 1000;
+const H = height;
+const padL = 48;
+const padR = 18;
+const padT = 22;
+const padB = 36;
+const plotW = W - padL - padR;
+const plotH = H - padT - padB;
+
+const maxAbs = Math.max(1, ...data.map((d) => Math.abs(d.anomaly)));
+const scale = Math.ceil(maxAbs * 2) / 2;
+const top = Math.ceil(scale);
+const y0 = padT + plotH / 2;
+const yScale = plotH / 2 / scale;
+
+const n = data.length;
+const stepW = plotW / n;
+const barW = Math.min(Math.max(stepW - 2, 0.8), stepW);
+
+const bars = data.map((d, i) => {
+  const x = padL + i * stepW + (stepW - barW) / 2;
+  const h = Math.max(Math.abs(d.anomaly) * yScale, 0.6);
+  const y = d.anomaly >= 0 ? y0 - h : y0;
+  return { x, y, h, warm: d.anomaly >= 0, d };
+});
+
+const tickStep = top >= 2 ? 1 : 0.5;
+const ticks: number[] = [];
+for (let v = -top; v <= top + 1e-9; v += tickStep) {
+  ticks.push(Math.round((v + Number.EPSILON) * 2) / 2);
+}
+
+const djfIndices = data
+  .map((d, i) => ({ d, i }))
+  .filter(({ d }) => d.season === "DJF");
+const labelEvery = Math.ceil(djfIndices.length / 12);
+const yearLabels = djfIndices.filter((_, idx) => idx % labelEvery === 0);
+
+const yFor = (v: number) => y0 - v * yScale;
+---
+
+<div class="chart-wrap">
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    role="img"
+    aria-label={`Serie de tiempo del índice ONI, últimos ${n} trimestres`}
+    preserveAspectRatio="xMidYMid meet"
+  >
+    {ticks.map((v) => (
+      <g>
+        <line
+          x1={padL}
+          x2={W - padR}
+          y1={yFor(v)}
+          y2={yFor(v)}
+          stroke={v === 0 ? "rgba(150,190,220,0.5)" : "rgba(150,190,220,0.12)"}
+          stroke-width={v === 0 ? 1.5 : 1}
+          stroke-dasharray={v === 0 ? "0" : "4 5"}
+        />
+        <text
+          x={padL - 8}
+          y={yFor(v) + 4}
+          text-anchor="end"
+          fill="#7f9ab1"
+          font-size="12"
+          font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+        >
+          {v > 0 ? `+${v}` : v}
+        </text>
+      </g>
+    ))}
+
+    {bars.map((b) => (
+      <rect x={b.x} y={b.y} width={barW} height={b.h} rx="1.5" fill={b.warm ? "#ff7a4d" : "#43c2f0"}>
+        <title>{`${b.d.season} ${b.d.year} (${seasonLabel(b.d.season)}): ONI ${formatAnomaly(b.d.anomaly)}`}</title>
+      </rect>
+    ))}
+
+    {yearLabels.map(({ d, i }) => (
+      <text
+        x={padL + i * stepW + barW / 2}
+        y={H - 12}
+        text-anchor="middle"
+        fill="#7f9ab1"
+        font-size="12"
+        font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+      >
+        {d.year}
+      </text>
+    ))}
+  </svg>
+
+  <div class="legend">
+    <span><i style="background:#ff7a4d"></i> El Niño (sobre +0,5)</span>
+    <span><i style="background:#43c2f0"></i> La Niña (bajo −0,5)</span>
+    <span><i style="background:rgba(150,190,220,0.5)"></i> Umbral neutral</span>
+  </div>
+</div>

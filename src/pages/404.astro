@@ -1,0 +1,28 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { nav } from "../data/content";
+---
+
+<Layout title="Página no encontrada" description="La página que buscás no existe.">
+  <section class="section container" style="text-align:center;">
+    <p class="eyebrow">Error 404</p>
+    <h1 style="font-size:clamp(3rem,12vw,7rem);color:var(--warm-soft);margin-bottom:0;">404</h1>
+    <p class="lead" style="margin:0 auto 28px;">
+      No encontramos esta página. Puede que el enlace haya cambiado o ya no exista.
+    </p>
+    <div class="hero-cta" style="justify-content:center;">
+      <a class="btn btn-primary" href="/">Volver al inicio</a>
+      <a class="btn btn-ghost" href="/impactos">Ver impactos</a>
+    </div>
+
+    <div class="grid grid-3" style="margin-top:48px;text-align:left;">
+      {
+        nav.slice(0, 6).map((item) => (
+          <a class="card" href={item.href}>
+            <h3 style="margin-top:0;">{item.label}</h3>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

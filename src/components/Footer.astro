@@ -1,0 +1,45 @@
+---
+import { nav, sources, site } from "../data/content";
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="brand" aria-label={`${site.name} — inicio`}>
+          <span class="dot" aria-hidden="true">🌡️</span>
+          <span>El Niño Argentina<small>Monitoreo ENSO</small></span>
+        </a>
+        <p style="margin-top:14px;max-width:34ch;">
+          Portal independiente de seguimiento del fenómeno de El Niño y La Niña en Argentina.
+          Datos abiertos de organismos oficiales.
+        </p>
+      </div>
+      <div>
+        <h4>Secciones</h4>
+        <ul>
+          {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h4>Fuentes de datos</h4>
+        <ul>
+          {sources.map((s) => <li><a href={s.url} rel="noopener" target="_blank">{s.name}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/preguntas#acerca">Acerca del sitio</a></li>
+          <li><a href="/privacidad">Privacidad y cookies</a></li>
+          <li><a href="/contacto">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {year} {site.name}. Todos los derechos reservados.</span>
+      <span>Datos: NOAA · IRI · SMN · BOM. Sitio con fines informativos.</span>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,212 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import OniChart from "../components/OniChart.astro";
+import AdSlot from "../components/AdSlot.astro";
+import { getOni, buildStatus, formatAnomaly, seasonLabel } from "../data/oni";
+import { regions, site, outlook } from "../data/content";
+
+const points = await getOni();
+const s = buildStatus(points);
+
+const stateClass = s.state === "El Niño" ? "warm" : s.state === "La Niña" ? "cool" : "neutral";
+const trendIcon = s.trend === "subiendo" ? "↑" : s.trend === "bajando" ? "↓" : "→";
+const valueColor =
+  stateClass === "warm" ? "var(--warm-soft)" : stateClass === "cool" ? "var(--cool-soft)" : "var(--neutral)";
+
+const o = outlook[s.state];
+const notes = (await getCollection("noticias", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+const fmtDate = (d: Date) =>
+  new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "long", year: "numeric" }).format(d);
+const built = fmtDate(new Date());
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  name: "Índice ONI (Oceanic Niño Index) y estado ENSO",
+  description:
+    "Serie histórica del índice ONI de NOAA y estado actual del fenómeno de El Niño / La Niña.",
+  url: new URL("/", Astro.site ?? site.url).href,
+  creator: { "@type": "Organization", name: "NOAA Climate Prediction Center" },
+  temporalCoverage: "1950/..",
+  variableMeasured: "Oceanic Niño Index",
+};
+---
+
+<Layout title="El Niño en Argentina: estado, pronóstico e impactos" jsonLd={jsonLd}>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Monitoreo ENSO · actualizado con datos de NOAA</p>
+        <h1>El Niño llega a Argentina: seguí el fenómeno <span>trimestre a trimestre</span></h1>
+        <p class="lead">
+          Estado actual del Pacífico, intensidad, pronóstico y qué significa para el clima,
+          el campo y los ríos de cada región del país.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="/pronostico">Ver pronóstico →</a>
+          <a class="btn btn-ghost" href="/impactos">Impactos por región</a>
+        </div>
+      </div>
+
+      <div class={`status-card ${stateClass}`}>
+        <span class={`pill ${stateClass}`}><span class="dot"></span> Estado actual</span>
+        <div class={`big ${stateClass}`}>{formatAnomaly(s.latest.anomaly)}</div>
+        <p style="margin:0 0 4px;color:var(--text);font-weight:600;">
+          {s.state} {s.state !== "Neutral" ? `· ${s.intensity}` : ""}
+        </p>
+        <p style="margin:0;color:var(--muted);font-size:0.9rem;">
+          ONI {s.latest.season} {s.latest.year} ({seasonLabel(s.latest.season)})
+        </p>
+        <p style="margin:12px 0 0;color:var(--muted);font-size:0.78rem;">
+          Actualizado: {built}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="stats">
+      <div class="stat">
+        <div class="label">Índice ONI</div>
+        <div class="value" style={`color:${valueColor}`}>
+          {formatAnomaly(s.latest.anomaly)}
+        </div>
+        <div class="sub">{s.latest.season} {s.latest.year}</div>
+      </div>
+      <div class="stat">
+        <div class="label">Estado</div>
+        <div class="value" style="font-size:1.5rem;">{s.state}</div>
+        <div class="sub">{s.state === "Neutral" ? "Sin fase activa" : `Intensidad ${s.intensity.toLowerCase()}`}</div>
+      </div>
+      <div class="stat">
+        <div class="label">Tendencia</div>
+        <div class="value">{trendIcon}</div>
+        <div class="sub">
+          {s.trend} ({formatAnomaly(s.delta)} vs. trimestre anterior)
+        </div>
+      </div>
+      <div class="stat">
+        <div class="label">Hace 12 meses</div>
+        <div class="value" style="font-size:1.5rem;">{formatAnomaly(s.yearAgo.anomaly)}</div>
+        <div class="sub">{s.yearAgo.season} {s.yearAgo.year}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <p class="eyebrow">Serie histórica</p>
+    <h2>El índice ONI desde 2018</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      Cada barra es un trimestre móvil. Por encima de +0,5 °C hay condiciones de El Niño;
+      por debajo de −0,5 °C, de La Niña.
+    </p>
+    <OniChart points={points} count={32} />
+  </section>
+
+  <AdSlot label="Publicidad" slot="home-top" />
+
+  <section class="section container">
+    <p class="eyebrow">El ciclo ENSO</p>
+    <h2>El Niño vs. La Niña</h2>
+    <div class="grid grid-2" style="margin-top:24px;">
+      <div class="card">
+        <div class="icon">🔥</div>
+        <h3>El Niño (fase cálida)</h3>
+        <p>
+          Aguas del Pacífico ecuatorial más cálidas de lo normal. En Argentina suele
+          traducirse en <strong>más lluvias</strong> en el Litoral, el NEA y la región pampeana.
+        </p>
+        <a class="more" href="/el-nino">Qué es El Niño →</a>
+      </div>
+      <div class="card">
+        <div class="icon">🧊</div>
+        <h3>La Niña (fase fría)</h3>
+        <p>
+          Aguas más frías de lo normal. Históricamente asociada a <strong>sequías</strong> y
+          déficit de lluvias en el centro del país, con impacto directo en la producción agrícola.
+        </p>
+        <a class="more" href="/la-nina">Qué es La Niña →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <p class="eyebrow">Próximos meses</p>
+    <h2>{o.title}</h2>
+    <div class="card" style="margin-top:20px;">
+      <ul style="color:var(--text-soft);padding-left:1.2em;margin:0;">
+        {o.items.map((item) => <li style="margin-bottom:10px;">{item}</li>)}
+      </ul>
+      <div class="hero-cta" style="margin-top:20px;">
+        <a class="btn btn-ghost" href="/pronostico">Pronóstico completo →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <p class="eyebrow">Territorio</p>
+    <h2>Impactos por región</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      El efecto de El Niño no es igual en todo el país. Estas son las señales más probables.
+    </p>
+    <div class="grid grid-3">
+      {
+        regions.map((r) => (
+          <div class="card">
+            <div class="icon">{r.icon}</div>
+            <h3>{r.name}</h3>
+            <p>{r.summary}</p>
+            <a class="more" href={`/impactos/${r.slug}`}>Ver detalle →</a>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section container">
+    <p class="eyebrow">Notas</p>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;">
+      <h2 style="margin-bottom:0;">Últimas notas</h2>
+      <a class="more" href="/noticias">Ver todas →</a>
+    </div>
+    <div class="grid grid-3" style="margin-top:28px;">
+      {
+        notes.map((post) => (
+          <a class="card post-card" href={`/noticias/${post.id}`}>
+            <span class="tag">{post.data.tag}</span>
+            <h3>{post.data.title}</h3>
+            <p style="font-size:0.92rem;">{post.data.description}</p>
+            <div class="post-meta">
+              <time datetime={post.data.date.toISOString()}>{fmtDate(post.data.date)}</time>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section container prose">
+    <p class="eyebrow">Metodología</p>
+    <h2>Cómo calculamos el estado</h2>
+    <p>
+      Usamos el <strong>ONI</strong> (Oceanic Niño Index) del Climate Prediction Center de
+      NOAA, el indicador estándar para medir ENSO. El valor de cada trimestre es el promedio
+      móvil de 3 meses de la anomalía de temperatura superficial del mar en la región Niño 3.4.
+    </p>
+    <div class="callout">
+      <p>
+        <strong>Actual:</strong> {s.latest.season} {s.latest.year} = {formatAnomaly(s.latest.anomaly)} °C.
+        {s.state !== "Neutral"
+          ? ` Condiciones de ${s.state} de intensidad ${s.intensity.toLowerCase()}.`
+          : " Condiciones neutrales."}
+      </p>
+    </div>
+    <p>
+      El sitio se recalcula con los datos públicos de NOAA. Para pronósticos locales,
+      consultá siempre el <a href="https://www.smn.gob.ar/" rel="noopener" target="_blank">Servicio Meteorológico Nacional</a>.
+    </p>
+  </section>
+</Layout>

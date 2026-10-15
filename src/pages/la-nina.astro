@@ -1,0 +1,97 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AdSlot from "../components/AdSlot.astro";
+import { getOni, buildStatus, formatAnomaly } from "../data/oni";
+
+const points = await getOni();
+const s = buildStatus(points);
+const isNina = s.state === "La Niña";
+
+const scales = [
+  { range: "−0,5 a −0,9", label: "Débil" },
+  { range: "−1,0 a −1,4", label: "Moderada" },
+  { range: "−1,5 a −1,9", label: "Fuerte" },
+  { range: "≤ −2,0", label: "Muy fuerte" },
+];
+---
+
+<Layout
+  title="¿Qué es La Niña? Definición, causas e impactos"
+  description="La Niña es la fase fría del ENSO. Explicamos qué es, cómo se forma, cómo se mide y por qué en Argentina se asocia a sequías."
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · La Niña</div>
+
+  <section class="section container">
+    <p class="eyebrow">Fase fría del ENSO</p>
+    <h1>¿Qué es La Niña?</h1>
+    <p class="lead">
+      La Niña es la fase fría del ciclo <strong>ENSO</strong>: las aguas del Pacífico
+      ecuatorial central y oriental se enfrían más de lo normal. Para Argentina, es el
+      escenario opuesto al de El Niño y suele asociarse a <strong>sequías</strong>.
+    </p>
+    {
+      isNina && (
+        <div class="callout">
+          <p>
+            <strong>Hoy:</strong> el ONI marca {formatAnomaly(s.latest.anomaly)} °C
+            ({s.latest.season} {s.latest.year}). Hay condiciones de La Niña
+            {s.intensity !== "Neutro" ? ` de intensidad ${s.intensity.toLowerCase()}` : ""}.
+          </p>
+        </div>
+      )
+    }
+  </section>
+
+  <section class="section container prose">
+    <h2>Cómo se forma</h2>
+    <p>
+      Durante La Niña, los vientos alisios se intensifican y empujan aún más agua cálida
+      hacia el oeste del Pacífico. En la parte central y oriental aflora más agua profunda
+      y fría, y la atmósfera reorganiza sus patrones de circulación.
+    </p>
+    <p>
+      Es el proceso inverso al de El Niño, pero igual de potente: cambia la ubicación de
+      las lluvias y las temperaturas a escala global.
+    </p>
+
+    <h2>Cómo se mide</h2>
+    <p>
+      Al igual que El Niño, se usa el <strong>ONI</strong>. Valores sostenidos iguales o
+      inferiores a <strong>−0,5 °C</strong> indican La Niña. Su intensidad se clasifica:
+    </p>
+  </section>
+
+  <section class="container">
+    <div class="table-wrap" style="max-width:640px;">
+      <table>
+        <thead>
+          <tr><th>ONI (Niño 3.4)</th><th>Intensidad</th></tr>
+        </thead>
+        <tbody>
+          {scales.map((row) => (
+            <tr><td style="font-family:var(--mono)">{row.range}</td><td>{row.label}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <AdSlot label="Publicidad" slot="la-nina" />
+
+  <section class="section container prose">
+    <h2>Qué significa para Argentina</h2>
+    <p>
+      La Niña suele provocar déficit de lluvias y sequías en la región pampeana y Cuyo, más
+      olas de calor en el centro del país y la bajante de los ríos de la cuenca del Plata.
+    </p>
+    <p>
+      El caso más recordado es la "Niña triple" (2020–2022), que combinó tres años
+      consecutivos de sequía con una bajante histórica del río Paraná y una de las peores
+      campañas agrícolas de las últimas décadas.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-ghost" href="/impactos">Impactos por región</a>
+      <a class="btn btn-ghost" href="/historia">La Niña en la historia</a>
+    </div>
+  </section>
+</Layout>

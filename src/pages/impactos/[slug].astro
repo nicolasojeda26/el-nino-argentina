@@ -1,0 +1,78 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { regions, site } from "../../data/content";
+
+export function getStaticPaths() {
+  return regions.map((region) => ({ params: { slug: region.slug }, props: { region } }));
+}
+
+const { region } = Astro.props;
+const others = regions.filter((r) => r.slug !== region.slug);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: `El Niño en ${region.name}: impactos y qué esperar`,
+  about: region.name,
+  inLanguage: "es-AR",
+  url: new URL(Astro.url.pathname, Astro.site ?? site.url).href,
+};
+---
+
+<Layout
+  title={`El Niño en ${region.name}: impactos y qué esperar`}
+  description={`Cómo afecta El Niño y La Niña a ${region.name} (${region.provinces}): lluvias, sequías, ríos, agro y recomendaciones.`}
+  jsonLd={jsonLd}
+>
+  <div class="container breadcrumbs">
+    <a href="/">Inicio</a> · <a href="/impactos">Impactos</a> · {region.name}
+  </div>
+
+  <section class="section container">
+    <div class="icon" style="width:56px;height:56px;font-size:28px;border-radius:15px;background:rgba(255,255,255,0.06);border:1px solid var(--border);display:grid;place-items:center;">
+      {region.icon}
+    </div>
+    <p class="eyebrow" style="margin-top:16px;">{region.provinces}</p>
+    <h1>El Niño en {region.name}</h1>
+    <p class="lead">{region.summary}</p>
+  </section>
+
+  <section class="section container prose">
+    <p>{region.detail}</p>
+  </section>
+
+  <AdSlot label="Publicidad" slot={`impactos-${region.slug}`} />
+
+  <section class="section container">
+    <div class="grid grid-2">
+      <div class="card">
+        <h3 style="margin-top:0;">Qué esperar</h3>
+        <ul style="color:var(--text-soft);padding-left:1.2em;">
+          {region.points.map((p) => <li style="margin-bottom:10px;">{p}</li>)}
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0;">Recomendaciones</h3>
+        <ul style="color:var(--text-soft);padding-left:1.2em;">
+          {region.recommendations.map((p) => <li style="margin-bottom:10px;">{p}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h2>Otras regiones</h2>
+    <div class="grid grid-3" style="margin-top:20px;">
+      {
+        others.map((r) => (
+          <a class="card" href={`/impactos/${r.slug}`}>
+            <div class="icon">{r.icon}</div>
+            <h3>{r.name}</h3>
+            <p style="font-size:0.9rem;">{r.provinces}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

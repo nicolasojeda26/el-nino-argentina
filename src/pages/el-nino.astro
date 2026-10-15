@@ -1,0 +1,106 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AdSlot from "../components/AdSlot.astro";
+import { getOni, buildStatus, formatAnomaly } from "../data/oni";
+
+const points = await getOni();
+const s = buildStatus(points);
+const isNino = s.state === "El Niño";
+
+const scales = [
+  { range: "+0,5 a +0,9", label: "Débil" },
+  { range: "+1,0 a +1,4", label: "Moderado" },
+  { range: "+1,5 a +1,9", label: "Fuerte" },
+  { range: "≥ +2,0", label: "Muy fuerte" },
+];
+---
+
+<Layout
+  title="¿Qué es El Niño? Definición, causas e impactos"
+  description="El Niño es la fase cálida del fenómeno ENSO. Explicamos qué es, cómo se forma, cómo se mide con el ONI y qué significa para Argentina."
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · El Niño</div>
+
+  <section class="section container">
+    <p class="eyebrow">Fase cálida del ENSO</p>
+    <h1>¿Qué es El Niño?</h1>
+    <p class="lead">
+      El Niño es la fase cálida de un ciclo climático natural llamado <strong>ENSO</strong>
+      (El Niño–Oscilación del Sur). Se caracteriza por el calentamiento inusual de las aguas
+      del océano Pacífico ecuatorial, que altera los patrones de lluvia, viento y temperatura
+      en gran parte del planeta.
+    </p>
+    {
+      isNino && (
+        <div class="callout">
+          <p>
+            <strong>Hoy:</strong> el ONI marca {formatAnomaly(s.latest.anomaly)} °C
+            ({s.latest.season} {s.latest.year}). Hay condiciones de El Niño
+            {s.intensity !== "Neutro" ? ` de intensidad ${s.intensity.toLowerCase()}` : ""}.
+          </p>
+        </div>
+      )
+    }
+  </section>
+
+  <section class="section container prose">
+    <h2>Cómo se forma</h2>
+    <p>
+      En condiciones normales, los vientos alisios empujan agua cálida hacia el oeste del
+      Pacífico (cerca de Indonesia y Australia), mientras en la costa de Sudamérica aflora
+      agua fría y rica en nutrientes. Durante El Niño, esos vientos se debilitan: el agua
+      cálida se extiende hacia el este y la atmósfera responde con cambios en la circulación.
+    </p>
+    <p>
+      El resultado es una enorme cantidad de energía y humedad redistribuida por el planeta.
+      Por eso un cambio en el Pacífico tropical puede influir en el clima de Argentina, a
+      miles de kilómetros de distancia.
+    </p>
+
+    <h2>Cómo se mide: el índice ONI</h2>
+    <p>
+      El indicador estándar es el <strong>ONI</strong> (Oceanic Niño Index), que promedia
+      la anomalía de temperatura del mar en la región Niño 3.4 durante 3 meses:
+    </p>
+    <ul>
+      <li><strong>+0,5 °C o más</strong> de forma sostenida → El Niño</li>
+      <li><strong>−0,5 °C o menos</strong> de forma sostenida → La Niña</li>
+      <li>Entre ambos valores → condiciones neutrales</li>
+    </ul>
+    <p>La intensidad de un evento de El Niño se clasifica así:</p>
+  </section>
+
+  <section class="container">
+    <div class="table-wrap" style="max-width:640px;">
+      <table>
+        <thead>
+          <tr><th>ONI (Niño 3.4)</th><th>Intensidad</th></tr>
+        </thead>
+        <tbody>
+          {scales.map((row) => (
+            <tr><td style="font-family:var(--mono)">{row.range}</td><td>{row.label}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <AdSlot label="Publicidad" slot="el-nino" />
+
+  <section class="section container prose">
+    <h2>Qué significa para Argentina</h2>
+    <p>
+      Durante El Niño, Argentina suele registrar más lluvias en el Litoral, el NEA y la
+      región pampeana, con mayor riesgo de crecidas en los ríos de la cuenca del Plata y
+      de anegamientos en zonas bajas.
+    </p>
+    <p>
+      Para el agro, en muchos casos implica mejores rindes por mayor recarga de agua en los
+      suelos, aunque con el riesgo asociado de excesos hídricos.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-ghost" href="/impactos">Impactos por región</a>
+      <a class="btn btn-ghost" href="/historia">El Niño en la historia</a>
+    </div>
+  </section>
+</Layout>

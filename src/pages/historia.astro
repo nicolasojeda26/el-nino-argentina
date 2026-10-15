@@ -1,0 +1,87 @@
+---
+import Layout from "../layouts/Layout.astro";
+import OniChart from "../components/OniChart.astro";
+import AdSlot from "../components/AdSlot.astro";
+import { getOni } from "../data/oni";
+import { historicEvents } from "../data/content";
+
+const points = await getOni();
+const nino = historicEvents.filter((e) => e.type === "El Niño");
+const nina = historicEvents.filter((e) => e.type === "La Niña");
+const fmt = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
+---
+
+<Layout
+  title="Historia de El Niño y La Niña en Argentina"
+  description="Los eventos de El Niño y La Niña más importantes de la historia reciente y su impacto en Argentina, con la serie completa del índice ONI."
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · Historia</div>
+
+  <section class="section container">
+    <p class="eyebrow">Registro histórico</p>
+    <h1>El Niño y La Niña en la historia</h1>
+    <p class="lead">
+      El índice ONI de NOAA se remonta a 1950. Estos son los eventos más intensos y sus
+      impactos documentados en Argentina.
+    </p>
+  </section>
+
+  <section class="section container">
+    <div class="chart-wrap">
+      <h3 style="margin-top:0;">Serie completa del ONI (1950 – hoy)</h3>
+      <p style="color:var(--muted);font-size:0.9rem;">
+        Décadas de oscilación entre fases cálidas (rojo) y frías (azul).
+      </p>
+      <OniChart points={points} count={points.length} height={300} />
+    </div>
+  </section>
+
+  <AdSlot label="Publicidad" slot="historia" />
+
+  <section class="section container">
+    <h2>Grandes eventos de El Niño</h2>
+    <div class="table-wrap" style="margin-bottom:40px;">
+      <table>
+        <thead>
+          <tr><th>Período</th><th>Intensidad</th><th>ONI máx.</th><th>Impacto en Argentina</th></tr>
+        </thead>
+        <tbody>
+          {
+            nino.map((e) => (
+              <tr>
+                <td><strong>{e.period}</strong></td>
+                <td style="color:var(--warm-soft)">{e.intensity}</td>
+                <td style="font-family:var(--mono)">{fmt(e.peak)}</td>
+                <td style="white-space:normal">{e.impact}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Grandes eventos de La Niña</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Período</th><th>Intensidad</th><th>ONI mín.</th><th>Impacto en Argentina</th></tr>
+        </thead>
+        <tbody>
+          {
+            nina.map((e) => (
+              <tr>
+                <td><strong>{e.period}</strong></td>
+                <td style="color:var(--cool-soft)">{e.intensity}</td>
+                <td style="font-family:var(--mono)">{fmt(e.peak)}</td>
+                <td style="white-space:normal">{e.impact}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--muted);font-size:0.85rem;margin-top:14px;">
+      Los valores de ONI son aproximados e ilustrativos; consultá la serie oficial de NOAA para precisión.
+    </p>
+  </section>
+</Layout>

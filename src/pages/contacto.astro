@@ -1,0 +1,58 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site } from "../data/content";
+---
+
+<Layout
+  title="Contacto"
+  description="Contactate con El Niño Argentina: consultas, sugerencias, correcciones o propuestas de colaboración."
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · Contacto</div>
+
+  <section class="section container">
+    <p class="eyebrow">Contacto</p>
+    <h1>Hablemos</h1>
+    <p class="lead">
+      ¿Tenés una consulta, una sugerencia o detectaste un error en los datos? Escribinos.
+    </p>
+  </section>
+
+  <section class="section container">
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="icon">✉️</div>
+        <h3>Correo electrónico</h3>
+        <p>El canal más directo para consultas generales y prensa.</p>
+        <p><a class="btn btn-primary" href="mailto:contacto@elnino.com.ar">contacto@elnino.com.ar</a></p>
+      </div>
+      <div class="card">
+        <div class="icon">📊</div>
+        <h3>Correcciones de datos</h3>
+        <p>
+          Trabajamos con datos abiertos de NOAA, IRI y el SMN. Si encontrás una
+          inconsistencia, contanos el trimestre y el valor.
+        </p>
+      </div>
+      <div class="card">
+        <div class="icon">🤝</div>
+        <h3>Colaboraciones</h3>
+        <p>
+          Si representás a una cooperativa, aseguradora, medio o institución y querés
+          aportar información o patrocinar contenido, escribinos.
+        </p>
+      </div>
+      <div class="card">
+        <div class="icon">📣</div>
+        <h3>Publicidad</h3>
+        <p>
+          El sitio está abierto a auspicios y publicidad. Consultá por disponibilidad y
+          formatos.
+        </p>
+      </div>
+    </div>
+
+    <p style="margin-top:28px;color:var(--muted);font-size:0.9rem;">
+      {site.name} es un portal informativo independiente. Respondemos en la medida de lo posible.
+    </p>
+  </section>
+</Layout>

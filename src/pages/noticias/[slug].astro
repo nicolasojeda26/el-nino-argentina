@@ -1,0 +1,54 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { site } from "../../data/content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("noticias", ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const fmt = (d: Date) =>
+  new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "long", year: "numeric" }).format(d);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  dateModified: post.data.date.toISOString(),
+  author: { "@type": "Organization", name: post.data.author },
+  publisher: { "@type": "Organization", name: site.name },
+  inLanguage: "es-AR",
+  url: new URL(Astro.url.pathname, Astro.site ?? site.url).href,
+};
+---
+
+<Layout title={post.data.title} description={post.data.description} type="article" jsonLd={jsonLd}>
+  <div class="container breadcrumbs">
+    <a href="/">Inicio</a> · <a href="/noticias">Notas</a> · {post.data.tag}
+  </div>
+
+  <article class="section container prose">
+    <span class="tag">{post.data.tag}</span>
+    <h1 style="margin-top:14px;">{post.data.title}</h1>
+    <div class="post-meta" style="margin-bottom:28px;">
+      <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+      <span> · {post.data.author}</span>
+    </div>
+
+    <Content />
+
+    <AdSlot label="Publicidad" slot="noticia" />
+
+    <div class="hero-cta" style="margin-top:36px;">
+      <a class="btn btn-ghost" href="/noticias">← Volver a las notas</a>
+      <a class="btn btn-primary" href="/pronostico">Ver pronóstico actual</a>
+    </div>
+  </article>
+</Layout>

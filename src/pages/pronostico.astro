@@ -1,0 +1,123 @@
+---
+import Layout from "../layouts/Layout.astro";
+import OniChart from "../components/OniChart.astro";
+import AdSlot from "../components/AdSlot.astro";
+import { getOni, buildStatus, formatAnomaly, seasonLabel } from "../data/oni";
+import { sources, outlook } from "../data/content";
+
+const points = await getOni();
+const s = buildStatus(points);
+const stateClass = s.state === "El Niño" ? "warm" : s.state === "La Niña" ? "cool" : "neutral";
+const recent = points.slice(-12).reverse();
+
+const o = outlook[s.state];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: sources.map((src) => ({
+    "@type": "Question",
+    name: `¿Dónde consultar el pronóstico oficial? ${src.name}`,
+    acceptedAnswer: { "@type": "Answer", text: src.url },
+  })),
+};
+---
+
+<Layout
+  title="Pronóstico de El Niño en Argentina"
+  description="Estado actual del ENSO, tendencia del ONI y qué se espera para Argentina según la fase activa (El Niño, La Niña o neutral)."
+  jsonLd={jsonLd}
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · Pronóstico</div>
+
+  <section class="section container">
+    <p class="eyebrow">Pronóstico ENSO</p>
+    <h1>Pronóstico de El Niño</h1>
+    <p class="lead">
+      El ONI más reciente es <strong>{formatAnomaly(s.latest.anomaly)} °C</strong> ({s.latest.season} {s.latest.year}),
+      lo que indica condiciones <strong>{s.state}</strong>{s.state !== "Neutral" ? ` de intensidad ${s.intensity.toLowerCase()}` : ""}.
+      La tendencia respecto al trimestre anterior es <strong>{s.trend}</strong>.
+    </p>
+
+    <div class={`status-card ${stateClass}`} style="max-width:520px;margin-top:24px;">
+      <span class={`pill ${stateClass}`}><span class="dot"></span> Fase actual</span>
+      <div class={`big ${stateClass}`}>{s.state}</div>
+      <p style="margin:0;color:var(--muted);font-size:0.9rem;">
+        ONI {formatAnomaly(s.latest.anomaly)} · {seasonLabel(s.latest.season)} {s.latest.year}
+      </p>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h2>Tendencia de los últimos años</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      La evolución del ONI permite ver cómo el Pacífico pasó de una fase a otra.
+    </p>
+    <OniChart points={points} count={44} />
+  </section>
+
+  <AdSlot label="Publicidad" slot="pronostico" />
+
+  <section class="section container prose">
+    <h2>{o.title}</h2>
+    <p>
+      A partir de la fase actual, estos son los impactos más probables que suelen
+      registrarse en el país durante los próximos meses:
+    </p>
+    <ul>
+      {o.items.map((item) => <li>{item}</li>)}
+    </ul>
+
+    <div class="callout">
+      <p>
+        <strong>Importante:</strong> el ONI describe una tendencia estacional, no un
+        pronóstico del tiempo diario. Para el pronóstico de tu localidad, consultá el
+        Servicio Meteorológico Nacional.
+      </p>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h2>Últimos 12 trimestres</h2>
+    <div class="table-wrap" style="margin-top:20px;max-width:760px;">
+      <table>
+        <thead>
+          <tr><th>Trimestre</th><th>Período</th><th>ONI</th><th>Fase</th></tr>
+        </thead>
+        <tbody>
+          {
+            recent.map((p) => (
+              <tr>
+                <td style="font-family:var(--mono)">{p.season} {p.year}</td>
+                <td>{seasonLabel(p.season)}</td>
+                <td style="font-family:var(--mono)">{formatAnomaly(p.anomaly)}</td>
+                <td style={p.anomaly >= 0.5 ? "color:var(--warm-soft)" : p.anomaly <= -0.5 ? "color:var(--cool-soft)" : "color:var(--muted)"}>
+                  {p.anomaly >= 0.5 ? "El Niño" : p.anomaly <= -0.5 ? "La Niña" : "Neutral"}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h2>Pronóstico oficial</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      Los pronósticos probabilísticos y la "pluma" de proyección los publican organismos
+      internacionales. Estas son las fuentes de referencia:
+    </p>
+    <div class="grid grid-2">
+      {
+        sources.map((src) => (
+          <a class="card" href={src.url} rel="noopener" target="_blank">
+            <div class="icon">🔗</div>
+            <h3>{src.name}</h3>
+            <p style="font-size:0.85rem;word-break:break-all;">{src.url}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,86 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AdSlot from "../components/AdSlot.astro";
+import { regions } from "../data/content";
+
+const comparisons: { region: string; nino: string; nina: string }[] = [
+  { region: "Litoral y NEA", nino: "Lluvias muy por encima de lo normal, crecidas", nina: "Lluvias cercanas a lo normal, con bajante" },
+  { region: "Región Pampeana", nino: "Más lluvia, riesgo de excesos", nina: "Sequía, déficit hídrico" },
+  { region: "Cuyo", nino: "Efecto variable, más nieve en cordillera", nina: "Déficit de lluvias e inviernos secos" },
+  { region: "Noroeste (NOA)", nino: "Veranos más lluviosos", nina: "Veranos más secos" },
+  { region: "Patagonia", nino: "Inviernos fríos y nevadas variables", nina: "Efecto débil y heterogéneo" },
+];
+---
+
+<Layout
+  title="Impactos de El Niño por región en Argentina"
+  description="Cómo afecta El Niño y La Niña a cada región de Argentina: Litoral, Pampa, Cuyo, NOA y Patagonia. Lluvias, sequías, ríos y agro."
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · Impactos</div>
+
+  <section class="section container">
+    <p class="eyebrow">Territorio</p>
+    <h1>Impactos de El Niño en Argentina</h1>
+    <p class="lead">
+      El efecto del ENSO no es uniforme en el país. La señal es más fuerte en el
+      centro-este y el Litoral, y más débil en Cuyo y la Patagonia. Elegí tu región:
+    </p>
+  </section>
+
+  <section class="container">
+    <div class="grid grid-3">
+      {
+        regions.map((r) => (
+          <a class="card" href={`/impactos/${r.slug}`}>
+            <div class="icon">{r.icon}</div>
+            <h3>{r.name}</h3>
+            <p style="font-size:0.9rem;">{r.summary}</p>
+            <span class="more">Ver detalle →</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <AdSlot label="Publicidad" slot="impactos" />
+
+  <section class="section container">
+    <h2>Comparación rápida</h2>
+    <div class="table-wrap" style="margin-top:20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Región</th>
+            <th>Con El Niño</th>
+            <th>Con La Niña</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            comparisons.map((c) => (
+              <tr>
+                <td><strong>{c.region}</strong></td>
+                <td style="white-space:normal;color:var(--warm-soft)">{c.nino}</td>
+                <td style="white-space:normal;color:var(--cool-soft)">{c.nina}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section container prose">
+    <h2>El agro, el sector más sensible</h2>
+    <p>
+      La producción de soja, maíz y trigo de la región pampeana depende fuertemente del
+      régimen de lluvias. Históricamente, los años de El Niño trajeron más agua y, en general,
+      mejores rindes, mientras que las sequías de La Niña golpearon la producción y las
+      exportaciones.
+    </p>
+    <p>
+      Por eso El Niño es seguido de cerca por productores, aseguradoras, cooperativas y el
+      mercado de granos: el fenómeno es un insumo clave para la planificación de la campaña.
+    </p>
+  </section>
+</Layout>

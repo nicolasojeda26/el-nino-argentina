@@ -1,0 +1,125 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site } from "../data/content";
+const updated = "Octubre de 2026";
+---
+
+<Layout
+  title="Política de Privacidad y Cookies"
+  description="Política de privacidad, uso de cookies y publicidad de El Niño Argentina. Información sobre datos personales y Google AdSense."
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · Privacidad</div>
+
+  <section class="section container prose">
+    <p class="eyebrow">Legal</p>
+    <h1>Política de Privacidad y Cookies</h1>
+    <p style="color:var(--muted);">Última actualización: {updated}</p>
+
+    <p>
+      Esta Política de Privacidad describe cómo <strong>{site.name}</strong> recopila, usa y
+      protege la información de los usuarios del sitio {site.url}. Al navegar el sitio,
+      aceptás las prácticas descritas en este documento.
+    </p>
+
+    <h2>1. Responsable</h2>
+    <p>
+      El sitio {site.name} es un portal informativo independiente. Para consultas sobre esta
+      política podés escribir a <a href="mailto:contacto@elnino.com.ar">contacto@elnino.com.ar</a>.
+    </p>
+
+    <h2>2. Qué datos recopilamos</h2>
+    <p>
+      No solicitamos registro ni datos personales para navegar. Podemos recibir información
+      de forma automática y anónima cuando usás el sitio:
+    </p>
+    <ul>
+      <li>Dirección IP y ubicación aproximada (a nivel de ciudad/país).</li>
+      <li>Tipo de navegador, sistema operativo y dispositivo.</li>
+      <li>Páginas visitadas, tiempo de permanencia y sitio de referencia.</li>
+      <li>Cookies y tecnologías similares (ver punto 4).</li>
+    </ul>
+
+    <h2>3. Uso de la información</h2>
+    <p>La información se utiliza para:</p>
+    <ul>
+      <li>Analizar el tráfico y mejorar el contenido y la experiencia del sitio.</li>
+      <li>Mostrar publicidad (incluida publicidad personalizada).</li>
+      <li>Prevenir abusos y garantizar la seguridad del servicio.</li>
+    </ul>
+
+    <h2>4. Cookies y publicidad de terceros</h2>
+    <p>
+      Este sitio puede utilizar <strong>Google AdSense</strong> y otros servicios de terceros
+      para mostrar publicidad. Google y sus partners pueden usar cookies para publicar anuncios
+      basados en las visitas previas del usuario a este sitio y a otros sitios de Internet.
+    </p>
+    <ul>
+      <li>
+        El uso de cookies publicitarias permite a Google y a sus partners mostrar anuncios
+        basados en tus intereses.
+      </li>
+      <li>
+        Podés inhabilitar la publicidad personalizada de Google en
+        <a href="https://www.google.com/settings/ads" rel="noopener" target="_blank">google.com/settings/ads</a>.
+      </li>
+      <li>
+        Podés inhabilitar las cookies de proveedores externos en
+        <a href="https://www.aboutads.info/choices/" rel="noopener" target="_blank">aboutads.info/choices</a>.
+      </li>
+      <li>
+        Más información sobre cómo Google usa los datos:
+        <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">policies.google.com/technologies/partner-sites</a>.
+      </li>
+    </ul>
+    <p>
+      También podemos usar herramientas de analítica web (por ejemplo, Google Analytics) que
+      emplean cookies para medir el tráfico de forma agregada.
+    </p>
+
+    <h2>5. Control de cookies</h2>
+    <p>
+      Podés configurar tu navegador para bloquear o eliminar cookies. Tené en cuenta que
+      algunas funciones del sitio podrían no funcionar correctamente si las deshabilitás.
+    </p>
+
+    <h2>6. Conservación y seguridad</h2>
+    <p>
+      No almacenamos datos personales identificables en nuestros servidores, ya que el sitio
+      es de contenido informativo y no requiere cuentas de usuario. Los datos agregados se
+      conservan solo el tiempo necesario para los fines descritos.
+    </p>
+
+    <h2>7. Derechos de los usuarios (Ley 25.326)</h2>
+    <p>
+      Conforme a la Ley de Protección de Datos Personales de la República Argentina (Ley
+      25.326), podés ejercer tus derechos de acceso, rectificación, actualización o supresión
+      escribiendo a <a href="mailto:contacto@elnino.com.ar">contacto@elnino.com.ar</a>.
+    </p>
+
+    <h2>8. Enlaces a sitios de terceros</h2>
+    <p>
+      El sitio contiene enlaces a fuentes externas (como NOAA, IRI o el SMN). No somos
+      responsables por las prácticas de privacidad ni el contenido de esos sitios.
+    </p>
+
+    <h2>9. Menores de edad</h2>
+    <p>
+      El sitio no está dirigido a menores de 13 años y no recopilamos deliberadamente datos
+      de menores.
+    </p>
+
+    <h2>10. Cambios en esta política</h2>
+    <p>
+      Podemos actualizar esta política en cualquier momento. La fecha de última actualización
+      figura al inicio del documento.
+    </p>
+
+    <div class="callout">
+      <p>
+        <strong>Aviso:</strong> el contenido de {site.name} es informativo y no reemplaza los
+        pronósticos ni las alertas oficiales del Servicio Meteorológico Nacional ni de otros
+        organismos competentes.
+      </p>
+    </div>
+  </section>
+</Layout>

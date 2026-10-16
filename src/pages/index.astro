@@ -2,10 +2,12 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import OniChart from "../components/OniChart.astro";
-import OniGauge from "../components/OniGauge.astro";
+import EnsoScale from "../components/EnsoScale.astro";
 import ArgentinaMap from "../components/ArgentinaMap.astro";
 import AdSlot from "../components/AdSlot.astro";
-import { getOni, buildStatus, formatAnomaly, seasonLabel } from "../data/oni";
+import Icon from "../components/Icon.astro";
+import Sun from "../components/Sun.astro";
+import { getOni, buildStatus, formatAnomaly } from "../data/oni";
 import { regions, site, outlook } from "../data/content";
 
 const points = await getOni();
@@ -13,8 +15,7 @@ const s = buildStatus(points);
 
 const stateClass = s.state === "El Niño" ? "warm" : s.state === "La Niña" ? "cool" : "neutral";
 const trendIcon = s.trend === "subiendo" ? "↑" : s.trend === "bajando" ? "↓" : "→";
-const valueColor =
-  stateClass === "warm" ? "var(--warm-soft)" : stateClass === "cool" ? "var(--cool-soft)" : "var(--neutral)";
+const peak = points.reduce((a, b) => (b.anomaly > a.anomaly ? b : a));
 
 const o = outlook[s.state];
 const notes = (await getCollection("noticias", ({ data }) => !data.draft))
@@ -39,88 +40,82 @@ const jsonLd = {
 
 <Layout title="El Niño en Argentina: estado, pronóstico e impactos" jsonLd={jsonLd}>
   <section class="hero">
-    <span class="sun-halo" aria-hidden="true"></span>
-    <div class="container hero-grid">
-      <div>
-        <p class="eyebrow">Monitoreo ENSO · actualizado con datos de NOAA</p>
-        <h1>El Niño llega a Argentina: seguí el fenómeno <span>trimestre a trimestre</span></h1>
-        <p class="lead">
-          Estado actual del Pacífico, intensidad, pronóstico y qué significa para el clima,
-          el campo y los ríos de cada región del país.
-        </p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="/pronostico/">Ver pronóstico →</a>
-          <a class="btn btn-ghost" href="/impactos/">Impactos por región</a>
-        </div>
-        <div class="chips" style="margin-top:22px;">
-          {
-            regions.map((r) => (
-              <a class="chip" data-region={r.slug} href={`/impactos/${r.slug}/`}>
-                <span class="swatch" aria-hidden="true" />
-                {r.name}
-              </a>
-            ))
-          }
-        </div>
-      </div>
-
-      <div class={`status-card ${stateClass}`}>
-        <span class={`pill ${stateClass}`}><span class="dot"></span> Estado actual</span>
-        <div class={`big ${stateClass}`}>{formatAnomaly(s.latest.anomaly)}</div>
-        <p style="margin:0 0 4px;color:var(--text);font-weight:600;">
-          {s.state} {s.state !== "Neutral" ? `· ${s.intensity}` : ""}
-        </p>
-        <p style="margin:0;color:var(--muted);font-size:0.9rem;">
-          ONI {s.latest.season} {s.latest.year} ({seasonLabel(s.latest.season)})
-        </p>
-        <p style="margin:12px 0 0;color:var(--muted);font-size:0.78rem;">
-          Actualizado: {built}
-        </p>
+    <span class="hero-sun" aria-hidden="true"><Sun size={520} rays={24} /></span>
+    <div class="container">
+      <p class="eyebrow">Monitoreo ENSO · datos NOAA</p>
+      <h1>
+        El Niño llega a Argentina: seguí el fenómeno<br />
+        <span class="hl">trimestre a trimestre</span>
+      </h1>
+      <p class="lead">
+        Estado del Pacífico, intensidad, pronóstico y qué significa para el clima, el campo
+        y los ríos de cada región del país.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="/pronostico/">Ver pronóstico →</a>
+        <a class="btn btn-ghost" href="#mapa">Impactos por región</a>
       </div>
     </div>
   </section>
 
-  <section class="container">
-    <div class="stats">
-      <div class="stat">
-        <div class="label">Índice ONI</div>
-        <div class="value" style={`color:${valueColor}`}>
-          {formatAnomaly(s.latest.anomaly)}
+  <section class="band band-rays">
+    <div class="container">
+      <div class="panel">
+        <div class="panel-head">
+          <span class="mono" style="color:var(--sol)">
+            ● Estado actual · {s.state}
+          </span>
+          <span class="mono">Actualizado {built}</span>
         </div>
-        <div class="sub">{s.latest.season} {s.latest.year}</div>
-      </div>
-      <div class="stat">
-        <div class="label">Estado</div>
-        <div class="value" style="font-size:1.5rem;">{s.state}</div>
-        <div class="sub">{s.state === "Neutral" ? "Sin fase activa" : `Intensidad ${s.intensity.toLowerCase()}`}</div>
-      </div>
-      <div class="stat">
-        <div class="label">Tendencia</div>
-        <div class="value">{trendIcon}</div>
-        <div class="sub">
-          {s.trend} ({formatAnomaly(s.delta)} vs. trimestre anterior)
+
+        <div class="panel-main">
+          <div class={`panel-value ${stateClass}`}>
+            {formatAnomaly(s.latest.anomaly)}
+            <small>°C &nbsp;ONI {s.latest.season} {s.latest.year}</small>
+          </div>
+          <div class="panel-state">
+            <div class="state">{s.state}</div>
+            <div class="intensity">
+              {s.state === "Neutral" ? "sin fase activa" : `intensidad ${s.intensity.toLowerCase()}`}
+            </div>
+          </div>
         </div>
+
+        <EnsoScale
+          value={s.latest.anomaly}
+          caption={`El ONI actual (${formatAnomaly(s.latest.anomaly)} °C) se ubica en zona de ${s.state}.`}
+        />
+
+        <dl class="panel-stats">
+          <div>
+            <dt>Tendencia</dt>
+            <dd>{trendIcon} {formatAnomaly(s.delta)}°</dd>
+          </div>
+          <div>
+            <dt>Hace 12 meses</dt>
+            <dd>{formatAnomaly(s.yearAgo.anomaly)}° <span class="mono">{s.yearAgo.season}</span></dd>
+          </div>
+          <div>
+            <dt>Récord histórico</dt>
+            <dd>{formatAnomaly(peak.anomaly)}° <span class="mono">{peak.season} {peak.year}</span></dd>
+          </div>
+          <div>
+            <dt>Próximo dato NOAA</dt>
+            <dd class="small">Actualización mensual</dd>
+          </div>
+        </dl>
       </div>
-      <div class="stat">
-        <div class="label">Hace 12 meses</div>
-        <div class="value" style="font-size:1.5rem;">{formatAnomaly(s.yearAgo.anomaly)}</div>
-        <div class="sub">{s.yearAgo.season} {s.yearAgo.year}</div>
+
+      <div class="sub-block">
+        <p class="eyebrow">Serie histórica</p>
+        <h2>El índice ONI desde 2018</h2>
+        <p class="lead" style="margin-bottom:26px;">
+          Cada barra es un trimestre móvil. Por encima de +0,5 °C hay condiciones de El Niño;
+          por debajo de −0,5 °C, de La Niña.
+        </p>
+        <OniChart points={points} count={32} />
       </div>
     </div>
-    <OniGauge
-      value={s.latest.anomaly}
-      caption={`El ONI actual (${formatAnomaly(s.latest.anomaly)} °C) se ubica en zona de ${s.state}.`}
-    />
-  </section>
-
-  <section class="section container">
-    <p class="eyebrow">Serie histórica</p>
-    <h2>El índice ONI desde 2018</h2>
-    <p class="lead" style="margin-bottom:24px;">
-      Cada barra es un trimestre móvil. Por encima de +0,5 °C hay condiciones de El Niño;
-      por debajo de −0,5 °C, de La Niña.
-    </p>
-    <OniChart points={points} count={32} />
   </section>
 
   <AdSlot label="Publicidad" slot="home-top" />
@@ -128,9 +123,9 @@ const jsonLd = {
   <section class="section container">
     <p class="eyebrow">El ciclo ENSO</p>
     <h2>El Niño vs. La Niña</h2>
-    <div class="grid grid-2" style="margin-top:24px;">
-      <div class="card">
-        <div class="icon">🔥</div>
+    <div class="grid grid-2" style="margin-top:30px;">
+      <div class="card" data-phase="nino">
+        <div class="icon"><Icon name="flame" size={30} /></div>
         <h3>El Niño (fase cálida)</h3>
         <p>
           Aguas del Pacífico ecuatorial más cálidas de lo normal. En Argentina suele
@@ -138,8 +133,8 @@ const jsonLd = {
         </p>
         <a class="more" href="/el-nino/">Qué es El Niño →</a>
       </div>
-      <div class="card">
-        <div class="icon">🧊</div>
+      <div class="card" data-phase="nina">
+        <div class="icon"><Icon name="snow" size={30} /></div>
         <h3>La Niña (fase fría)</h3>
         <p>
           Aguas más frías de lo normal. Históricamente asociada a <strong>sequías</strong> y
@@ -153,23 +148,35 @@ const jsonLd = {
   <section class="section container">
     <p class="eyebrow">Próximos meses</p>
     <h2>{o.title}</h2>
-    <div class="card" style="margin-top:20px;">
-      <ul style="color:var(--text-soft);padding-left:1.2em;margin:0;">
+    <div class="callout" style="margin-top:26px;">
+      <ul style="color:var(--text-soft);padding-left:1.1em;margin:0;">
         {o.items.map((item) => <li style="margin-bottom:10px;">{item}</li>)}
       </ul>
-      <div class="hero-cta" style="margin-top:20px;">
-        <a class="btn btn-ghost" href="/pronostico/">Pronóstico completo →</a>
-      </div>
+    </div>
+    <div class="hero-cta">
+      <a class="btn btn-ghost" href="/pronostico/">Pronóstico completo →</a>
     </div>
   </section>
 
-  <section class="section container">
-    <p class="eyebrow">Territorio</p>
-    <h2>Impactos por región</h2>
-    <p class="lead" style="margin-bottom:24px;">
-      El efecto de El Niño no es igual en todo el país. Explorá el mapa y elegí tu región.
-    </p>
-    <ArgentinaMap />
+  <section class="band" id="mapa">
+    <div class="container">
+      <p class="eyebrow">Territorio</p>
+      <h2>El efecto no es igual en todo el país</h2>
+      <p class="lead" style="margin-bottom:22px;">
+        Explorá el mapa y elegí tu región para ver impactos, riesgos y recomendaciones.
+      </p>
+      <div class="chips" style="margin-top:0;margin-bottom:30px;">
+        {
+          regions.map((r) => (
+            <a class="chip" data-region={r.slug} href={`/impactos/${r.slug}/`}>
+              <span class="swatch" aria-hidden="true" />
+              {r.name}
+            </a>
+          ))
+        }
+      </div>
+      <ArgentinaMap />
+    </div>
   </section>
 
   <section class="section container">
@@ -178,7 +185,7 @@ const jsonLd = {
       <h2 style="margin-bottom:0;">Últimas notas</h2>
       <a class="more" href="/noticias/">Ver todas →</a>
     </div>
-    <div class="grid grid-3" style="margin-top:28px;">
+    <div class="grid grid-3" style="margin-top:30px;">
       {
         notes.map((post) => (
           <a class="card post-card" href={`/noticias/${post.id}/`}>

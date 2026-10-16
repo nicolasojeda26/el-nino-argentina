@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import OniChart from "../components/OniChart.astro";
+import EnsoScale from "../components/EnsoScale.astro";
 import AdSlot from "../components/AdSlot.astro";
 import { getOni, buildStatus, formatAnomaly, seasonLabel } from "../data/oni";
 import { site, sources, outlook } from "../data/content";
@@ -48,12 +49,29 @@ const jsonLd = {
       La tendencia respecto al trimestre anterior es <strong>{s.trend}</strong>.
     </p>
 
-    <div class={`status-card ${stateClass}`} style="max-width:520px;margin-top:24px;">
-      <span class={`pill ${stateClass}`}><span class="dot"></span> Fase actual</span>
-      <div class={`big ${stateClass}`}>{s.state}</div>
-      <p style="margin:0;color:var(--muted);font-size:0.9rem;">
-        ONI {formatAnomaly(s.latest.anomaly)} · {seasonLabel(s.latest.season)} {s.latest.year}
-      </p>
+  </section>
+
+  <section class="band band-rays">
+    <div class="container">
+      <div class="panel">
+        <div class="panel-head">
+          <span class="mono" style="color:var(--sol)">● Fase actual</span>
+          <span class="mono">ONI {s.latest.season} {s.latest.year}</span>
+        </div>
+        <div class="panel-main">
+          <div class={`panel-value ${stateClass}`}>{formatAnomaly(s.latest.anomaly)}<small>°C</small></div>
+          <div class="panel-state">
+            <div class="state">{s.state}</div>
+            <div class="intensity">
+              {s.state === "Neutral" ? "sin fase activa" : `intensidad ${s.intensity.toLowerCase()}`}
+            </div>
+          </div>
+        </div>
+        <EnsoScale
+          value={s.latest.anomaly}
+          caption={`Tendencia ${s.trend}: ${formatAnomaly(s.delta)} °C respecto del trimestre anterior.`}
+        />
+      </div>
     </div>
   </section>
 

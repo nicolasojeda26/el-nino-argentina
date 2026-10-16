@@ -26,11 +26,14 @@ export const nav: NavItem[] = [
   { href: "/contacto/", label: "Contacto" },
 ];
 
+export type RegionIcon = "waves" | "wheat" | "mountain" | "mountain-sun" | "wind";
+
 export interface Region {
   slug: string;
   name: string;
   provinces: string;
   icon: string;
+  iconName: RegionIcon;
   summary: string;
   points: string[];
   detail: string;
@@ -43,6 +46,7 @@ export const regions: Region[] = [
     name: "Litoral y NEA",
     provinces: "Misiones, Corrientes, Chaco, Formosa, Entre Ríos, Santa Fe",
     icon: "🌊",
+    iconName: "waves",
     summary:
       "La zona más expuesta al El Niño: lluvias por encima de lo normal y crecidas de los ríos Paraná, Paraguay y Uruguay.",
     points: [
@@ -63,6 +67,7 @@ export const regions: Region[] = [
     name: "Región Pampeana",
     provinces: "Buenos Aires, Córdoba, Santa Fe, La Pampa",
     icon: "🌾",
+    iconName: "wheat",
     summary:
       "El corazón productivo del país. El Niño suele traer más lluvia, lo que puede mejorar rindes pero también generar excesos hídricos.",
     points: [
@@ -83,6 +88,7 @@ export const regions: Region[] = [
     name: "Cuyo",
     provinces: "Mendoza, San Juan, San Luis",
     icon: "🏔️",
+    iconName: "mountain",
     summary:
       "Efecto más variable y en general moderado, con impacto sobre la nieve de cordillera y los caudales de riego.",
     points: [
@@ -103,6 +109,7 @@ export const regions: Region[] = [
     name: "Noroeste (NOA)",
     provinces: "Salta, Jujuy, Tucumán, Catamarca, La Rioja, Santiago del Estero",
     icon: "⛰️",
+    iconName: "mountain-sun",
     summary:
       "Veranos más lluviosos y actividad convectiva más intensa sobre las yungas y los valles.",
     points: [
@@ -123,6 +130,7 @@ export const regions: Region[] = [
     name: "Patagonia",
     provinces: "Neuquén, Río Negro, Chubut, Santa Cruz, Tierra del Fuego",
     icon: "❄️",
+    iconName: "wind",
     summary:
       "Inviernos fríos y variables. La señal del El Niño es más débil y heterogénea que en el resto del país.",
     points: [

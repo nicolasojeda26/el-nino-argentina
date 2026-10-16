@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import AdSlot from "../components/AdSlot.astro";
 import ArgentinaMap from "../components/ArgentinaMap.astro";
+import Icon from "../components/Icon.astro";
 import { regions } from "../data/content";
 
 const comparisons: { region: string; nino: string; nina: string }[] = [
@@ -32,8 +33,10 @@ const comparisons: { region: string; nino: string; nina: string }[] = [
     </p>
   </section>
 
-  <section class="container">
-    <ArgentinaMap />
+  <section class="band">
+    <div class="container">
+      <ArgentinaMap />
+    </div>
   </section>
 
   <section class="section container">
@@ -41,7 +44,7 @@ const comparisons: { region: string; nino: string; nina: string }[] = [
       {
         regions.map((r) => (
           <a class="card" href={`/impactos/${r.slug}/`}>
-            <div class="icon">{r.icon}</div>
+            <div class="icon"><Icon name={r.iconName} size={28} /></div>
             <h3>{r.name}</h3>
             <p style="font-size:0.9rem;">{r.summary}</p>
             <span class="more">Ver detalle →</span>

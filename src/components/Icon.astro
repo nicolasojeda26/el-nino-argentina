@@ -1,0 +1,62 @@
+---
+interface Props {
+  name:
+    | "waves"
+    | "wheat"
+    | "mountain"
+    | "mountain-sun"
+    | "wind"
+    | "flame"
+    | "snow"
+    | "chart"
+    | "map"
+    | "book"
+    | "alert";
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 26, class: cls = "" } = Astro.props;
+
+const paths: Record<string, string[]> = {
+  waves: [
+    "M2.5 9c2-1.9 4.2-1.9 6.2 0s4.2 1.9 6.2 0 4.2-1.9 6.2 0",
+    "M2.5 14.5c2-1.9 4.2-1.9 6.2 0s4.2 1.9 6.2 0 4.2-1.9 6.2 0",
+    "M2.5 20c2-1.9 4.2-1.9 6.2 0s4.2 1.9 6.2 0 4.2-1.9 6.2 0",
+  ],
+  wheat: [
+    "M12 21V7",
+    "M12 11c-2.6 0-4.2-1.7-4.2-4.2M12 11c2.6 0 4.2-1.7 4.2-4.2",
+    "M12 16c-2.6 0-4.2-1.7-4.2-4.2M12 16c2.6 0 4.2-1.7 4.2-4.2",
+  ],
+  mountain: ["M2 19.5l6.2-9.4 4 6 3-4.2L22 19.5z"],
+  "mountain-sun": ["M2 19.5l6.2-9.4 4 6 3-4.2L22 19.5z", "M17 6.5a2.6 2.6 0 1 1 5.2 0 2.6 2.6 0 0 1-5.2 0z"],
+  wind: ["M3 7.5h10.5a2.8 2.8 0 1 0-2.8-2.8", "M3 12.5h15a2.8 2.8 0 1 1-2.8 2.8", "M3 17.5h8"],
+  flame: [
+    "M12 2.5c.6 2.6 1.9 4.4 3.4 5.9 1.6 1.6 2.6 3.2 2.6 5.2a6 6 0 0 1-12 0c0-1.5.7-2.7 1.6-3.6.5.9 1.1 1.5 2 1.8-.6-1.4-.8-2.5-.4-3.7.5-1.6 1.5-3 2.8-5.6z",
+  ],
+  snow: ["M12 2.5v19", "M3.8 7.2l16.4 9.6", "M20.2 7.2L3.8 16.8", "M12 7l2-2M12 7l-2-2"],
+  chart: ["M3 20.5h18", "M6.5 20.5V11", "M12 20.5V4.5", "M17.5 20.5v-6"],
+  map: ["M3 6.5l6-2.5 6 2.5 6-2.5v13l-6 2.5-6-2.5-6 2.5z", "M9 4v13M15 6.5v13"],
+  book: ["M4 4.5h6.5A2.5 2.5 0 0 1 13 7v12a2 2 0 0 0-2-2H4z", "M20 4.5h-6.5A2.5 2.5 0 0 0 11 7v12a2 2 0 0 1 2-2h7z"],
+  alert: ["M12 3.5l9 16H3z", "M12 9.5v4.5", "M12 17h.01"],
+};
+
+const d = paths[name] ?? paths.alert;
+---
+
+<svg
+  class={cls}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.7"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {d.map((p) => <path d={p} />)}
+</svg>

@@ -1,0 +1,44 @@
+---
+import Sun from "./Sun.astro";
+
+interface Props {
+  value: number;
+  min?: number;
+  max?: number;
+  caption?: string;
+  onPaper?: boolean;
+  compact?: boolean;
+  size?: number;
+}
+
+const {
+  value,
+  min = -3,
+  max = 3,
+  caption,
+  onPaper = false,
+  compact = false,
+  size = 20,
+} = Astro.props;
+const pct = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
+const fmt = (v: number) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v)}`;
+const markerSize = compact ? 12 : size;
+---
+
+<div class={`esc${onPaper ? " on-paper" : ""}${compact ? " compact" : ""}`}>
+  <div class="esc-track" role="img" aria-label={`Posición del ONI en la escala ENSO: ${value} °C`}>
+    <span class="esc-marker" style={`left:${pct}%`}>
+      <Sun size={markerSize} />
+    </span>
+  </div>
+  {
+    !compact && (
+      <div class="esc-ticks">
+        <span>La Niña {fmt(min)}°</span>
+        <span>Neutral</span>
+        <span>El Niño {fmt(max)}°</span>
+      </div>
+    )
+  }
+  {caption && <p class="esc-caption">{caption}</p>}
+</div>

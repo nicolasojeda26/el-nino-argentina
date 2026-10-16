@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import AdSlot from "../../components/AdSlot.astro";
+import Icon from "../../components/Icon.astro";
 import { regions, site } from "../../data/content";
 
 export function getStaticPaths() {
@@ -37,10 +38,10 @@ const jsonLd = {
   </div>
 
   <section class="section container">
-    <div class="icon" style="width:56px;height:56px;font-size:28px;border-radius:15px;background:rgba(255,255,255,0.06);border:1px solid var(--border);display:grid;place-items:center;">
-      {region.icon}
+    <div class="region-badge" data-region={region.slug}>
+      <Icon name={region.iconName} size={30} />
     </div>
-    <p class="eyebrow" style="margin-top:16px;">{region.provinces}</p>
+    <p class="eyebrow" style="margin-top:18px;">{region.provinces}</p>
     <h1>El Niño en {region.name}</h1>
     <p class="lead">{region.summary}</p>
   </section>
@@ -70,11 +71,13 @@ const jsonLd = {
 
   <section class="section container">
     <h2>Otras regiones</h2>
-    <div class="grid grid-3" style="margin-top:20px;">
+    <div class="grid grid-2" style="margin-top:20px;">
       {
         others.map((r) => (
           <a class="card" href={`/impactos/${r.slug}/`}>
-            <div class="icon">{r.icon}</div>
+            <div class="icon" data-region={r.slug}>
+              <Icon name={r.iconName} size={28} />
+            </div>
             <h3>{r.name}</h3>
             <p style="font-size:0.9rem;">{r.provinces}</p>
           </a>

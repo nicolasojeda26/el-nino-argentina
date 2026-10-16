@@ -1,0 +1,29 @@
+---
+interface Props {
+  size?: number;
+  rays?: number;
+  class?: string;
+}
+
+const { size = 22, rays = 16, class: cls = "" } = Astro.props;
+const step = 360 / rays;
+const half = step / 2;
+---
+
+<svg
+  class={`sun ${cls}`}
+  width={size}
+  height={size}
+  viewBox="0 0 100 100"
+  aria-hidden="true"
+  focusable="false"
+>
+  <g fill="currentColor">
+    {
+      Array.from({ length: rays }).map((_, i) => (
+        <path d={`M50 4 L${50 + half * 0.62} 27 L${50 - half * 0.62} 27 Z`} transform={`rotate(${i * step} 50 50)`} />
+      ))
+    }
+  </g>
+  <circle cx="50" cy="50" r="18" fill="currentColor" />
+</svg>

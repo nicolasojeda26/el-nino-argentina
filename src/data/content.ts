@@ -278,6 +278,22 @@ export const faq: FaqItem[] = [
     q: "¿El cambio climático tiene que ver?",
     a: "Son fenómenos distintos. El Niño es un ciclo natural del océano y la atmósfera, mientras que el cambio climático es la tendencia de calentamiento global por gases de efecto invernadero. El cambio climático puede intensificar algunos impactos del El Niño, pero no lo causa.",
   },
+  {
+    q: "¿El Niño afecta la nieve de la cordillera?",
+    a: "Puede influir. En Cuyo y el norte de la Patagonia, los inviernos de El Niño suelen traer más nevadas en alta montaña, lo que mejora la reserva de agua para riego y la temporada de esquí. En el sur de la Patagonia la relación es más débil y depende de otros patrones como el SAM.",
+  },
+  {
+    q: "¿Qué significa la 'Niña triple'?",
+    a: "Fue la secuencia de tres inviernos consecutivos de La Niña entre 2020 y 2022. Su impacto más recordado en Argentina fue la bajante histórica del río Paraná y una de las sequías más severas del agro, con pérdidas millonarias en soja, maíz y trigo.",
+  },
+  {
+    q: "¿Con qué frecuencia ocurre El Niño?",
+    a: "El ciclo ENSO es irregular: El Niño o La Niña aparecen cada 2 a 7 años, y no todos los años hay una fase definida. Pueden alternarse, repetirse (como la Niña triple) o dar paso a períodos neutrales más largos.",
+  },
+  {
+    q: "¿Cómo se pronostica El Niño?",
+    a: "Se combinan observaciones (boyas del Pacífico, satélites, vientos) con modelos climáticos como los del IRI y los conjuntos del NMME. Los pronósticos son más confiables para la tendencia estacional que para un mes concreto, y se actualizan mes a mes.",
+  },
 ];
 
 export interface GlossaryItem {
@@ -294,6 +310,16 @@ export const glossary: GlossaryItem[] = [
   { term: "Fase cálida", definition: "Período con aguas más cálidas de lo normal: El Niño." },
   { term: "Fase fría", definition: "Período con aguas más frías de lo normal: La Niña." },
   { term: "Neutral", definition: "Condición en la que el ONI se mantiene entre −0,5 y +0,5 °C." },
+  { term: "Niño 1+2", definition: "Región del Pacífico oriental, frente a Perú y Ecuador. La primera en calentarse durante El Niño." },
+  { term: "Niño 3", definition: "Región del Pacífico ecuatorial oriental, al oeste de Niño 1+2." },
+  { term: "Anomalía", definition: "Diferencia entre un valor observado y su promedio histórico. El ONI es una anomalía de temperatura." },
+  { term: "Jet subtropical", definition: "Corriente de vientos en altura. Con El Niño se desplaza hacia el sur y guía las lluvias sobre el centro-este de Argentina." },
+  { term: "SAM", definition: "Modo Anular del Sur: patrón de circulación que influye en el clima de la Patagonia y puede reforzar o atenuar la señal del ENSO." },
+  { term: "PDO", definition: "Oscilación Decadal del Pacífico: variabilidad de largo plazo que modula la frecuencia e intensidad de El Niño." },
+  { term: "MEI", definition: "Multivariate ENSO Index: índice que combina varias variables (presión, viento, temperatura) para medir ENSO." },
+  { term: "Cuenca del Plata", definition: "Gran sistema fluvial que integra los ríos Paraná, Paraguay y Uruguay; su caudal responde con retraso a las lluvias de El Niño." },
+  { term: "Onda de crecida", definition: "Pulso de agua que viaja río abajo durante semanas. Por eso un río puede crecer aunque no llueva localmente." },
+  { term: "Pronóstico estacional", definition: "Estimación de tendencias para los próximos meses (más/menos lluvia o calor), no un pronóstico del tiempo diario." },
 ];
 
 export const sources = [

@@ -1,0 +1,91 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AdSlot from "../components/AdSlot.astro";
+import { glossary, site } from "../data/content";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "DefinedTermSet",
+  name: "Glosario del ENSO",
+  inLanguage: "es-AR",
+  url: new URL("/glosario/", Astro.site ?? site.url).href,
+  hasDefinedTerm: glossary.map((g) => ({
+    "@type": "DefinedTerm",
+    name: g.term,
+    description: g.definition,
+  })),
+};
+---
+
+<Layout
+  title="Glosario del ENSO: ONI, SOI, Niño 3.4 y más"
+  description="Glosario claro de los términos del fenómeno de El Niño: ENSO, ONI, SST, SOI, Niño 3.4, SAM, PDO, jet subtropical y más, explicados en simple."
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: "Inicio", path: "/" },
+    { name: "Glosario", path: "/glosario/" },
+  ]}
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · Glosario</div>
+
+  <section class="section container">
+    <p class="eyebrow">Referencia</p>
+    <h1>Glosario del ENSO</h1>
+    <p class="lead">
+      Los términos que aparecen en los informes climáticos, explicados sin vueltas.
+    </p>
+
+    <label class="glos-search">
+      <span class="visually-hidden">Buscar término</span>
+      <input
+        id="glos-filter"
+        type="search"
+        placeholder="Buscar un término… (ej. ONI, SAM, cuenca)"
+        autocomplete="off"
+      />
+    </label>
+
+    <dl class="glos-list" id="glos-list">
+      {
+        glossary.map((g) => (
+          <div class="glos-item" data-term={`${g.term} ${g.definition}`.toLowerCase()}>
+            <dt id={g.term.toLowerCase().replace(/[^a-z0-9]+/g, "-")}>{g.term}</dt>
+            <dd>{g.definition}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <p class="glos-empty" id="glos-empty" hidden>No encontramos ese término. Probá con otra palabra.</p>
+  </section>
+
+  <AdSlot label="Publicidad" slot="glosario" />
+
+  <section class="section container prose">
+    <h2>Seguí explorando</h2>
+    <p>
+      ¿Querés entender el contexto completo? Empezá por <a href="/el-nino/">qué es El Niño</a>,
+      mirá el <a href="/pronostico/">pronóstico actual</a> o revisá los
+      <a href="/impactos/">impactos por región</a> en Argentina.
+    </p>
+  </section>
+</Layout>
+
+<script>
+  const input = document.getElementById("glos-filter") as HTMLInputElement | null;
+  const list = document.getElementById("glos-list");
+  const empty = document.getElementById("glos-empty");
+  if (input && list) {
+    const items = Array.from(list.querySelectorAll<HTMLElement>(".glos-item"));
+    const run = () => {
+      const q = input.value.trim().toLowerCase();
+      let shown = 0;
+      for (const item of items) {
+        const match = !q || (item.dataset.term ?? "").includes(q);
+        item.hidden = !match;
+        if (match) shown++;
+      }
+      if (empty) empty.hidden = shown > 0;
+    };
+    input.addEventListener("input", run);
+  }
+</script>

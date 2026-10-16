@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import OniChart from "../components/OniChart.astro";
 import AdSlot from "../components/AdSlot.astro";
 import { getOni, buildStatus, formatAnomaly, seasonLabel } from "../data/oni";
-import { sources, outlook } from "../data/content";
+import { site, sources, outlook } from "../data/content";
 
 const points = await getOni();
 const s = buildStatus(points);
@@ -14,12 +14,17 @@ const o = outlook[s.state];
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: sources.map((src) => ({
-    "@type": "Question",
-    name: `¿Dónde consultar el pronóstico oficial? ${src.name}`,
-    acceptedAnswer: { "@type": "Answer", text: src.url },
-  })),
+  "@type": "WebPage",
+  name: "Pronóstico de El Niño en Argentina",
+  inLanguage: "es-AR",
+  url: new URL("/pronostico/", Astro.site ?? site.url).href,
+  isPartOf: { "@type": "WebSite", name: site.name, url: site.url },
+  about: {
+    "@type": "Thing",
+    name: "ENSO",
+    description: "El Niño–Oscilación del Sur y su pronóstico estacional",
+  },
+  significantLink: sources.map((src) => src.url),
 };
 ---
 
@@ -27,6 +32,10 @@ const jsonLd = {
   title="Pronóstico de El Niño en Argentina"
   description="Estado actual del ENSO, tendencia del ONI y qué se espera para Argentina según la fase activa (El Niño, La Niña o neutral)."
   jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: "Inicio", path: "/" },
+    { name: "Pronóstico", path: "/pronostico/" },
+  ]}
 >
   <div class="container breadcrumbs"><a href="/">Inicio</a> · Pronóstico</div>
 

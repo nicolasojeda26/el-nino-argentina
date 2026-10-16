@@ -1,0 +1,15 @@
+{
+  "name": "El Niño Argentina",
+  "short_name": "El Niño AR",
+  "description": "Monitoreo del fenómeno ENSO y sus impactos en Argentina.",
+  "lang": "es-AR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#061220",
+  "theme_color": "#061220",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ]
+}

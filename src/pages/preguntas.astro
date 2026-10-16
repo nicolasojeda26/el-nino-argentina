@@ -18,6 +18,10 @@ const jsonLd = {
   title="Preguntas frecuentes sobre El Niño"
   description="Respuestas claras sobre El Niño y La Niña: qué son, cómo se diferencian, qué es el ONI, si va a llover más y cuánto dura un evento."
   jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: "Inicio", path: "/" },
+    { name: "Preguntas frecuentes", path: "/preguntas/" },
+  ]}
 >
   <div class="container breadcrumbs"><a href="/">Inicio</a> · Preguntas</div>
 
@@ -41,7 +45,10 @@ const jsonLd = {
   <AdSlot label="Publicidad" slot="faq" />
 
   <section class="section container">
-    <h2>Glosario</h2>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;">
+      <h2 style="margin-bottom:0;">Glosario</h2>
+      <a class="more" href="/glosario/">Ver glosario completo →</a>
+    </div>
     <div class="table-wrap" style="max-width:820px;margin-top:20px;">
       <table>
         <thead>
@@ -49,7 +56,7 @@ const jsonLd = {
         </thead>
         <tbody>
           {
-            glossary.map((g) => (
+            glossary.slice(0, 8).map((g) => (
               <tr>
                 <td><strong>{g.term}</strong></td>
                 <td style="white-space:normal">{g.definition}</td>

@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
 Sitemap: https://xn--elnio-rta.net.ar/sitemap-index.xml

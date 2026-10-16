@@ -15,21 +15,41 @@ const { Content } = await render(post);
 const fmt = (d: Date) =>
   new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "long", year: "numeric" }).format(d);
 
+const origin = Astro.site ?? site.url;
+const url = new URL(Astro.url.pathname, origin).href;
+
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": "NewsArticle",
   headline: post.data.title,
   description: post.data.description,
   datePublished: post.data.date.toISOString(),
   dateModified: post.data.date.toISOString(),
   author: { "@type": "Organization", name: post.data.author },
-  publisher: { "@type": "Organization", name: site.name },
+  publisher: {
+    "@type": "Organization",
+    name: site.name,
+    logo: { "@type": "ImageObject", url: new URL("/apple-touch-icon.png", origin).href },
+  },
   inLanguage: "es-AR",
-  url: new URL(Astro.url.pathname, Astro.site ?? site.url).href,
+  url,
+  mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  image: [new URL("/og.png", origin).href],
+  articleSection: post.data.tag,
 };
 ---
 
-<Layout title={post.data.title} description={post.data.description} type="article" jsonLd={jsonLd}>
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: "Inicio", path: "/" },
+    { name: "Notas", path: "/noticias/" },
+    { name: post.data.title, path: `/noticias/${post.id}/` },
+  ]}
+>
   <div class="container breadcrumbs">
     <a href="/">Inicio</a> · <a href="/noticias/">Notas</a> · {post.data.tag}
   </div>

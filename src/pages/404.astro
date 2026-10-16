@@ -3,7 +3,11 @@ import Layout from "../layouts/Layout.astro";
 import { nav } from "../data/content";
 ---
 
-<Layout title="Página no encontrada" description="La página que buscás no existe.">
+<Layout
+  title="Página no encontrada"
+  description="La página que buscás no existe."
+  robots="noindex, follow"
+>
   <section class="section container" style="text-align:center;">
     <p class="eyebrow">Error 404</p>
     <h1 style="font-size:clamp(3rem,12vw,7rem);color:var(--warm-soft);margin-bottom:0;">404</h1>

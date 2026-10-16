@@ -2,10 +2,11 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import OniChart from "../components/OniChart.astro";
+import OniGauge from "../components/OniGauge.astro";
 import ArgentinaMap from "../components/ArgentinaMap.astro";
 import AdSlot from "../components/AdSlot.astro";
 import { getOni, buildStatus, formatAnomaly, seasonLabel } from "../data/oni";
-import { site, outlook } from "../data/content";
+import { regions, site, outlook } from "../data/content";
 
 const points = await getOni();
 const s = buildStatus(points);
@@ -38,6 +39,7 @@ const jsonLd = {
 
 <Layout title="El Niño en Argentina: estado, pronóstico e impactos" jsonLd={jsonLd}>
   <section class="hero">
+    <span class="sun-halo" aria-hidden="true"></span>
     <div class="container hero-grid">
       <div>
         <p class="eyebrow">Monitoreo ENSO · actualizado con datos de NOAA</p>
@@ -49,6 +51,16 @@ const jsonLd = {
         <div class="hero-cta">
           <a class="btn btn-primary" href="/pronostico/">Ver pronóstico →</a>
           <a class="btn btn-ghost" href="/impactos/">Impactos por región</a>
+        </div>
+        <div class="chips" style="margin-top:22px;">
+          {
+            regions.map((r) => (
+              <a class="chip" data-region={r.slug} href={`/impactos/${r.slug}/`}>
+                <span class="swatch" aria-hidden="true" />
+                {r.name}
+              </a>
+            ))
+          }
         </div>
       </div>
 
@@ -95,6 +107,10 @@ const jsonLd = {
         <div class="sub">{s.yearAgo.season} {s.yearAgo.year}</div>
       </div>
     </div>
+    <OniGauge
+      value={s.latest.anomaly}
+      caption={`El ONI actual (${formatAnomaly(s.latest.anomaly)} °C) se ubica en zona de ${s.state}.`}
+    />
   </section>
 
   <section class="section container">

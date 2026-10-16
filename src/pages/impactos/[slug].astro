@@ -12,11 +12,13 @@ const others = regions.filter((r) => r.slug !== region.slug);
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Article",
-  headline: `El Niño en ${region.name}: impactos y qué esperar`,
-  about: region.name,
+  "@type": "WebPage",
+  name: `El Niño en ${region.name}: impactos y qué esperar`,
   inLanguage: "es-AR",
   url: new URL(Astro.url.pathname, Astro.site ?? site.url).href,
+  isPartOf: { "@type": "WebSite", name: site.name, url: site.url },
+  about: { "@type": "Place", name: region.name, description: region.provinces },
+  publisher: { "@type": "Organization", name: site.name },
 };
 ---
 
@@ -24,6 +26,11 @@ const jsonLd = {
   title={`El Niño en ${region.name}: impactos y qué esperar`}
   description={`Cómo afecta El Niño y La Niña a ${region.name} (${region.provinces}): lluvias, sequías, ríos, agro y recomendaciones.`}
   jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: "Inicio", path: "/" },
+    { name: "Impactos", path: "/impactos/" },
+    { name: region.name, path: `/impactos/${region.slug}/` },
+  ]}
 >
   <div class="container breadcrumbs">
     <a href="/">Inicio</a> · <a href="/impactos/">Impactos</a> · {region.name}

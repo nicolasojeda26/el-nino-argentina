@@ -31,10 +31,10 @@ function buildChart(sliceCount: number, key: string, label: string) {
 
   const n = data.length;
   const stepW = plotW / n;
-  const barW = Math.min(Math.max(stepW - (n > 200 ? 0.4 : 2), 0.8), stepW);
+  const barW = n > 200 ? Math.max(stepW + 0.15, 1.1) : Math.min(Math.max(stepW - 2, 0.8), stepW);
 
   const bars = data.map((d, i) => {
-    const x = padL + i * stepW + (stepW - barW) / 2;
+    const x = padL + i * stepW + (n > 200 ? 0 : (stepW - barW) / 2);
     const h = Math.max(Math.abs(d.anomaly) * yScale, 1.2);
     const y = d.anomaly >= 0 ? y0 - h : y0;
     const phase = d.anomaly >= 0.5 ? "nino" : d.anomaly <= -0.5 ? "nina" : "neutral";

@@ -9,30 +9,39 @@ const provincesByRegion = regions.reduce<Record<string, string[]>>((acc, r) => {
   acc[r.slug] = provinces.filter((p) => p.region === r.slug).map((p) => p.name);
   return acc;
 }, {});
+
+const defaultStatus = "Explorá el mapa: tocá o pasá el cursor por cualquier provincia o región";
 ---
 
-<figure class="armap">
+<figure class="armap" data-default-status={defaultStatus}>
   <div class="armap-canvas">
+    <div class="armap-status" data-map-status aria-live="polite">
+      <span class="armap-status-dot"></span>
+      <span data-map-status-text>{defaultStatus}</span>
+    </div>
     <svg
       class="armap-svg"
       viewBox={viewBox}
       role="img"
-      aria-label="Mapa de Argentina dividido en cinco regiones climáticas"
+      aria-label="Mapa de Argentina dividido en cinco regiones climáticas y 24 jurisdicciones"
     >
       <g class="armap-provs">
         {
           provinces.map((p) => {
             const pInfo = provinceByName[p.name];
             const href = pInfo ? `/impactos/provincia/${pInfo.slug}/` : `/impactos/${p.region}/`;
+            const regName = regionMeta[p.region]?.name ?? p.region;
             return (
               <a
                 class="prov"
                 href={href}
                 data-region={p.region}
-                aria-label={`${p.name}: ver impactos en ${p.name} (${regionMeta[p.region]?.name ?? p.region})`}
+                data-prov-name={p.name}
+                data-region-name={regName}
+                aria-label={`${p.name}: ver impactos en ${p.name} (${regName})`}
               >
                 <path d={p.d} />
-                <title>{`${p.name} — clic para ver ficha provincial`}</title>
+                <title>{`${p.name} (${regName}) — clic para ver ficha provincial`}</title>
               </a>
             );
           })
@@ -44,7 +53,7 @@ const provincesByRegion = regions.reduce<Record<string, string[]>>((acc, r) => {
   <ul class="armap-legend">
     {
       regions.map((r) => (
-        <li class="leg" data-region={r.slug}>
+        <li class="leg" data-region={r.slug} data-region-name={r.name}>
           <span class="swatch" aria-hidden="true" />
           <span class="leg-body">
             <a class="leg-name" href={`/impactos/${r.slug}/`}>
@@ -58,8 +67,7 @@ const provincesByRegion = regions.reduce<Record<string, string[]>>((acc, r) => {
   </ul>
 
   <figcaption class="armap-cap">
-    Pasá el mouse por el mapa o por la referencia y hacé clic para ver los
-    impactos de cada región.
+    Hacé clic sobre una provincia en el mapa para abrir su ficha individual, o sobre el nombre de una región en la lista para ver el resumen regional.
     <span class="armap-attr">Geometría: Natural Earth (dominio público).</span>
   </figcaption>
 </figure>
@@ -69,21 +77,40 @@ const provincesByRegion = regions.reduce<Record<string, string[]>>((acc, r) => {
   if (root) {
     const scope = root.closest("section") ?? document;
     const all = Array.from(scope.querySelectorAll<HTMLElement>("[data-region]"));
+    const statusText = root.querySelector<HTMLElement>("[data-map-status-text]");
+    const defaultStatus = root.dataset.defaultStatus ?? "";
 
-    const setActive = (region: string | null) => {
+    const setActive = (region: string | null, provEl?: HTMLElement | null) => {
       root.classList.toggle("has-hover", region !== null);
       for (const el of all) {
         const on = region !== null && el.dataset.region === region;
         el.classList.toggle("is-active", on);
+        el.classList.toggle("is-hovered-prov", el === provEl);
+      }
+
+      if (!statusText) return;
+      if (!region) {
+        statusText.textContent = defaultStatus;
+        return;
+      }
+      const provName = provEl?.dataset.provName;
+      const regName = provEl?.dataset.regionName;
+      if (provName && regName) {
+        statusText.textContent = `${provName} · ${regName} — Clic para ver provincia`;
+      } else if (regName) {
+        statusText.textContent = `Región: ${regName}`;
+      } else {
+        const leg = root.querySelector<HTMLElement>(`.leg[data-region="${region}"]`);
+        statusText.textContent = `Región: ${leg?.dataset.regionName ?? region}`;
       }
     };
 
     for (const el of all) {
       const region = el.dataset.region ?? null;
-      el.addEventListener("pointerenter", () => setActive(region));
-      el.addEventListener("pointerleave", () => setActive(null));
-      el.addEventListener("focusin", () => setActive(region));
-      el.addEventListener("focusout", () => setActive(null));
+      el.addEventListener("pointerenter", () => setActive(region, el));
+      el.addEventListener("pointerleave", () => setActive(null, null));
+      el.addEventListener("focusin", () => setActive(region, el));
+      el.addEventListener("focusout", () => setActive(null, null));
     }
   }
 </script>

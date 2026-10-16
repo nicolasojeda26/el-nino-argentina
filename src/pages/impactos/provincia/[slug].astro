@@ -3,6 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import AdSlot from "../../../components/AdSlot.astro";
 import Icon from "../../../components/Icon.astro";
 import { provincesData, regions, site } from "../../../data/content";
+import map from "../../../data/argentina-map.json";
 import { buildStatus, formatAnomaly, getOni } from "../../../data/oni";
 
 export function getStaticPaths() {
@@ -52,29 +53,61 @@ const jsonLd = {
   </div>
 
   <section class="section container">
-    <div class="region-badge" data-region={region.slug}>
-      <Icon name={region.iconName} size={30} />
-    </div>
-    <p class="eyebrow" style="margin-top:18px;">
-      {region.name} · Exposición al ENSO: {prov.exposure}
-    </p>
-    <h1>El Niño y La Niña en {prov.name}</h1>
-    <p class="lead">
-      Principales actividades sensibles al clima en la jurisdicción: <strong>{prov.sectors}</strong>.
-    </p>
+    <div class="prov-hero" data-region={region.slug}>
+      <div class="prov-hero-main">
+        <div class="region-badge" data-region={region.slug}>
+          <Icon name={region.iconName} size={30} />
+        </div>
+        <p class="eyebrow" style="margin-top:18px;">
+          {region.name} · Exposición al ENSO: {prov.exposure}
+        </p>
+        <h1>El Niño y La Niña en {prov.name}</h1>
+        <p class="lead">
+          Principales actividades sensibles al clima en la jurisdicción: <strong>{prov.sectors}</strong>.
+        </p>
 
-    <div class="callout" style="margin-top:24px;">
-      <p>
-        <strong>Estado actual ({s.latest.season} {s.latest.year}):</strong> el índice ONI es de{" "}
-        <strong>{formatAnomaly(s.latest.anomaly)} °C</strong>, en fase{" "}
-        <strong>{s.state}</strong>
-        {s.state !== "Neutral" ? ` (${s.intensity.toLowerCase()})` : ""}.{" "}
-        {s.state === "El Niño"
-          ? prov.ninoImpact
-          : s.state === "La Niña"
-            ? prov.ninaImpact
-            : "En fase neutral predominan los forzantes meteorológicos regionales de corto plazo."}
-      </p>
+        <div class="callout" style="margin-top:24px;margin-bottom:0;">
+          <p>
+            <strong>Estado actual ({s.latest.season} {s.latest.year}):</strong> el índice ONI es de{" "}
+            <strong>{formatAnomaly(s.latest.anomaly)} °C</strong>, en fase{" "}
+            <strong>{s.state}</strong>
+            {s.state !== "Neutral" ? ` (${s.intensity.toLowerCase()})` : ""}.{" "}
+            {s.state === "El Niño"
+              ? prov.ninoImpact
+              : s.state === "La Niña"
+                ? prov.ninaImpact
+                : "En fase neutral predominan los forzantes meteorológicos regionales de corto plazo."}
+          </p>
+        </div>
+      </div>
+
+      <aside class="prov-minimap" aria-label={`Ubicación de ${prov.name} en el mapa de Argentina`}>
+        <svg viewBox={map.viewBox} role="img" aria-label={`Mapa de Argentina destacando ${prov.name}`}>
+          <g>
+            {
+              map.provinces.map((mp) => {
+                const isTarget = mp.name === prov.name;
+                const isSameRegion = mp.region === prov.regionSlug;
+                return (
+                  <path
+                    d={mp.d}
+                    class={
+                      isTarget
+                        ? "mm-prov is-target"
+                        : isSameRegion
+                          ? "mm-prov is-region"
+                          : "mm-prov"
+                    }
+                  >
+                    <title>{mp.name}</title>
+                  </path>
+                );
+              })
+            }
+          </g>
+        </svg>
+        <span class="mono">{prov.name} · {region.name}</span>
+      </aside>
     </div>
   </section>
 

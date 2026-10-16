@@ -1,6 +1,6 @@
 ---
 import type { OniPoint } from "../data/oni";
-import { ANALOG_SEASONS, formatAnomaly, getAnalogSeries } from "../data/oni";
+import { ANALOG_SEASONS, formatAnomaly, getAnalogSeries, seasonLabel } from "../data/oni";
 
 interface Props {
   points: OniPoint[];
@@ -11,8 +11,8 @@ const series = getAnalogSeries(points);
 
 const W = 1000;
 const H = 320;
-const padL = 52;
-const padR = 24;
+const padL = 56;
+const padR = 26;
 const padT = 30;
 const padB = 38;
 const plotW = W - padL - padR;
@@ -30,22 +30,43 @@ const neutralTop = yFor(0.5);
 const neutralBottom = yFor(-0.5);
 
 const builtSeries = series.map((s) => {
-  const coords: { x: number; y: number; v: number; season: string }[] = [];
+  const coords: { x: number; y: number; v: number; season: string; idx: number }[] = [];
   s.values.forEach((v, i) => {
     if (v !== null && Number.isFinite(v)) {
-      coords.push({ x: xFor(i), y: yFor(v), v, season: ANALOG_SEASONS[i] });
+      coords.push({ x: xFor(i), y: yFor(v), v, season: ANALOG_SEASONS[i], idx: i });
     }
   });
   const d = coords.map((pt, idx) => `${idx === 0 ? "M" : "L"}${pt.x.toFixed(1)},${pt.y.toFixed(1)}`).join(" ");
   return { ...s, coords, d };
 });
+
+const seasonSummaries = ANALOG_SEASONS.map((season, i) => {
+  const items = series.map((s) => ({
+    id: s.id,
+    short: s.id,
+    val: s.values[i] !== null ? `${formatAnomaly(s.values[i]!)}°` : null,
+  }));
+  return {
+    season,
+    period: seasonLabel(season),
+    x: xFor(i),
+    items,
+  };
+});
+
+const defaultReadout = "Pasá el cursor o deslizá sobre el gráfico para comparar cada trimestre";
 ---
 
-<div class="chart-wrap analog-wrap" data-analog-chart>
+<div
+  class="chart-wrap analog-wrap"
+  data-analog-chart
+  data-seasons={JSON.stringify(seasonSummaries)}
+  data-default-readout={defaultReadout}
+>
   <div class="chart-toolbar">
-    <div class="chart-readout">
+    <div class="chart-readout" aria-live="polite">
       <span class="chart-readout-dot"></span>
-      <span>Activar / desactivar campañas históricas para comparar:</span>
+      <span data-analog-readout>{defaultReadout}</span>
     </div>
     <div class="analog-toggles">
       {
@@ -65,6 +86,7 @@ const builtSeries = series.map((s) => {
   </div>
 
   <svg
+    class="analog-svg"
     viewBox={`0 0 ${W} ${H}`}
     role="img"
     aria-label="Comparador de curvas ONI de años análogos trimestre a trimestre"
@@ -104,6 +126,19 @@ const builtSeries = series.map((s) => {
       ))
     }
 
+    <line
+      class="analog-guide is-hidden"
+      data-analog-guide
+      x1={padL}
+      x2={padL}
+      y1={padT}
+      y2={H - padB}
+      stroke="var(--sol)"
+      stroke-width="1"
+      stroke-dasharray="3 4"
+      opacity="0.75"
+    />
+
     {
       ANALOG_SEASONS.map((season, i) => (
         <text
@@ -130,14 +165,13 @@ const builtSeries = series.map((s) => {
             fill="none"
             stroke={s.color}
             stroke-width={s.isCurrent ? "3.4" : "2"}
-            stroke-dasharray={s.isCurrent ? "0" : "0"}
-            opacity={s.isCurrent ? "1" : "0.82"}
+            opacity={s.isCurrent ? "1" : "0.84"}
           />
           {s.coords.map((pt) => (
             <circle
               cx={pt.x}
               cy={pt.y}
-              r={s.isCurrent ? "4.5" : "3"}
+              r={s.isCurrent ? "4.6" : "3.2"}
               fill={s.color}
             >
               <title>{`${s.label} · ${pt.season}: ${formatAnomaly(pt.v)} °C`}</title>
@@ -157,8 +191,50 @@ const builtSeries = series.map((s) => {
 </div>
 
 <script>
+  interface SeasonData {
+    season: string;
+    period: string;
+    x: number;
+    items: { id: string; short: string; val: string | null }[];
+  }
+
   for (const root of document.querySelectorAll<HTMLElement>("[data-analog-chart]")) {
     const btns = root.querySelectorAll<HTMLButtonElement>("[data-analog-toggle]");
+    const readout = root.querySelector<HTMLElement>("[data-analog-readout]");
+    const svg = root.querySelector<SVGSVGElement>("svg.analog-svg");
+    const guide = root.querySelector<SVGLineElement>("[data-analog-guide]");
+    const defaultText = root.dataset.defaultReadout ?? "";
+    const seasons: SeasonData[] = JSON.parse(root.dataset.seasons ?? "[]");
+    let currentIdx: number | null = null;
+
+    const getActiveIds = () =>
+      new Set(
+        Array.from(btns)
+          .filter((b) => b.classList.contains("is-active"))
+          .map((b) => b.dataset.analogToggle ?? ""),
+      );
+
+    const updateReadout = (idx: number | null) => {
+      currentIdx = idx;
+      if (!readout) return;
+      if (idx === null || !seasons[idx]) {
+        readout.textContent = defaultText;
+        guide?.classList.add("is-hidden");
+        return;
+      }
+      const s = seasons[idx];
+      const activeIds = getActiveIds();
+      const parts = s.items
+        .filter((it) => activeIds.has(it.id) && it.val !== null)
+        .map((it) => `${it.short}: ${it.val}`);
+      readout.textContent = `${s.season} (${s.period}) · ${parts.join(" · ")}`;
+      if (guide) {
+        guide.setAttribute("x1", String(s.x));
+        guide.setAttribute("x2", String(s.x));
+        guide.classList.remove("is-hidden");
+      }
+    };
+
     for (const btn of btns) {
       btn.addEventListener("click", () => {
         const id = btn.dataset.analogToggle;
@@ -167,7 +243,28 @@ const builtSeries = series.map((s) => {
         btn.setAttribute("aria-pressed", String(active));
         const grp = root.querySelector<SVGGElement>(`[data-analog-series="${id}"]`);
         grp?.classList.toggle("is-hidden", !active);
+        if (currentIdx !== null) updateReadout(currentIdx);
       });
+    }
+
+    if (svg && seasons.length) {
+      const handlePointer = (e: PointerEvent) => {
+        const rect = svg.getBoundingClientRect();
+        if (!rect.width) return;
+        const relX = ((e.clientX - rect.left) / rect.width) * 1000;
+        const padL = 56;
+        const plotW = 1000 - 56 - 26;
+        const ratio = (relX - padL) / plotW;
+        const idx = Math.min(
+          seasons.length - 1,
+          Math.max(0, Math.round(ratio * (seasons.length - 1))),
+        );
+        updateReadout(idx);
+      };
+
+      svg.addEventListener("pointermove", handlePointer);
+      svg.addEventListener("pointerdown", handlePointer);
+      svg.addEventListener("pointerleave", () => updateReadout(null));
     }
   }
 </script>

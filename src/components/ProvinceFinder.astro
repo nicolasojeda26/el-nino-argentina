@@ -2,7 +2,8 @@
 import { provincesData, regions } from "../data/content";
 
 const regionNames = Object.fromEntries(regions.map((r) => [r.slug, r.name]));
-const defaultProv = provincesData[0];
+const sortedProvinces = [...provincesData].sort((a, b) => a.name.localeCompare(b.name, "es-AR"));
+const defaultProv = sortedProvinces[0];
 ---
 
 <div class="prov-finder" data-prov-finder>
@@ -10,21 +11,22 @@ const defaultProv = provincesData[0];
     <label for="provSelect" class="mono">Elegí tu provincia:</label>
     <select id="provSelect" class="prov-select" data-prov-select>
       {
-        provincesData.map((p) => (
-          <option value={p.slug}>{p.name} ({regionNames[p.regionSlug]})</option>
+        sortedProvinces.map((p) => (
+          <option value={p.slug}>{p.name} — {regionNames[p.regionSlug]}</option>
         ))
       }
     </select>
     <a class="btn btn-primary prov-go" id="provGoLink" href={`/impactos/provincia/${defaultProv.slug}/`}>
-      Ver ficha completa →
+      Abrir página de {defaultProv.name} →
     </a>
   </div>
 
   {
-    provincesData.map((p, idx) => (
+    sortedProvinces.map((p, idx) => (
       <div
         class="prov-preview"
         data-prov-card={p.slug}
+        data-prov-name={p.name}
         data-region={p.regionSlug}
         hidden={idx !== 0 ? true : undefined}
       >
@@ -36,7 +38,7 @@ const defaultProv = provincesData[0];
             <h3 style="margin:0;font-size:1.45rem;">{p.name}</h3>
           </div>
           <a class="more" href={`/impactos/provincia/${p.slug}/`}>
-            Abrir página de {p.name} →
+            Ver ficha completa de {p.name} →
           </a>
         </div>
         <p style="font-size:0.9rem;margin:10px 0 18px;">
@@ -58,8 +60,13 @@ const defaultProv = provincesData[0];
 
   <div class="chips" style="margin-top:20px;">
     {
-      provincesData.map((p) => (
-        <a class="chip" data-region={p.regionSlug} href={`/impactos/provincia/${p.slug}/`}>
+      sortedProvinces.map((p, idx) => (
+        <a
+          class={`chip${idx === 0 ? " is-active" : ""}`}
+          data-prov-chip={p.slug}
+          data-region={p.regionSlug}
+          href={`/impactos/provincia/${p.slug}/`}
+        >
           <span class="swatch" aria-hidden="true" />
           {p.name}
         </a>
@@ -73,15 +80,24 @@ const defaultProv = provincesData[0];
     const select = root.querySelector<HTMLSelectElement>("[data-prov-select]");
     const goLink = root.querySelector<HTMLAnchorElement>("#provGoLink");
     const cards = root.querySelectorAll<HTMLElement>("[data-prov-card]");
+    const chips = root.querySelectorAll<HTMLElement>("[data-prov-chip]");
 
-    select?.addEventListener("change", () => {
-      const slug = select.value;
+    const setProvince = (slug: string) => {
+      let selectedName = "";
       for (const c of cards) {
-        c.hidden = c.dataset.provCard !== slug;
+        const match = c.dataset.provCard === slug;
+        c.hidden = !match;
+        if (match) selectedName = c.dataset.provName ?? "";
+      }
+      for (const chip of chips) {
+        chip.classList.toggle("is-active", chip.dataset.provChip === slug);
       }
       if (goLink) {
         goLink.href = `/impactos/provincia/${slug}/`;
+        if (selectedName) goLink.textContent = `Abrir página de ${selectedName} →`;
       }
-    });
+    };
+
+    select?.addEventListener("change", () => setProvince(select.value));
   }
 </script>

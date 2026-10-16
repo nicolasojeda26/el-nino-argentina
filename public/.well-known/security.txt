@@ -1,0 +1,5 @@
+Contact: mailto:litoraldevctes@gmail.com
+Expires: 2027-09-30T00:00:00.000Z
+Preferred-Languages: es, en
+Canonical: https://xn--elnio-rta.net.ar/.well-known/security.txt
+Policy: https://xn--elnio-rta.net.ar/seguridad/

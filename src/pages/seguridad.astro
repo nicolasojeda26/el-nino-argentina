@@ -1,0 +1,162 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Icon from "../components/Icon.astro";
+import { site } from "../data/content";
+const updated = "16 de octubre de 2026";
+
+const measures = [
+  {
+    title: "Todo el sitio por HTTPS",
+    text: "El sitio se sirve exclusivamente por HTTPS y aplica HSTS (Strict-Transport-Security) para que el navegador no vuelva a conectarse por HTTP. Los certificados y el tráfico se gestionan sobre la red de Cloudflare.",
+  },
+  {
+    title: "Cabeceras de seguridad",
+    text: "Enviamos Content-Security-Policy (restringe de dónde se puede cargar código), X-Content-Type-Options, Referrer-Policy, Permissions-Policy y Cross-Origin-Opener-Policy. Podés verificarlas con las herramientas de desarrollo de tu navegador.",
+  },
+  {
+    title: "Sin cuentas ni base de datos de usuarios",
+    text: "No hay registro, login, formularios con datos personales ni almacenamiento de información de lectores. No hay nada que robar del lado del usuario.",
+  },
+  {
+    title: "Superficie mínima",
+    text: "El sitio es estático: se genera por adelantado y se sirve desde el borde de la red. No ejecuta bases de datos expuestas ni paneles administrativos públicos.",
+  },
+  {
+    title: "Dependencias y contenido",
+    text: "Las dependencias del sitio se mantienen actualizadas y los scripts de terceros se limitan a los necesarios (medición y publicidad de Google). Los datos de NOAA se validan al procesarse.",
+  },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Seguridad de la información y divulgación responsable",
+  inLanguage: "es-AR",
+  url: new URL("/seguridad/", Astro.site ?? site.url).href,
+  isPartOf: { "@type": "WebSite", name: site.name, url: site.url },
+  publisher: { "@type": "Organization", name: site.name },
+};
+---
+
+<Layout
+  title="Seguridad y divulgación responsable"
+  description="Cómo protegemos El Niño Argentina: HTTPS y HSTS, cabeceras de seguridad, sin datos de usuarios. Canal para reportar vulnerabilidades de forma responsable."
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: "Inicio", path: "/" },
+    { name: "Seguridad", path: "/seguridad/" },
+  ]}
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · Seguridad</div>
+
+  <section class="section container">
+    <p class="eyebrow">Confianza</p>
+    <h1>Seguridad de la información</h1>
+    <p class="lead">
+      Un sitio de datos tiene que ser, antes que nada, un sitio seguro. Esto es lo que
+      aplicamos y lo que no hacemos nunca.
+    </p>
+  </section>
+
+  <section class="section container">
+    <div class="grid grid-3">
+      {
+        measures.map((m) => (
+          <div class="card">
+            <div class="icon"><Icon name="shield" size={26} /></div>
+            <h3>{m.title}</h3>
+            <p>{m.text}</p>
+          </div>
+        ))
+      }
+      <div class="card">
+        <div class="icon"><Icon name="mail" size={26} /></div>
+        <h3>Canal de reporte</h3>
+        <p>
+          Problemas de seguridad se reportan por correo con el asunto{" "}
+          <strong>[SEGURIDAD]</strong> a{" "}
+          <a href={`mailto:${site.email}?subject=%5BSEGURIDAD%5D`}>
+            {site.email}
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container prose">
+    <p class="eyebrow">Qué no hacemos</p>
+    <h2>Compromisos explícitos</h2>
+    <ul>
+      <li>No vendemos, alquilamos ni compartimos datos de lectores: no los recopilamos.</li>
+      <li>No pedimos contraseñas, datos de tarjetas ni documentación por ningún canal.</li>
+      <li>
+        Nunca te vamos a escribir pidiendo que instales algo o que ingreses a un enlace con
+        tus credenciales.
+      </li>
+      <li>No incluimos scripts de terceros fuera de los necesarios para publicidad y medición.</li>
+    </ul>
+
+    <h2>Suplantación y phishing</h2>
+    <p>
+      Nuestro único dominio es <strong>{site.domain}</strong> y nuestra única dirección de
+      correo es{" "}
+      <a href={`mailto:${site.email}`}>{site.email}</a>. Si recibís un mensaje
+      con otro dominio o un enlace a un sitio parecido, desconfiá y avisanos: la
+      suplantación de identidad nos perjudica tanto como a vos.
+    </p>
+
+    <p class="eyebrow" style="margin-top:56px;">Investigación</p>
+    <h2>Divulgación responsable de vulnerabilidades</h2>
+    <p>
+      Si encontrás un problema de seguridad en el sitio, agradecemos que nos lo informes de
+      forma privada antes de hacerlo público. Nos comprometemos a:
+    </p>
+    <ul>
+      <li>
+        <strong>Acusar recibo en 72 horas</strong> y mantenerte al tanto del estado del
+        reporte.
+      </li>
+      <li>Evaluar el problema y resolverlo en un plazo razonable, priorizando el impacto real.</li>
+      <li>
+        No iniciar acciones legales contra quien investigue de buena fe, respetando el
+        alcance descripto abajo.
+      </li>
+      <li>
+        Acreditar tu nombre o alias en esta página si querés, una vez resuelto el problema.
+      </li>
+    </ul>
+    <p>En tu reporte incluí, si es posible:</p>
+    <ul>
+      <li>La URL o componente afectado y el tipo de problema.</li>
+      <li>Los pasos mínimos para reproducirlo (una captura o un registro ayuda).</li>
+      <li>El impacto que estimás y cualquier idea de mitigación.</li>
+    </ul>
+    <p>
+      <strong>Alcance:</strong> este programa cubre <strong>{site.domain}</strong> y sus
+      subdominios. No cubre servicios de terceros que el sitio utiliza (Cloudflare, Google
+      AdSense, GitHub), que tienen sus propios programas de reporte.
+    </p>
+    <p>
+      <strong>Fuera de alcance:</strong> pruebas de denegación de servicio, ingeniería social
+      contra terceros, acceso a datos que no sean tuyos y cualquier acción que interrumpa el
+      servicio para otras personas.
+    </p>
+
+    <h2>Estado público de la seguridad</h2>
+    <p>
+      Publicamos información de contacto para temas de seguridad en{" "}
+      <a href="/.well-known/security.txt">/.well-known/security.txt</a>, siguiendo el
+      estándar RFC 9116. Ahí figura la fecha de expiración del contacto y el idioma
+      preferido para reportar.
+    </p>
+
+    <div class="callout">
+      <p>
+        <strong>Última actualización:</strong> {updated}. Políticas relacionadas:{" "}
+        <a href="/privacidad/">privacidad</a>, <a href="/cookies/">cookies</a> y{" "}
+        <a href="/terminos/">términos de uso</a>.
+      </p>
+    </div>
+  </section>
+</Layout>

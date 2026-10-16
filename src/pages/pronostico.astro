@@ -4,6 +4,7 @@ import OniChart from "../components/OniChart.astro";
 import EnsoScale from "../components/EnsoScale.astro";
 import ForecastProbs from "../components/ForecastProbs.astro";
 import AnalogChart from "../components/AnalogChart.astro";
+import Icon from "../components/Icon.astro";
 import AdSlot from "../components/AdSlot.astro";
 import { getOni, buildStatus, formatAnomaly, seasonLabel, getNextNoaaRelease } from "../data/oni";
 import { site, sources, outlook } from "../data/content";
@@ -160,7 +161,7 @@ const jsonLd = {
       {
         sources.map((src) => (
           <a class="card" href={src.url} rel="noopener" target="_blank">
-            <div class="icon">🔗</div>
+            <div class="icon"><Icon name="database" size={22} /></div>
             <h3>{src.name}</h3>
             <p style="font-size:0.85rem;word-break:break-all;">{src.url}</p>
           </a>

@@ -1,0 +1,184 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Icon from "../components/Icon.astro";
+import { site, sources } from "../data/content";
+const updated = "16 de octubre de 2026";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: "Acerca del sitio y política editorial",
+  inLanguage: "es-AR",
+  url: new URL("/acerca/", Astro.site ?? site.url).href,
+  isPartOf: { "@type": "WebSite", name: site.name, url: site.url },
+  about: {
+    "@type": "Organization",
+    name: site.name,
+    url: site.url,
+    email: site.email,
+    description:
+      "Portal informativo independiente sobre el fenómeno ENSO (El Niño / La Niña) y sus impactos en Argentina.",
+  },
+};
+---
+
+<Layout
+  title="Acerca del sitio y política editorial"
+  description="Quién hace El Niño Argentina, de dónde salen los datos, cada cuánto se actualiza, cómo tratamos las correcciones y cómo se financia el proyecto."
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: "Inicio", path: "/" },
+    { name: "Acerca del sitio", path: "/acerca/" },
+  ]}
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · Acerca del sitio</div>
+
+  <section class="section container">
+    <p class="eyebrow">Transparencia</p>
+    <h1>Acerca del sitio</h1>
+    <p class="lead">
+      Un proyecto independiente que traduce la información técnica del Pacífico ecuatorial
+      en algo útil para quien vive en Argentina: productores, docentes, periodistas,
+      organismos y curiosos.
+    </p>
+  </section>
+
+  <section class="section container">
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="icon"><Icon name="database" size={28} /></div>
+        <h3>Solo fuentes oficiales</h3>
+        <p>
+          Los datos no se estiman ni se interpolan: se toman tal cual los publica NOAA y se
+          citan con su trimestre de referencia.
+        </p>
+      </div>
+      <div class="card">
+        <div class="icon"><Icon name="clock" size={28} /></div>
+        <h3>Se actualiza solo</h3>
+        <p>
+          Cuando NOAA publica un nuevo valor del ONI, el sitio lo recalcula automáticamente:
+          estado, intensidad, tendencia y mapa de impactos.
+        </p>
+      </div>
+      <div class="card">
+        <div class="icon"><Icon name="pencil" size={28} /></div>
+        <h3>Con correcciones</h3>
+        <p>
+          Si un dato está mal, lo corregimos y lo dejamos asentado. No hay versiones
+          silenciosas de los mismos gráficos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container prose">
+    <p class="eyebrow">Quiénes somos</p>
+    <h2>Un proyecto independiente</h2>
+    <p>
+      {site.name} es un portal informativo independiente, desarrollado y mantenido en
+      Argentina. No pertenece a ningún organismo oficial, empresa de servicios climáticos ni
+      partido político. No vendemos pronósticos ni asesoramiento.
+    </p>
+    <p>
+      El sitio existe porque la información sobre ENSO suele estar disponible en inglés, en
+      formato técnico y sin contexto local. Acá se explica el mismo dato, en castellano y
+      con foco en lo que ocurre entre el Litoral y la Patagonia.
+    </p>
+
+    <p class="eyebrow" style="margin-top:56px;">Método</p>
+    <h2>De dónde salen los datos</h2>
+    <p>
+      El indicador principal es el <strong>ONI</strong> (Oceanic Niño Index) del Climate
+      Prediction Center de la NOAA, calculado como promedio móvil de 3 meses de la anomalía
+      de temperatura superficial del mar en la región Niño 3.4. Los umbrales son los
+      estándar: <strong>±0,5 °C</strong> para separar fases, y +0,5 / +1,0 / +1,5 °C para
+      graduar la intensidad.
+    </p>
+    <ul>
+      {
+        sources.map((s) => (
+          <li>
+            <a href={s.url} rel="noopener" target="_blank">
+              {s.name}
+            </a>
+          </li>
+        ))
+      }
+      <li>Geometría del mapa: Natural Earth (dominio público).</li>
+    </ul>
+    <p>
+      La evolución de cada fase se describe a partir de la bibliografía climática publicada
+      por esos organismos y por el SMN; no se usan datos privados ni modelos propios
+      presentados como oficiales.
+    </p>
+
+    <p class="eyebrow" style="margin-top:56px;">Política editorial</p>
+    <h2>Cómo trabajamos el contenido</h2>
+    <ul>
+      <li>
+        <strong>Precisión antes que novedad:</strong> si el dato no está confirmado por la
+        fuente oficial, no se publica como un hecho.
+      </li>
+      <li>
+        <strong>Atribución explícita:</strong> cada cifra se puede rastrear hasta el
+        organismo que la emitió.
+      </li>
+      <li>
+        <strong>Separación entre información y publicidad:</strong> los espacios
+        publicitarios están identificados y no influyen en el contenido.
+      </li>
+      <li>
+        <strong>Sin sensacionalismo:</strong> una fase fuerte no se anuncia como catástrofe;
+        se explica qué es probable, qué es posible y qué no se puede saber todavía.
+      </li>
+      <li>
+        <strong>Idioma claro:</strong> se prefieren las palabras del uso cotidiano antes que
+        la jerga técnica, y cuando se usa un término técnico se define en el{" "}
+        <a href="/glosario/">glosario</a>.
+      </li>
+    </ul>
+
+    <h2>Correcciones</h2>
+    <p>
+      Si detectás un error —un valor mal transcripto, un trimestre equivocado, una
+      afirmación que no se corresponde con la fuente— escribinos a{" "}
+      <a href={`mailto:${site.email}`}>{site.email}</a> indicando la página y
+      el dato en cuestión. Corregimos los errores verificables en un plazo de{" "}
+      <strong>5 días hábiles</strong> y dejamos registrada la fecha de la corrección.
+    </p>
+
+    <h2>Uso de herramientas automáticas</h2>
+    <p>
+      El sitio obtiene los datos de forma automática desde las fuentes públicas y utiliza
+      asistencia por computadora para tareas de procesamiento, revisión de estilo y control
+      de consistencia. Toda publicación pasa por una revisión humana antes de estar en
+      línea, y las cifras que se muestran nunca son generadas por un modelo: son las que
+      publicó el organismo de origen.
+    </p>
+
+    <h2>Financiamiento</h2>
+    <p>
+      El proyecto se sostiene con <strong>publicidad programática</strong> (Google AdSense) y,
+      eventualmente, con auspicios identificados. Ningún anunciante tiene acceso a la línea
+      editorial, no se publican contenidos patrocinados sin aviso y no se acepta
+      financiamiento que condicione las conclusiones sobre el clima o los datos.
+    </p>
+
+    <h2>Contacto</h2>
+    <p>
+      Consultas generales, prensa, correcciones y propuestas:{" "}
+      <a href={`mailto:${site.email}`}>{site.email}</a>. Para temas de
+      seguridad informática hay un canal específico en la{" "}
+      <a href="/seguridad/">página de seguridad</a>.
+    </p>
+
+    <div class="callout">
+      <p>
+        <strong>Última actualización de esta página:</strong> {updated}. Las políticas
+        relacionadas son la <a href="/privacidad/">de privacidad</a>, la{" "}
+        <a href="/cookies/">de cookies</a> y los <a href="/terminos/">términos de uso</a>.
+      </p>
+    </div>
+  </section>
+</Layout>

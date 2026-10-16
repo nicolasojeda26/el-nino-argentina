@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Icon from "../components/Icon.astro";
 import { site } from "../data/content";
 ---
 
@@ -24,21 +25,22 @@ import { site } from "../data/content";
   <section class="section container">
     <div class="grid grid-2">
       <div class="card">
-        <div class="icon">✉️</div>
+        <div class="icon"><Icon name="mail" size={26} /></div>
         <h3>Correo electrónico</h3>
         <p>El canal más directo para consultas generales y prensa.</p>
         <p><a class="btn btn-primary" href={`mailto:${site.email}`}>{site.email}</a></p>
       </div>
       <div class="card">
-        <div class="icon">📊</div>
+        <div class="icon"><Icon name="check" size={26} /></div>
         <h3>Correcciones de datos</h3>
         <p>
           Trabajamos con datos abiertos de NOAA, IRI y el SMN. Si encontrás una
-          inconsistencia, contanos el trimestre y el valor.
+          inconsistencia, contanos el trimestre y el valor. El compromiso de corrección
+          está en la <a href="/acerca/">política editorial</a>.
         </p>
       </div>
       <div class="card">
-        <div class="icon">🤝</div>
+        <div class="icon"><Icon name="users" size={26} /></div>
         <h3>Colaboraciones</h3>
         <p>
           Si representás a una cooperativa, aseguradora, medio o institución y querés
@@ -46,11 +48,11 @@ import { site } from "../data/content";
         </p>
       </div>
       <div class="card">
-        <div class="icon">📣</div>
+        <div class="icon"><Icon name="megaphone" size={26} /></div>
         <h3>Publicidad</h3>
         <p>
-          El sitio está abierto a auspicios y publicidad. Consultá por disponibilidad y
-          formatos.
+          El sitio está abierto a auspicios y publicidad identificada. Consultá por
+          disponibilidad y formatos.
         </p>
       </div>
     </div>

@@ -5,7 +5,7 @@ export const site = {
     "Estado actual, pronóstico, impactos por región e historia del fenómeno de El Niño y La Niña (ENSO) en Argentina. Datos oficiales de NOAA y el SMN.",
   url: "https://xn--elnio-rta.net.ar",
   domain: "elniño.net.ar",
-  email: "contacto@elniño.net.ar",
+  email: "litoraldevctes@gmail.com",
   adsenseClient: "ca-pub-2347772486638856",
   author: "El Niño Argentina",
 };
@@ -33,7 +33,6 @@ export interface Region {
   slug: string;
   name: string;
   provinces: string;
-  icon: string;
   iconName: RegionIcon;
   summary: string;
   points: string[];
@@ -48,7 +47,6 @@ export const regions: Region[] = [
     slug: "litoral",
     name: "Litoral y NEA",
     provinces: "Misiones, Corrientes, Chaco, Formosa, Entre Ríos, Santa Fe",
-    icon: "🌊",
     iconName: "waves",
     summary:
       "La zona más expuesta al El Niño: lluvias por encima de lo normal y crecidas de los ríos Paraná, Paraguay y Uruguay.",
@@ -76,7 +74,6 @@ export const regions: Region[] = [
     slug: "pampeana",
     name: "Región Pampeana",
     provinces: "Buenos Aires, Córdoba, Santa Fe, La Pampa",
-    icon: "🌾",
     iconName: "wheat",
     summary:
       "El corazón productivo del país. El Niño suele traer más lluvia, lo que puede mejorar rindes pero también generar excesos hídricos.",
@@ -104,7 +101,6 @@ export const regions: Region[] = [
     slug: "cuyo",
     name: "Cuyo",
     provinces: "Mendoza, San Juan, San Luis",
-    icon: "🏔️",
     iconName: "mountain",
     summary:
       "Efecto más variable y en general moderado, con impacto sobre la nieve de cordillera y los caudales de riego.",
@@ -132,7 +128,6 @@ export const regions: Region[] = [
     slug: "noa",
     name: "Noroeste (NOA)",
     provinces: "Salta, Jujuy, Tucumán, Catamarca, La Rioja, Santiago del Estero",
-    icon: "⛰️",
     iconName: "mountain-sun",
     summary:
       "Veranos más lluviosos y actividad convectiva más intensa sobre las yungas y los valles.",
@@ -160,7 +155,6 @@ export const regions: Region[] = [
     slug: "patagonia",
     name: "Patagonia",
     provinces: "Neuquén, Río Negro, Chubut, Santa Cruz, Tierra del Fuego",
-    icon: "❄️",
     iconName: "wind",
     summary:
       "Inviernos fríos y variables. La señal del El Niño es más débil y heterogénea que en el resto del país.",

@@ -1,0 +1,151 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site } from "../data/content";
+const updated = "16 de octubre de 2026";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Términos y condiciones de uso",
+  inLanguage: "es-AR",
+  url: new URL("/terminos/", Astro.site ?? site.url).href,
+  isPartOf: { "@type": "WebSite", name: site.name, url: site.url },
+  publisher: { "@type": "Organization", name: site.name },
+};
+---
+
+<Layout
+  title="Términos y condiciones de uso"
+  description="Condiciones de uso de El Niño Argentina: carácter informativo del contenido, propiedad intelectual, uso de los datos, publicidad, limitación de responsabilidad y ley aplicable."
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: "Inicio", path: "/" },
+    { name: "Términos", path: "/terminos/" },
+  ]}
+>
+  <div class="container breadcrumbs"><a href="/">Inicio</a> · Términos</div>
+
+  <section class="section container prose">
+    <p class="eyebrow">Legal</p>
+    <h1>Términos y condiciones de uso</h1>
+    <p style="color:var(--muted);">Última actualización: {updated}</p>
+
+    <p>
+      Estos términos regulan el acceso y uso de <strong>{site.domain}</strong> (en adelante,
+      «el sitio»). Al navegar el sitio aceptás estas condiciones. Si no estás de acuerdo, te
+      pedimos que no lo utilices.
+    </p>
+
+    <h2>1. Carácter informativo del contenido</h2>
+    <p>
+      El sitio publica información de divulgación sobre el fenómeno ENSO (El Niño, La Niña y
+      fase neutral) y sus impactos probables en Argentina. El contenido tiene finalidad{" "}
+      <strong>informativa y educativa</strong> y <strong>no constituye asesoramiento</strong>{" "}
+      agronómico, financiero, de seguros, sanitario ni de gestión de emergencias.
+    </p>
+    <p>
+      Para decisiones operativas, consultá siempre a los organismos competentes:
+      el Servicio Meteorológico Nacional, el Instituto Nacional del Agua, las autoridades de
+      Defensa Civil de tu jurisdicción y los servicios de extensión rural.
+    </p>
+
+    <h2>2. Exactitud y disponibilidad de los datos</h2>
+    <p>
+      Los valores que se muestran provienen de fuentes públicas (NOAA, IRI, SMN, BOM) y se
+      reproducen de forma automática. Los organismos de origen pueden{" "}
+      <strong>revisar o corregir</strong> sus series: un valor publicado este mes puede ser
+      ajustado en el informe siguiente.
+    </p>
+    <p>
+      No garantizamos que la información esté libre de errores, completa o permanentemente
+      disponible. El sitio puede interrumpirse por tareas de mantenimiento, fallas de
+      proveedores de infraestructura o causas ajenas a nuestra voluntad.
+    </p>
+
+    <h2>3. Propiedad intelectual</h2>
+    <p>
+      Los textos, el diseño, los gráficos, el mapa y la marca del sitio son de{" "}
+      {site.name}, salvo indicación en contrario. Los <strong>datos</strong> pertenecen a los
+      organismos que los publican (NOAA, IRI, SMN, BOM) y la geometría del mapa proviene de
+      Natural Earth (dominio público).
+    </p>
+    <p>Se permite:</p>
+    <ul>
+      <li>
+        Citar fragmentos con atribución al sitio y enlace a la página original, sin
+        alterar el sentido de lo publicado.
+      </li>
+      <li>Usar las cifras del ONI citando la fuente de origen (NOAA CPC).</li>
+      <li>Enlazar libremente cualquier página del sitio.</li>
+    </ul>
+    <p>No se permite:</p>
+    <ul>
+      <li>Reproducir íntegramente artículos o páginas del sitio en otro medio.</li>
+      <li>Reutilizar el diseño, el mapa o los gráficos como propios o con fines comerciales.</li>
+      <li>
+        Extraer contenido de forma automatizada y masiva (scraping) que afecte el
+        funcionamiento del sitio o su monetización.
+      </li>
+      <li>El uso de la marca «{site.name}» de modo que sugiera patrocinio o vínculo oficial inexistente.</li>
+    </ul>
+    <p>
+      Las solicitudes de uso comercial o de reproducción se canalizan por{" "}
+      <a href={`mailto:${site.email}`}>{site.email}</a>.
+    </p>
+
+    <h2>4. Publicidad y enlaces a terceros</h2>
+    <p>
+      El sitio se financia con publicidad de terceros (Google AdSense) y puede incluir
+      enlaces a sitios externos. No controlamos el contenido, las políticas ni las prácticas
+      de esos terceros, y su inclusión no implica recomendación.
+    </p>
+    <p>
+      El detalle sobre cookies publicitarias y cómo desactivarlas está en la{" "}
+      <a href="/cookies/">política de cookies</a>.
+    </p>
+
+    <h2>5. Uso aceptable</h2>
+    <p>Al usar el sitio te comprometés a no:</p>
+    <ul>
+      <li>Intentar vulnerar la seguridad, interferir con el servicio o acceder a sistemas no públicos.</li>
+      <li>Automatizar consultas de manera tal que degraden el servicio para otras personas.</li>
+      <li>Suplantar la identidad del sitio o de sus responsables.</li>
+    </ul>
+
+    <h2>6. Limitación de responsabilidad</h2>
+    <p>
+      En la máxima medida permitida por la ley, {site.name} no será responsable por daños
+      directos o indirectos, pérdidas de producción, lucro cesante o decisiones tomadas a
+      partir de la información publicada. El uso del sitio es bajo tu propia
+      responsabilidad.
+    </p>
+
+    <h2>7. Cambios en el sitio y en estos términos</h2>
+    <p>
+      Podemos modificar el contenido, suspender secciones o actualizar estos términos. La
+      versión vigente es la publicada en esta página, con su fecha de actualización.
+    </p>
+
+    <h2>8. Ley aplicable</h2>
+    <p>
+      Estos términos se rigen por las leyes de la República Argentina. Cualquier controversia
+      se someterá a los tribunales competentes de dicho país.
+    </p>
+
+    <h2>9. Contacto</h2>
+    <p>
+      Consultas sobre estos términos:{" "}
+      <a href={`mailto:${site.email}`}>{site.email}</a>. Ver también el{" "}
+      <a href="/acerca/">acerca del sitio</a> y la{" "}
+      <a href="/privacidad/">política de privacidad</a>.
+    </p>
+
+    <div class="callout">
+      <p>
+        <strong>Importante:</strong> este sitio no emite alertas meteorológicas. Ante un
+        evento en curso, seguí las indicaciones oficiales del Servicio Meteorológico
+        Nacional y de Defensa Civil de tu provincia.
+      </p>
+    </div>
+  </section>
+</Layout>

@@ -11,7 +11,7 @@ const provincesByRegion = regions.reduce<Record<string, string[]>>((acc, r) => {
 }, {});
 ---
 
-<figure class="armap" id="mapa">
+<figure class="armap">
   <div class="armap-canvas">
     <svg
       class="armap-svg"
@@ -63,7 +63,8 @@ const provincesByRegion = regions.reduce<Record<string, string[]>>((acc, r) => {
 <script>
   const root = document.querySelector<HTMLElement>(".armap");
   if (root) {
-    const all = Array.from(root.querySelectorAll<HTMLElement>("[data-region]"));
+    const scope = root.closest("section") ?? document;
+    const all = Array.from(scope.querySelectorAll<HTMLElement>("[data-region]"));
 
     const setActive = (region: string | null) => {
       root.classList.toggle("has-hover", region !== null);

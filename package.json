@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "update:oni": "node scripts/update-oni.mjs",
     "astro": "astro"
   },
   "dependencies": {

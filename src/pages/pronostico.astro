@@ -118,7 +118,7 @@ const jsonLd = {
                 <td style="font-family:var(--mono)">{p.season} {p.year}</td>
                 <td>{seasonLabel(p.season)}</td>
                 <td style="font-family:var(--mono)">{formatAnomaly(p.anomaly)}</td>
-                <td style={p.anomaly >= 0.5 ? "color:var(--warm-soft)" : p.anomaly <= -0.5 ? "color:var(--cool-soft)" : "color:var(--muted)"}>
+                <td style={p.anomaly >= 0.5 ? "color:var(--nino);font-weight:600" : p.anomaly <= -0.5 ? "color:var(--nina);font-weight:600" : "color:var(--muted)"}>
                   {p.anomaly >= 0.5 ? "El Niño" : p.anomaly <= -0.5 ? "La Niña" : "Neutral"}
                 </td>
               </tr>

@@ -5,11 +5,23 @@ import AdSlot from "../../components/AdSlot.astro";
 import { site } from "../../data/content";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("noticias", ({ data }) => !data.draft);
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  const posts = (await getCollection("noticias", ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  );
+  return posts.map((post) => {
+    const related = posts
+      .filter((p) => p.id !== post.id)
+      .sort((a, b) => {
+        const sameTagA = a.data.tag === post.data.tag ? 1 : 0;
+        const sameTagB = b.data.tag === post.data.tag ? 1 : 0;
+        return sameTagB - sameTagA || b.data.date.valueOf() - a.data.date.valueOf();
+      })
+      .slice(0, 3);
+    return { params: { slug: post.id }, props: { post, related } };
+  });
 }
 
-const { post } = Astro.props;
+const { post, related } = Astro.props;
 const { Content } = await render(post);
 
 const fmt = (d: Date) =>
@@ -17,6 +29,9 @@ const fmt = (d: Date) =>
 
 const origin = Astro.site ?? site.url;
 const url = new URL(Astro.url.pathname, origin).href;
+const shareText = encodeURIComponent(`${post.data.title} — ${url}`);
+const shareTweet = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.data.title)}&url=${encodeURIComponent(url)}`;
+const shareWa = `https://wa.me/?text=${shareText}`;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -64,6 +79,19 @@ const jsonLd = {
 
     <Content />
 
+    <div class="share-bar" aria-label="Compartir nota">
+      <span class="share-label">Compartir:</span>
+      <a class="share-btn" href={shareWa} target="_blank" rel="noopener">
+        WhatsApp
+      </a>
+      <a class="share-btn" href={shareTweet} target="_blank" rel="noopener">
+        X / Twitter
+      </a>
+      <button type="button" class="share-btn" id="copyLinkBtn" data-url={url}>
+        Copiar enlace
+      </button>
+    </div>
+
     <AdSlot label="Publicidad" slot="noticia" />
 
     <div class="hero-cta" style="margin-top:36px;">
@@ -71,4 +99,42 @@ const jsonLd = {
       <a class="btn btn-primary" href="/pronostico/">Ver pronóstico actual</a>
     </div>
   </article>
+
+  {
+    related.length > 0 && (
+      <section class="section container">
+        <p class="eyebrow">Seguí leyendo</p>
+        <h2>Notas relacionadas</h2>
+        <div class="grid grid-3" style="margin-top:24px;">
+          {related.map((p) => (
+            <a class="card post-card" href={`/noticias/${p.id}/`}>
+              <span class="tag">{p.data.tag}</span>
+              <h3>{p.data.title}</h3>
+              <p style="font-size:0.92rem;">{p.data.description}</p>
+              <div class="post-meta">
+                <time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
 </Layout>
+
+<script>
+  const copyBtn = document.getElementById("copyLinkBtn") as HTMLButtonElement | null;
+  copyBtn?.addEventListener("click", async () => {
+    const url = copyBtn.dataset.url ?? window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      const original = copyBtn.textContent;
+      copyBtn.textContent = "¡Enlace copiado!";
+      setTimeout(() => {
+        copyBtn.textContent = original;
+      }, 2000);
+    } catch {
+      // Fallback silencioso
+    }
+  });
+</script>

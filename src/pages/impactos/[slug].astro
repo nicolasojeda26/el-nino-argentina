@@ -53,19 +53,31 @@ const jsonLd = {
   <AdSlot label="Publicidad" slot={`impactos-${region.slug}`} />
 
   <section class="section container">
-    <div class="grid grid-2">
-      <div class="card">
-        <h3 style="margin-top:0;">Qué esperar</h3>
-        <ul style="color:var(--text-soft);padding-left:1.2em;">
-          {region.points.map((p) => <li style="margin-bottom:10px;">{p}</li>)}
+    <h2>El Niño vs. La Niña en {region.name}</h2>
+    <div class="grid grid-2" style="margin-top:22px;">
+      <div class="card" data-phase="nino">
+        <div class="icon"><Icon name="flame" size={28} /></div>
+        <h3>Con El Niño (fase cálida)</h3>
+        <p style="font-size:0.94rem;">{region.summary}</p>
+        <ul style="color:var(--text-soft);padding-left:1.2em;margin-bottom:0;">
+          {region.points.map((p) => <li style="margin-bottom:8px;">{p}</li>)}
         </ul>
       </div>
-      <div class="card">
-        <h3 style="margin-top:0;">Recomendaciones</h3>
-        <ul style="color:var(--text-soft);padding-left:1.2em;">
-          {region.recommendations.map((p) => <li style="margin-bottom:10px;">{p}</li>)}
+      <div class="card" data-phase="nina">
+        <div class="icon"><Icon name="snow" size={28} /></div>
+        <h3>Con La Niña (fase fría)</h3>
+        <p style="font-size:0.94rem;">{region.ninaSummary}</p>
+        <ul style="color:var(--text-soft);padding-left:1.2em;margin-bottom:0;">
+          {region.ninaPoints.map((p) => <li style="margin-bottom:8px;">{p}</li>)}
         </ul>
       </div>
+    </div>
+
+    <div class="callout" style="margin-top:28px;">
+      <h3 style="margin-top:0;margin-bottom:10px;">Recomendaciones para la región</h3>
+      <ul style="color:var(--text-soft);padding-left:1.2em;margin:0;">
+        {region.recommendations.map((p) => <li style="margin-bottom:8px;">{p}</li>)}
+      </ul>
     </div>
   </section>
 

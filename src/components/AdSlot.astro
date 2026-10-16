@@ -9,16 +9,17 @@ interface Props {
 
 const { slot = "", label = "Espacio publicitario", format = "auto" } = Astro.props;
 const client = site.adsenseClient;
+const isNumericSlot = /^\d+$/.test(slot.trim());
 ---
 
 {
-  client ? (
-    <div class="ad" style="border:none;min-height:0;">
+  client && isNumericSlot ? (
+    <div class="ad ad-live">
       <ins
         class="adsbygoogle"
-        style="display:block;width:100%;"
+        style="display:block;width:100%;min-height:96px;"
         data-ad-client={client}
-        data-ad-slot={slot}
+        data-ad-slot={slot.trim()}
         data-ad-format={format}
         data-full-width-responsive="true"
       />
@@ -26,7 +27,7 @@ const client = site.adsenseClient;
         (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
     </div>
-  ) : (
+  ) : !client ? (
     <div class="ad" aria-hidden="true">{label}</div>
-  )
+  ) : null
 }

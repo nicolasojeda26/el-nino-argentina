@@ -5,6 +5,7 @@ export const site = {
     "Estado actual, pronóstico, impactos por región e historia del fenómeno de El Niño y La Niña (ENSO) en Argentina. Datos oficiales de NOAA y el SMN.",
   url: "https://xn--elnio-rta.net.ar",
   domain: "elniño.net.ar",
+  email: "contacto@elniño.net.ar",
   adsenseClient: "ca-pub-2347772486638856",
   author: "El Niño Argentina",
 };
@@ -36,6 +37,8 @@ export interface Region {
   iconName: RegionIcon;
   summary: string;
   points: string[];
+  ninaSummary: string;
+  ninaPoints: string[];
   detail: string;
   recommendations: string[];
 }
@@ -53,6 +56,13 @@ export const regions: Region[] = [
       "Precipitaciones superiores a la media, con eventos intensos en primavera y verano.",
       "Incremento del caudal del río Paraná: mayor riesgo de inundaciones ribereñas.",
       "Afecta el transporte fluvial, la pesca y las cosechas de la región.",
+    ],
+    ninaSummary:
+      "Durante La Niña se revierte el patrón: déficit de lluvias en la cuenca alta y bajantes pronunciadas de los grandes ríos.",
+    ninaPoints: [
+      "Lluvias por debajo de lo normal en primavera y verano.",
+      "Bajante de los ríos Paraná, Paraguay y Uruguay, complicando la hidrovía y tomas de agua.",
+      "Mayor riesgo de incendios en humedales, pastizales y esteros.",
     ],
     detail:
       "La humedad que El Niño transporta desde el Atlántico tropical y el corrimiento del jet subtropical hacia el sur aumentan las precipitaciones en toda la cuenca. Como gran parte del agua proviene de lluvias en el sur de Brasil, el caudal del río Paraná responde con crecidas que llegan semanas después a territorio argentino. Es la región donde el fenómeno se siente con más fuerza y donde históricamente se registraron las mayores inundaciones, como en 1982–1983 y 1997–1998.",
@@ -75,6 +85,13 @@ export const regions: Region[] = [
       "Riesgo de anegamientos y excesos de agua en campos bajos.",
       "Aumento de tormentas severas y caída de granizo en verano.",
     ],
+    ninaSummary:
+      "La región más castigada por las sequías de La Niña, con recorte de lluvias en etapas críticas de la campaña agrícola.",
+    ninaPoints: [
+      "Déficit hídrico en primavera y verano, afectando la siembra y floración de soja y maíz.",
+      "Mayor frecuencia de olas de calor y estrés térmico en los cultivos.",
+      "Caída de rindes agrícolas y menor aporte de humedad en los perfiles de suelo.",
+    ],
     detail:
       "La región pampeana es el corazón agrícola del país y una de las más sensibles al ENSO. En años de El Niño, el mayor aporte de humedad suele traducirse en mejores reservas de agua en el suelo, lo que históricamente se reflejó en buenas campañas de soja y maíz. El riesgo es el exceso: lluvias muy concentradas pueden anegar lotes bajos, retrasar la siembra o la cosecha y favorecer enfermedades de los cultivos.",
     recommendations: [
@@ -95,6 +112,13 @@ export const regions: Region[] = [
       "Acumulación de nieve en cordillera variable según el año.",
       "Relación indirecta con la disponibilidad de agua para riego.",
       "Menor señal climática que en el centro-este del país.",
+    ],
+    ninaSummary:
+      "Inviernos más secos en alta montaña que reducen la acumulación nívea y el caudal de los ríos cordilleranos.",
+    ninaPoints: [
+      "Menor probabilidad de nevadas invernales en la cordillera.",
+      "Reducción del escurrimiento de deshielo en primavera y verano para los oasis de riego.",
+      "Mayor exigencia sobre las reservas de los embalses provinciales.",
     ],
     detail:
       "Cuyo está detrás de la cordillera, por lo que la señal directa de El Niño es más débil y varía año a año. El efecto más relevante es indirecto: la nieve que se acumula en la cordillera durante el invierno alimenta los ríos que riegan los oasis productivos de Mendoza y San Juan. Un año con buena nieve mejora la disponibilidad de agua para riego y para generar energía; uno con poca nieve complica la temporada.",
@@ -117,6 +141,13 @@ export const regions: Region[] = [
       "Mayor riesgo de aludes y crecidas en zonas cordilleranas.",
       "Impacto en cultivos subtropicales (caña, cítricos).",
     ],
+    ninaSummary:
+      "Comportamiento dispar: mientras el este de la región tiende a secarse, las yungas pueden registrar lluvias intensas puntuales.",
+    ninaPoints: [
+      "Inicio de la temporada de lluvias más tardío o irregular en el Chaco semiárido.",
+      "Eventos convectivos aislados pero intensos en quebradas y valles.",
+      "Estrés térmico por olas de calor en primavera antes del comienzo de las lluvias.",
+    ],
     detail:
       "En el noroeste, el efecto de El Niño se concentra en el verano. El mayor aporte de humedad y el calentamiento de la atmósfera favorecen lluvias convectivas más intensas sobre las yungas y los valles, lo que puede provocar crecidas repentinas de ríos de montaña y deslizamientos en rutas cordilleranas, además de beneficiar a los cultivos subtropicales como la caña de azúcar y los cítricos.",
     recommendations: [
@@ -137,6 +168,13 @@ export const regions: Region[] = [
       "Mayor probabilidad de nevadas en cordillera en invierno.",
       "Temporada de esquí que puede verse favorecida.",
       "Impactos sobre la cría de ganado ovino y caprino.",
+    ],
+    ninaSummary:
+      "Señal débil modulada por el Modo Anular del Sur (SAM), con tendencia a inviernos menos nevadores en el norte patagónico.",
+    ninaPoints: [
+      "Menor frecuencia de frentes húmedos sobre la cordillera norte patagónica.",
+      "Veranos más secos y ventosos que elevan el peligro de incendios forestales.",
+      "Menor recarga de cuencas hidroeléctricas del Comahue.",
     ],
     detail:
       "En la Patagonia la señal del ENSO es más débil y heterogénea, y depende de cómo se combinen otros patrones como el SAM (Modo Anular del Sur). Aun así, los inviernos de El Niño suelen ser más fríos y con mayor probabilidad de nevadas en la cordillera, lo que puede favorecer la temporada de esquí pero también complicar los caminos y la actividad ganadera extensiva.",

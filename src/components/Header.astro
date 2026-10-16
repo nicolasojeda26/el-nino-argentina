@@ -11,7 +11,7 @@ const s = buildStatus(await getOni());
 ---
 
 <header class="site-header">
-  <div class="ticker">
+  <a href="/pronostico/" class="ticker" aria-label={`Estado actual: ${s.state}, ONI ${formatAnomaly(s.latest.anomaly)} °C. Ver pronóstico`}>
     <div class="container">
       <span class="ticker-live"><span class="dot"></span> En vivo</span>
       <span class="ticker-value">
@@ -25,7 +25,7 @@ const s = buildStatus(await getOni());
         <EnsoScale value={s.latest.anomaly} compact />
       </span>
     </div>
-  </div>
+  </a>
 
   <div class="container inner">
     <a href="/" class="brand" aria-label={`${site.name} — inicio`}>
@@ -35,7 +35,7 @@ const s = buildStatus(await getOni());
         <small>Monitoreo ENSO</small>
       </span>
     </a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">☰</button>
     <nav class="nav" id="nav" aria-label="Principal">
       {
         nav.map((item) => (
@@ -51,8 +51,33 @@ const s = buildStatus(await getOni());
 <script>
   const toggle = document.getElementById("menuToggle");
   const navEl = document.getElementById("nav");
-  toggle?.addEventListener("click", () => {
-    const open = navEl?.classList.toggle("open") ?? false;
+
+  const setMenu = (open: boolean) => {
+    if (!toggle || !navEl) return;
+    navEl.classList.toggle("open", open);
     toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    toggle.textContent = open ? "✕" : "☰";
+  };
+
+  toggle?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isOpen = navEl?.classList.contains("open") ?? false;
+    setMenu(!isOpen);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!navEl?.classList.contains("open")) return;
+    const target = e.target as Node | null;
+    if (target && !navEl.contains(target) && target !== toggle) {
+      setMenu(false);
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navEl?.classList.contains("open")) {
+      setMenu(false);
+      toggle?.focus();
+    }
   });
 </script>

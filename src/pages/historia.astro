@@ -31,13 +31,11 @@ const fmt = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
   </section>
 
   <section class="section container">
-    <div class="chart-wrap">
-      <h3 style="margin-top:0;">Serie completa del ONI (1950 – hoy)</h3>
-      <p style="color:var(--muted);font-size:0.9rem;">
-        Décadas de oscilación entre fases cálidas (rojo) y frías (azul).
-      </p>
-      <OniChart points={points} count={points.length} height={300} />
-    </div>
+    <h2>Serie completa del ONI (1950 – hoy)</h2>
+    <p class="lead" style="margin-bottom:22px;">
+      Décadas de oscilación entre fases cálidas (El Niño) y frías (La Niña). Usá los botones para hacer zoom temporal.
+    </p>
+    <OniChart points={points} count={points.length} height={300} interactiveRange />
   </section>
 
   <AdSlot label="Publicidad" slot="historia" />
@@ -54,7 +52,7 @@ const fmt = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
             nino.map((e) => (
               <tr>
                 <td><strong>{e.period}</strong></td>
-                <td style="color:var(--warm-soft)">{e.intensity}</td>
+                <td style="color:var(--nino);font-weight:600">{e.intensity}</td>
                 <td style="font-family:var(--mono)">{fmt(e.peak)}</td>
                 <td style="white-space:normal">{e.impact}</td>
               </tr>
@@ -75,7 +73,7 @@ const fmt = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
             nina.map((e) => (
               <tr>
                 <td><strong>{e.period}</strong></td>
-                <td style="color:var(--cool-soft)">{e.intensity}</td>
+                <td style="color:var(--nina);font-weight:600">{e.intensity}</td>
                 <td style="font-family:var(--mono)">{fmt(e.peak)}</td>
                 <td style="white-space:normal">{e.impact}</td>
               </tr>

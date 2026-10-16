@@ -3,6 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import AdSlot from "../components/AdSlot.astro";
 import ArgentinaMap from "../components/ArgentinaMap.astro";
 import ProvinceFinder from "../components/ProvinceFinder.astro";
+import ImpactSimulator from "../components/ImpactSimulator.astro";
+import HydroAndesMonitor from "../components/HydroAndesMonitor.astro";
 import AgroCalendar from "../components/AgroCalendar.astro";
 import Icon from "../components/Icon.astro";
 import { regions } from "../data/content";
@@ -18,7 +20,7 @@ const comparisons: { region: string; nino: string; nina: string }[] = [
 
 <Layout
   title="Impactos de El Niño por región y provincia en Argentina"
-  description="Cómo afecta El Niño y La Niña a cada región y provincia de Argentina: Litoral, Pampa, Cuyo, NOA y Patagonia. Calendario agrícola, lluvias, sequías y ríos."
+  description="Cómo afecta El Niño y La Niña a cada región y provincia de Argentina: simulador por sector, monitor del río Paraná y cordillera, calendario agrícola y mapa."
   breadcrumbs={[
     { name: "Inicio", path: "/" },
     { name: "Impactos", path: "/impactos/" },
@@ -31,7 +33,7 @@ const comparisons: { region: string; nino: string; nina: string }[] = [
     <h1>Impactos de El Niño en Argentina</h1>
     <p class="lead">
       El efecto del ENSO no es uniforme en el país. La señal es más fuerte en el
-      centro-este y el Litoral, y más débil en Cuyo y la Patagonia. Elegí tu región o buscá tu provincia:
+      centro-este y el Litoral, y más débil en Cuyo y la Patagonia. Elegí tu región, buscá tu provincia o simulá el impacto en tu actividad:
     </p>
   </section>
 
@@ -39,6 +41,24 @@ const comparisons: { region: string; nino: string; nina: string }[] = [
     <div class="container">
       <ArgentinaMap />
     </div>
+  </section>
+
+  <section class="section container" id="simulador">
+    <p class="eyebrow">Herramienta de manejo</p>
+    <h2>Simulador de impacto por provincia y actividad</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      Combiná tu provincia, tu actividad principal y el escenario climático para consultar los meses críticos y las recomendaciones operativas:
+    </p>
+    <ImpactSimulator />
+  </section>
+
+  <section class="section container" id="cuenca-y-cordillera">
+    <p class="eyebrow">Hidrología y Nieve</p>
+    <h2>Monitor de la Cuenca del Plata y Nieve Andina</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      Cómo viaja el pulso de crecida o bajante por el río Paraná y el río Uruguay, y cómo responde la acumulación nívea en Cuyo y Comahue según la fase activa:
+    </p>
+    <HydroAndesMonitor />
   </section>
 
   <section class="section container">

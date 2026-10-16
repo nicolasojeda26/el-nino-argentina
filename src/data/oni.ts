@@ -314,3 +314,125 @@ export function getAnalogSeries(points: OniPoint[]): AnalogSeries[] {
     },
   ];
 }
+
+export interface OniEpisode {
+  id: string;
+  period: string;
+  rangeLabel: string;
+  startYear: number;
+  endYear: number;
+  startSeason: string;
+  endSeason: string;
+  duration: number;
+  type: "El Niño" | "La Niña";
+  intensity: "Muy fuerte" | "Fuerte" | "Moderado" | "Débil";
+  peak: number;
+  peakSeason: string;
+  years: number[];
+  impact: string;
+}
+
+const CURATED_IMPACTS: Record<string, string> = {
+  "1957–1958": "Crecidas en el río Paraná y lluvias por encima de la media en el Litoral y noreste argentino.",
+  "1965–1966": "Inundaciones ribereñas importantes en el Paraná medio e inferior; campaña agrícola húmeda.",
+  "1972–1973": "Lluvias abundantes en la región pampeana y crecidas en la cuenca del Plata.",
+  "1973–1974": "Transición brusca a fase fría con déficit de lluvias primaverales en el centro del país.",
+  "1975–1976": "La Niña fuerte con sequía estival marcada en Buenos Aires, Córdoba y La Pampa.",
+  "1982–1983": "Uno de los eventos más intensos del siglo XX. Inundaciones históricas en el Litoral y pérdidas severas en infraestructura.",
+  "1986–1988": "Evento prolongado con recarga hídrica sostenida en el centro-este y pulsos de crecida en el Paraná.",
+  "1988–1989": "La Niña fuerte: sequía severa en la región pampeana, crisis energética y caída en la cosecha de granos.",
+  "1991–1992": "Crecidas del río Paraná y excesos hídricos otoñales en el NEA y Litoral.",
+  "1997–1998": "El Niño extraordinario: crecidas históricas del Paraná y Uruguay y anegamientos extensos en la Pampa húmeda.",
+  "1998–2001": "Evento frío prolongado (casi 3 años) con enfriamiento y pulsos secos recurrentes en el centro del país.",
+  "2002–2003": "Buena oferta de agua en la región pampeana que acompañó la expansión de la cosecha gruesa.",
+  "2007–2008": "La Niña fuerte con déficit hídrico en primavera-verano y heladas tempranas en el sur pampeano.",
+  "2009–2010": "Recuperación rápida de las lluvias tras la sequía de 2008–2009, con récord de cosecha gruesa.",
+  "2010–2011": "Fuerte déficit de lluvias en diciembre y enero sobre la zona núcleo maicera.",
+  "2011–2012": "Segundo año consecutivo de La Niña con olas de calor y recorte de rindes en soja y maíz.",
+  "2015–2016": "Récord de anomalía en Niño 3.4 (+2,6 °C): crecidas del Paraná y temporales de otoño de 2016 en el centro-este.",
+  "2017–2018": "Aunque moderada en el Pacífico, desató una de las sequías estivales más costosas en la Pampa húmeda.",
+  "2020–2021": "Inicio de la 'Niña triple': comienzo de la bajante extraordinaria del río Paraná e incendios en el Delta.",
+  "2021–2023": "Continuación de la 'Niña triple': bajante histórica del Paraná e impacto extremo sobre trigo, maíz y soja en 2022/23.",
+  "2023–2024": "Reversión cálida fuerte (+2,0 °C): normalización del caudal del Paraná y recarga de perfiles agrícolas en el centro-este.",
+};
+
+function defaultEpisodeImpact(type: "El Niño" | "La Niña", intensity: string, duration: number): string {
+  if (type === "El Niño") {
+    if (intensity === "Muy fuerte" || intensity === "Fuerte") {
+      return `Evento cálido ${intensity.toLowerCase()} (${duration} trimestres): lluvias superiores a la media en Litoral y Pampa húmeda y repunte de caudales en la cuenca del Plata.`;
+    }
+    return `Fase cálida ${intensity.toLowerCase()} (${duration} trimestres): señal moderada de mayor humedad en el noreste y centro-este argentino.`;
+  }
+  if (intensity === "Muy fuerte" || intensity === "Fuerte") {
+    return `Evento frío ${intensity.toLowerCase()} (${duration} trimestres): restricción de lluvias primavero-estivales en región pampeana y tendencia a bajante en el Paraná.`;
+  }
+  return `Fase fría ${intensity.toLowerCase()} (${duration} trimestres): menor frecuencia de precipitaciones en el centro del país y mayor amplitud térmica.`;
+}
+
+/**
+ * Extrae todos los episodios oficiales de El Niño (>= +0.5 °C por >= 5 trimestres)
+ * y La Niña (<= -0.5 °C por >= 5 trimestres) desde 1950 a partir de la serie ONI.
+ */
+export function extractOniEpisodes(points: OniPoint[]): OniEpisode[] {
+  const episodes: OniEpisode[] = [];
+  let run: OniPoint[] = [];
+  let currentType: "El Niño" | "La Niña" | null = null;
+
+  const flushRun = () => {
+    if (run.length >= 5 && currentType) {
+      const start = run[0];
+      const end = run[run.length - 1];
+      const peakPoint = run.reduce((best, p) =>
+        Math.abs(p.anomaly) > Math.abs(best.anomaly) ? p : best,
+      );
+      const { intensity } = classify(peakPoint.anomaly);
+      const normIntensity = (
+        intensity === "Muy fuerte" || intensity === "Fuerte" || intensity === "Moderado"
+          ? intensity
+          : "Débil"
+      ) as OniEpisode["intensity"];
+      const period = start.year === end.year ? `${start.year}` : `${start.year}–${end.year}`;
+      const yearsSet = new Set<number>();
+      for (const p of run) yearsSet.add(p.year);
+      const impact =
+        CURATED_IMPACTS[period] ?? defaultEpisodeImpact(currentType, normIntensity, run.length);
+
+      episodes.push({
+        id: `${start.year}-${start.season}-${currentType === "El Niño" ? "nino" : "nina"}`,
+        period,
+        rangeLabel: `${start.season} ${start.year} – ${end.season} ${end.year}`,
+        startYear: start.year,
+        endYear: end.year,
+        startSeason: start.season,
+        endSeason: end.season,
+        duration: run.length,
+        type: currentType,
+        intensity: normIntensity,
+        peak: peakPoint.anomaly,
+        peakSeason: `${peakPoint.season} ${peakPoint.year}`,
+        years: Array.from(yearsSet),
+        impact,
+      });
+    }
+    run = [];
+    currentType = null;
+  };
+
+  for (const p of points) {
+    const pType: "El Niño" | "La Niña" | null =
+      p.anomaly >= 0.5 ? "El Niño" : p.anomaly <= -0.5 ? "La Niña" : null;
+    if (pType && pType === currentType) {
+      run.push(p);
+    } else {
+      flushRun();
+      if (pType) {
+        currentType = pType;
+        run = [p];
+      }
+    }
+  }
+  flushRun();
+
+  return episodes;
+}
+

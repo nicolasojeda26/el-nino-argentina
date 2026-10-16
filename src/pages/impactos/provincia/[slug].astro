@@ -2,6 +2,7 @@
 import Layout from "../../../layouts/Layout.astro";
 import AdSlot from "../../../components/AdSlot.astro";
 import Icon from "../../../components/Icon.astro";
+import ImpactSimulator from "../../../components/ImpactSimulator.astro";
 import { provincesData, regions, site } from "../../../data/content";
 import map from "../../../data/argentina-map.json";
 import { buildStatus, formatAnomaly, getOni } from "../../../data/oni";
@@ -55,8 +56,13 @@ const jsonLd = {
   <section class="section container">
     <div class="prov-hero" data-region={region.slug}>
       <div class="prov-hero-main">
-        <div class="region-badge" data-region={region.slug}>
-          <Icon name={region.iconName} size={30} />
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div class="region-badge" data-region={region.slug}>
+            <Icon name={region.iconName} size={30} />
+          </div>
+          <button type="button" class="btn btn-ghost no-print" onclick="window.print()">
+            ⎙ Imprimir ficha / PDF
+          </button>
         </div>
         <p class="eyebrow" style="margin-top:18px;">
           {region.name} · Exposición al ENSO: {prov.exposure}
@@ -136,11 +142,20 @@ const jsonLd = {
     </div>
   </section>
 
+  <section class="section container no-print">
+    <p class="eyebrow">Simulador por actividad</p>
+    <h2>Calculadora de impacto por sector en {prov.name}</h2>
+    <p class="lead" style="margin-bottom:22px;">
+      Elegí tu sector productivo o de infraestructura y simulá medidas de manejo para cada fase del ENSO:
+    </p>
+    <ImpactSimulator defaultProvince={prov.slug} />
+  </section>
+
   <AdSlot label="Publicidad" slot={`prov-${prov.slug}`} />
 
   {
     siblings.length > 0 && (
-      <section class="section container">
+      <section class="section container no-print">
         <h2>Otras provincias en {region.name}</h2>
         <div class="grid grid-3" style="margin-top:20px;">
           {siblings.map((p) => (

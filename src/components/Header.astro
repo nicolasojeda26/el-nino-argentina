@@ -35,7 +35,20 @@ const s = buildStatus(await getOni());
         <small>Monitoreo ENSO</small>
       </span>
     </a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">☰</button>
+    <div class="header-controls">
+      <button
+        type="button"
+        class="theme-toggle"
+        id="themeToggle"
+        aria-label="Cambiar entre modo claro (papel) y modo oscuro"
+        title="Cambiar entre modo claro (lectura al sol) y modo oscuro"
+      >
+        <span class="theme-icon-sun" aria-hidden="true">☀</span>
+        <span class="theme-icon-moon" aria-hidden="true">☾</span>
+        <span class="theme-toggle-label mono" data-theme-label>Tema</span>
+      </button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">☰</button>
+    </div>
     <nav class="nav" id="nav" aria-label="Principal">
       {
         nav.map((item) => (
@@ -51,6 +64,32 @@ const s = buildStatus(await getOni());
 <script>
   const toggle = document.getElementById("menuToggle");
   const navEl = document.getElementById("nav");
+  const themeBtn = document.getElementById("themeToggle");
+  const themeLabel = document.querySelector<HTMLElement>("[data-theme-label]");
+
+  const syncThemeUI = () => {
+    const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+    if (themeLabel) {
+      themeLabel.textContent = isDark ? "Claro" : "Oscuro";
+    }
+    themeBtn?.setAttribute(
+      "aria-label",
+      isDark ? "Cambiar a modo claro (papel)" : "Cambiar a modo oscuro (nocturno)",
+    );
+  };
+  syncThemeUI();
+
+  themeBtn?.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    const meta = document.getElementById("metaThemeColor");
+    if (meta) meta.setAttribute("content", next === "dark" ? "#071322" : "#f4f1e9");
+    try {
+      localStorage.setItem("enso-theme", next);
+    } catch {}
+    syncThemeUI();
+  });
 
   const setMenu = (open: boolean) => {
     if (!toggle || !navEl) return;

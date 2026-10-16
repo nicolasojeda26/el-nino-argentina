@@ -1,0 +1,419 @@
+---
+import { provincesData, regions } from "../data/content";
+
+interface Props {
+  defaultProvince?: string;
+  defaultSector?: string;
+  defaultScenario?: "nino" | "nina" | "neutral";
+}
+
+const {
+  defaultProvince = "buenos-aires",
+  defaultSector = "agro",
+  defaultScenario = "nino",
+} = Astro.props;
+
+const sortedProvinces = [...provincesData].sort((a, b) => a.name.localeCompare(b.name, "es-AR"));
+const regionMap = Object.fromEntries(regions.map((r) => [r.slug, r.name]));
+
+const sectors = [
+  { id: "agro", label: "Cultivos extensivos y agricultura" },
+  { id: "ganaderia", label: "Ganadería, pasturas y aguadas" },
+  { id: "rios", label: "Ríos, pesca y logística fluvial" },
+  { id: "urbano", label: "Ciudades, caminos rurales y energía" },
+  { id: "cordillera", label: "Nieve, riego y embalses andinos" },
+];
+
+type SectorGuidance = {
+  window: string;
+  ninoSignal: string;
+  ninoActions: string[];
+  ninaSignal: string;
+  ninaActions: string[];
+  neutralSignal: string;
+  neutralActions: string[];
+};
+
+const sectorMatrix: Record<string, Record<string, SectorGuidance>> = {
+  agro: {
+    litoral: {
+      window: "Sep–Nov (SON) y Dic–Feb (DJF)",
+      ninoSignal: "Alto riesgo de excesos hídricos, lavado de nutrientes y falta de piso para siembra o cosecha en lotes bajos.",
+      ninoActions: [
+        "Priorizar lotes bien drenados y mantener limpios los canales de escurrimiento predial.",
+        "Monitorear enfermedades fúngicas favorecidas por alta humedad relativa y rocío persistente.",
+        "Prever logística de cosecha y embolsado con caminos rurales comprometidos.",
+      ],
+      ninaSignal: "Déficit de lluvias en primavera-verano y golpes de calor que recortan el llenado de grano y estresan cultivos perennes.",
+      ninaActions: [
+        "Extender barbechos para conservar agua útil en el perfil antes de la fecha de siembra.",
+        "Diversificar fechas de siembra y ajustar densidad de plantas a escenarios restrictivos.",
+        "Reducir laboreos que expongan el suelo a pérdidas por evaporación.",
+      ],
+      neutralSignal: "Campaña regida por frentes regionales de corto plazo, sin sesgo extremo desde el Pacífico.",
+      neutralActions: [
+        "Escalonar fechas de siembra (temprana y tardía) para repartir el riesgo estacional.",
+        "Medir agua útil a 1 y 2 metros de profundidad al cierre del invierno.",
+        "Seguir los pronósticos trimestrales del SMN e INTA mes a mes.",
+      ],
+    },
+    pampeana: {
+      window: "Oct–Dic (OND) y Ene–Mar (JFM)",
+      ninoSignal: "Excelente recarga de perfiles para maíz temprano y soja de primera, con riesgo de anegamiento en bajos y fusariosis en trigo.",
+      ninoActions: [
+        "Aprovechar el potencial de rinde en lomas y medias lomas con fertilización balanceada.",
+        "Vigilar alertas de fusariosis en trigo durante espigazón y enfermedades de fin de ciclo en soja.",
+        "Evaluar seguros contra granizo y vientos severos en meses de verano.",
+      ],
+      ninaSignal: "Escenario de máxima vulnerabilidad: restricción hídrica en floración de maíz temprano (dic) y llenado de soja (ene-feb).",
+      ninaActions: [
+        "Pasar mayor proporción de área a maíces tardíos (siembra de diciembre) para ubicar la floración en febrero.",
+        "Ajustar densidad de plantas y dosis nitrogenada según el agua útil inicial en el perfil.",
+        "Priorizar híbridos y variedades con mayor estabilidad defensiva ante estrés termo-hídrico.",
+      ],
+      neutralSignal: "Oferta hídrica cercana al promedio histórico, dependiente de bloqueos regionales en el Atlántico Sur.",
+      neutralActions: [
+        "Mantener un planteo equilibrado 50/50 entre siembras tempranas y tardías.",
+        "Definir fertilización nitrogenada en V6 según recarga efectiva de primavera.",
+        "Conservar cobertura de rastrojo para amortiguar pulsos secos de mitad de verano.",
+      ],
+    },
+    default: {
+      window: "Oct–Mar (Primavera y Verano)",
+      ninoSignal: "Mayor oferta de humedad estival en el este agrícola y recarga de napas y represas para riego complementario.",
+      ninoActions: [
+        "Optimizar el drenaje en parcelas sistematizadas y proteger suelos con pendiente de la erosión hídrica.",
+        "Monitorear presión de plagas e insectos en veranos más húmedos y templados.",
+        "Planificar ventanas de pulverización y cosecha entre eventos convectivos.",
+      ],
+      ninaSignal: "Inicio tardío de la estación húmeda, alta radiación y demanda evaporativa elevada desde octubre.",
+      ninaActions: [
+        "Maximizar la eficiencia de turnos de riego por goteo o aspersión en cultivos intensivos.",
+        "Atrasar fechas de siembra de secano hasta acumular al menos 60–80 mm útiles.",
+        "Proteger cultivos intensivos ante posibles heladas tardías de primavera seca.",
+      ],
+      neutralSignal: "Comportamiento estacional dentro de los parámetros medios de cada microcuenca.",
+      neutralActions: [
+        "Ajustar el calendario de riego a los partes hidrometeorológicos provinciales.",
+        "Mantener monitoreo sanitario preventivo estándar.",
+        "Consultar perspectivas mensuales del SMN.",
+      ],
+    },
+  },
+  ganaderia: {
+    default: {
+      window: "Sep–Abr (Reproducción y oferta forrajera)",
+      ninoSignal: "Fuerte rebrote de pastizales naturales y verdeos, pero riesgo de pérdida de superficie útil por anegamiento de bajos e islas.",
+      ninoActions: [
+        "Prever potreros altos de resguardo y plan de traslado anticipado en campos de isla o ribereños.",
+        "Reforzar el calendario sanitario contra parásitos gastrointestinales, pietín y vectores (mosca de los cuernos).",
+        "Aprovechar el excedente forrajero de primavera mediante reservas (rollos o silaje).",
+      ],
+      ninaSignal: "Merma severa en la receptividad de pasturas, secado de aguadas temporarias y altísimo peligro de incendios rurales.",
+      ninaActions: [
+        "Ajustar carga animal antes del verano y planificar destete precoz o anticipado para preservar estado corporal.",
+        "Asegurar provisión y calidad de agua de bebida (mayor salinidad en perforaciones durante sequías).",
+        "Mantener picadas cortafuegos limpias alrededor de instalaciones, montes y reservas forrajeras.",
+      ],
+      neutralSignal: "Curva forrajera estacional normal con bache invernal típico de cada zona ecológica.",
+      neutralActions: [
+        "Planificar cadenas forrajeras combinando pasturas perennes y verdeos estacionales.",
+        "Controlar reservas de rollos/grano antes de entrar al invierno.",
+        "Monitorear condición corporal al tacto e inicio de servicio.",
+      ],
+    },
+  },
+  rios: {
+    default: {
+      window: "Oct–May (Hidrología de cuenca y navegación)",
+      ninoSignal: "Crecida sostenida de los ríos Paraná, Uruguay y Paraguay con desfase de 3 a 6 semanas respecto a las lluvias en Brasil.",
+      ninoActions: [
+        "Seguir diariamente los partes de alturas hidrométricas del INA y Prefectura Naval (umbrales de alerta y evacuación).",
+        "Asegurar amarras, defensas costeras y retiro oportuno de hacienda en islas del Paraná medio e inferior.",
+        "En puertos cerealeros, contemplar mayor velocidad de corriente y arrastre de camalotes/sedimentos.",
+      ],
+      ninaSignal: "Bajante pronunciada y prolongada en el eje fluvial del Plata, reduciendo el calado navegable y complicando tomas de agua.",
+      ninaActions: [
+        "Prever menor capacidad de carga por buque ('falso flete') en terminales del Gran Rosario y Paraná inferior.",
+        "Verificar cotas de succión en bombas de agua potable y de riego arrocero/industrial.",
+        "Extremar precaución en navegación deportiva y comercial por afloramiento de bancos de arena.",
+      ],
+      neutralSignal: "Niveles hidrométricos modulados por lluvias regionales en la cuenca media y operación de represas.",
+      neutralActions: [
+        "Consultar el boletín semanal de escenarios hidrológicos del Instituto Nacional del Agua (INA).",
+        "Mantener dragado y balizamiento operativo en accesos portuarios.",
+        "Programar logística fluvial sin restricciones extraordinarias de calado.",
+      ],
+    },
+  },
+  urbano: {
+    default: {
+      window: "Nov–Abr (Tormentas convectivas y demanda energética)",
+      ninoSignal: "Mayor frecuencia de lluvias intensas en cortos períodos, anegamientos urbanos, caída de ramas y cortes de caminos rurales.",
+      ninoActions: [
+        "Limpiar sumideros, pluviales, alcantarillas y canales colectores antes del inicio de la primavera.",
+        "Abastecer insumos críticos en establecimientos rurales ante posibles cortes prolongados de caminos de tierra.",
+        "Seguir el Sistema de Alerta Temprana (SAT) del SMN por tormentas fuertes o severas.",
+      ],
+      ninaSignal: "Olas de calor más extensas y persistentes, picos de consumo eléctrico estival y estrés en redes de agua potable.",
+      ninaActions: [
+        "Prever grupos electrógenos de respaldo en tambos, frigoríficos, granjas avícolas y electrodependientes.",
+        "Optimizar el uso racional del agua potable ante baja presión de red o merma en napas.",
+        "Evitar quemas de pastizales o residuos: el viento seco y la baja humedad propagan incendios a zonas de interfase.",
+      ],
+      neutralSignal: "Frecuencia normal de eventos meteorológicos severos y demanda energética estacional estándar.",
+      neutralActions: [
+        "Realizar mantenimiento preventivo de techos, desagües y líneas eléctricas rurales.",
+        "Conservar cunetas y alcantarillas viales despejadas.",
+        "Mantener actualizados los canales de aviso de Defensa Civil local.",
+      ],
+    },
+  },
+  cordillera: {
+    default: {
+      window: "May–Ago (Acumulación nívea) y Oct–Feb (Deshielo)",
+      ninoSignal: "Inviernos con mayor frecuencia de frentes húmedos del Pacífico y nevadas intensas en alta montaña de Cuyo y norte patagónico.",
+      ninoActions: [
+        "Aprovechar la mayor escorrentía primavero-estival para recargar embalses y acuíferos de los oasis de riego.",
+        "Prever cierres temporales de pasos internacionales (Cristo Redentor, Pino Hachado) por temporales de nieve en invierno.",
+        "En verano, vigilar crecidas aluvionales y deslizamientos en quebradas del NOA y precordillera.",
+      ],
+      ninaSignal: "Inviernos secos en la cordillera central y patagónica norte, reduciendo las reservas de nieve y el caudal de deshielo.",
+      ninaActions: [
+        "Administrar con máxima austeridad las dotaciones y turnos de riego superficial y subterráneo.",
+        "Priorizar riego en etapas fenológicas críticas de vid, olivo, frutales de carozo y pepita.",
+        "Reforzar la vigilancia de incendios forestales en bosques andino-patagónicos durante el verano seco.",
+      ],
+      neutralSignal: "Acumulación nívea cercana a la mediana histórica, modulada por el Modo Anular del Sur (SAM).",
+      neutralActions: [
+        "Consultar el pronóstico de escurrimiento de octubre del Departamento General de Irrigación / AIC.",
+        "Mantener impermeabilización y limpieza de hijuelas y canales de riego.",
+        "Monitorear equivalentes de agua en nieve (EAN) en estaciones de alta montaña.",
+      ],
+    },
+  },
+};
+
+const initialProv = sortedProvinces.find((p) => p.slug === defaultProvince) ?? sortedProvinces[0];
+const initialGuidance =
+  sectorMatrix[defaultSector]?.[initialProv.regionSlug] ??
+  sectorMatrix[defaultSector]?.default ??
+  sectorMatrix.agro.default;
+---
+
+<div class="sim-box" data-impact-sim>
+  <div class="sim-controls">
+    <div class="sim-field">
+      <label for="sim-prov" class="mono">1. Provincia</label>
+      <select id="sim-prov" class="prov-select" data-sim-prov>
+        {
+          sortedProvinces.map((p) => (
+            <option value={p.slug} selected={p.slug === initialProv.slug}>
+              {p.name} ({regionMap[p.regionSlug]})
+            </option>
+          ))
+        }
+      </select>
+    </div>
+
+    <div class="sim-field">
+      <label for="sim-sector" class="mono">2. Sector / Actividad</label>
+      <select id="sim-sector" class="prov-select" data-sim-sector>
+        {
+          sectors.map((s) => (
+            <option value={s.id} selected={s.id === defaultSector}>
+              {s.label}
+            </option>
+          ))
+        }
+      </select>
+    </div>
+
+    <div class="sim-field">
+      <span class="mono sim-label">3. Escenario climático</span>
+      <div class="sim-scenarios" role="group" aria-label="Escenario climático">
+        <button
+          type="button"
+          class={`sim-scen-btn is-nino ${defaultScenario === "nino" ? "is-active" : ""}`}
+          data-sim-scen="nino"
+        >
+          El Niño
+        </button>
+        <button
+          type="button"
+          class={`sim-scen-btn is-nina ${defaultScenario === "nina" ? "is-active" : ""}`}
+          data-sim-scen="nina"
+        >
+          La Niña
+        </button>
+        <button
+          type="button"
+          class={`sim-scen-btn is-neutral ${defaultScenario === "neutral" ? "is-active" : ""}`}
+          data-sim-scen="neutral"
+        >
+          Neutral
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sim-result" aria-live="polite">
+    <div class="sim-result-head">
+      <div>
+        <span class="mono sim-eyebrow" data-sim-meta>
+          {regionMap[initialProv.regionSlug]} · Exposición ENSO: {initialProv.exposure}
+        </span>
+        <h3 class="sim-title">
+          <span data-sim-title-prov>{initialProv.name}</span> ·{" "}
+          <span data-sim-title-scen style="color:var(--nino)">Escenario El Niño</span>
+        </h3>
+      </div>
+      <span class="sim-window mono" data-sim-window>
+        Ventana crítica: {initialGuidance.window}
+      </span>
+    </div>
+
+    <div class="sim-grid">
+      <div class="sim-col">
+        <h4>Señal climática en la provincia</h4>
+        <p data-sim-prov-impact>{initialProv.ninoImpact}</p>
+        <h4>Impacto esperado en el sector</h4>
+        <p data-sim-sector-signal>{initialGuidance.ninoSignal}</p>
+      </div>
+
+      <div class="sim-col sim-col-actions">
+        <h4>Medidas de manejo y prevención recomendadas</h4>
+        <ul class="sim-actions-list" data-sim-actions>
+          {initialGuidance.ninoActions.map((act) => <li>{act}</li>)}
+        </ul>
+        <div class="sim-links">
+          <a class="more" href={`/impactos/provincia/${initialProv.slug}/`} data-sim-link-prov>
+            Ver ficha de {initialProv.name} →
+          </a>
+          <a class="more" href={`/impactos/${initialProv.regionSlug}/`} data-sim-link-reg>
+            Región {regionMap[initialProv.regionSlug]} →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script
+    type="application/json"
+    data-sim-payload
+    set:html={JSON.stringify({
+      provinces: Object.fromEntries(
+        sortedProvinces.map((p) => [
+          p.slug,
+          {
+            ...p,
+            regionName: regionMap[p.regionSlug] ?? p.regionSlug,
+          },
+        ]),
+      ),
+      sectorMatrix,
+    })}
+  />
+</div>
+
+<script>
+  function initImpactSimulators() {
+    document.querySelectorAll<HTMLElement>("[data-impact-sim]").forEach((root) => {
+      if (root.dataset.bound === "true") return;
+      root.dataset.bound = "true";
+
+      const payloadEl = root.querySelector<HTMLScriptElement>("[data-sim-payload]");
+      const provSelect = root.querySelector<HTMLSelectElement>("[data-sim-prov]");
+      const sectorSelect = root.querySelector<HTMLSelectElement>("[data-sim-sector]");
+      const scenBtns = root.querySelectorAll<HTMLButtonElement>("[data-sim-scen]");
+      if (!payloadEl || !provSelect || !sectorSelect) return;
+
+      const { provinces, sectorMatrix } = JSON.parse(payloadEl.textContent || "{}");
+      let currentScen: "nino" | "nina" | "neutral" = "nino";
+
+      const metaEl = root.querySelector<HTMLElement>("[data-sim-meta]");
+      const titleProvEl = root.querySelector<HTMLElement>("[data-sim-title-prov]");
+      const titleScenEl = root.querySelector<HTMLElement>("[data-sim-title-scen]");
+      const windowEl = root.querySelector<HTMLElement>("[data-sim-window]");
+      const provImpactEl = root.querySelector<HTMLElement>("[data-sim-prov-impact]");
+      const sectorSignalEl = root.querySelector<HTMLElement>("[data-sim-sector-signal]");
+      const actionsEl = root.querySelector<HTMLElement>("[data-sim-actions]");
+      const linkProvEl = root.querySelector<HTMLAnchorElement>("[data-sim-link-prov]");
+      const linkRegEl = root.querySelector<HTMLAnchorElement>("[data-sim-link-reg]");
+
+      const update = () => {
+        const p = provinces[provSelect.value];
+        const secId = sectorSelect.value;
+        if (!p) return;
+
+        const secGroup = sectorMatrix[secId] || sectorMatrix.agro;
+        const g = secGroup[p.regionSlug] || secGroup.default;
+
+        if (metaEl) metaEl.textContent = `${p.regionName} · Exposición ENSO: ${p.exposure}`;
+        if (titleProvEl) titleProvEl.textContent = p.name;
+        if (titleScenEl) {
+          if (currentScen === "nino") {
+            titleScenEl.textContent = "Escenario El Niño";
+            titleScenEl.style.color = "var(--nino)";
+          } else if (currentScen === "nina") {
+            titleScenEl.textContent = "Escenario La Niña";
+            titleScenEl.style.color = "var(--nina)";
+          } else {
+            titleScenEl.textContent = "Escenario Neutral";
+            titleScenEl.style.color = "var(--muted)";
+          }
+        }
+        if (windowEl) windowEl.textContent = `Ventana crítica: ${g.window}`;
+
+        if (provImpactEl) {
+          provImpactEl.textContent =
+            currentScen === "nino"
+              ? p.ninoImpact
+              : currentScen === "nina"
+                ? p.ninaImpact
+                : `En fase neutral, ${p.name} depende más de sistemas meteorológicos regionales que del Pacífico ecuatorial. Riesgo base a vigilar: ${p.keyRisk}`;
+        }
+
+        if (sectorSignalEl) {
+          sectorSignalEl.textContent =
+            currentScen === "nino"
+              ? g.ninoSignal
+              : currentScen === "nina"
+                ? g.ninaSignal
+                : g.neutralSignal;
+        }
+
+        if (actionsEl) {
+          const list: string[] =
+            currentScen === "nino"
+              ? g.ninoActions
+              : currentScen === "nina"
+                ? g.ninaActions
+                : g.neutralActions;
+          actionsEl.innerHTML = list.map((item) => `<li>${item}</li>`).join("");
+        }
+
+        if (linkProvEl) {
+          linkProvEl.href = `/impactos/provincia/${p.slug}/`;
+          linkProvEl.textContent = `Ver ficha de ${p.name} →`;
+        }
+        if (linkRegEl) {
+          linkRegEl.href = `/impactos/${p.regionSlug}/`;
+          linkRegEl.textContent = `Región ${p.regionName} →`;
+        }
+      };
+
+      provSelect.addEventListener("change", update);
+      sectorSelect.addEventListener("change", update);
+      scenBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          currentScen = (btn.dataset.simScen as "nino" | "nina" | "neutral") || "nino";
+          scenBtns.forEach((b) => b.classList.toggle("is-active", b === btn));
+          update();
+        });
+      });
+    });
+  }
+
+  initImpactSimulators();
+</script>

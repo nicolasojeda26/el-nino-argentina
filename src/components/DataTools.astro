@@ -7,7 +7,10 @@ const embedCode = `<iframe src="${site.url}/widget/" width="100%" height="220" s
 <div class="data-tools" data-tools-root>
   <div class="data-tools-actions">
     <a class="btn btn-ghost" href="/datos/oni.csv" download="oni-noaa-argentina.csv">
-      ↓ Descargar serie ONI (.CSV)
+      ↓ Serie ONI (.CSV)
+    </a>
+    <a class="btn btn-ghost" href="/datos/oni.json" target="_blank" rel="noopener">
+      &#123; &#125; API Datos (.JSON)
     </a>
     <button
       type="button"
@@ -16,6 +19,14 @@ const embedCode = `<iframe src="${site.url}/widget/" width="100%" height="220" s
       aria-expanded="false"
     >
       ⟨/⟩ Insertar monitor en tu web
+    </button>
+    <button
+      type="button"
+      class="btn btn-ghost"
+      data-print-btn
+      title="Imprimir o guardar esta página como informe en PDF"
+    >
+      ⎙ Imprimir / PDF
     </button>
   </div>
 
@@ -50,10 +61,14 @@ const embedCode = `<iframe src="${site.url}/widget/" width="100%" height="220" s
 
 <script>
   for (const root of document.querySelectorAll<HTMLElement>("[data-tools-root]")) {
+    if (root.dataset.bound === "true") continue;
+    root.dataset.bound = "true";
+
     const toggleBtn = root.querySelector<HTMLButtonElement>("[data-embed-toggle]");
     const panel = root.querySelector<HTMLElement>("[data-embed-panel]");
     const copyBtn = root.querySelector<HTMLButtonElement>("[data-embed-copy]");
     const input = root.querySelector<HTMLInputElement>("[data-embed-input]");
+    const printBtn = root.querySelector<HTMLButtonElement>("[data-print-btn]");
 
     toggleBtn?.addEventListener("click", () => {
       if (!panel) return;
@@ -64,6 +79,10 @@ const embedCode = `<iframe src="${site.url}/widget/" width="100%" height="220" s
         panel.setAttribute("hidden", "");
       }
       toggleBtn.setAttribute("aria-expanded", String(isHidden));
+    });
+
+    printBtn?.addEventListener("click", () => {
+      window.print();
     });
 
     copyBtn?.addEventListener("click", async () => {

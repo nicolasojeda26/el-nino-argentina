@@ -1,0 +1,300 @@
+---
+interface NodeScenario {
+  badge: string;
+  level: "warm" | "cool" | "neutral";
+  detail: string;
+}
+
+interface HydroNode {
+  id: string;
+  step: string;
+  title: string;
+  stations: string;
+  lag: string;
+  nino: NodeScenario;
+  nina: NodeScenario;
+  neutral: NodeScenario;
+}
+
+const paranaNodes: HydroNode[] = [
+  {
+    id: "alta-cuenca",
+    step: "Tramo 1",
+    title: "Alta Cuenca (Brasil · Iguazú · Itaipú)",
+    stations: "Ríos Paranapanema, Iguazú y Alto Paraná",
+    lag: "Respuesta: 0 a 15 días",
+    nino: {
+      badge: "Aporte extraordinario",
+      level: "warm",
+      detail: "El jet subtropical intensifica las lluvias sobre el sur de Brasil y Misiones, recargando embalses y disparando pulsos rápidos en el río Iguazú.",
+    },
+    nina: {
+      badge: "Déficit en cabeceras",
+      level: "cool",
+      detail: "Menos lluvias en las nacientes brasileñas; las represas retienen agua para sostener generación y reducen las erogaciones hacia aguas abajo.",
+    },
+    neutral: {
+      badge: "Régimen regular",
+      level: "neutral",
+      detail: "Caudales regulados por la operación normal de embalses y lluvias estacionales sin anomalías persistentes.",
+    },
+  },
+  {
+    id: "confluencia",
+    step: "Tramo 2",
+    title: "Confluencia (Corrientes · Barranqueras · Posadas)",
+    stations: "Unión del Alto Paraná con el río Paraguay",
+    lag: "Desfase: 2 a 4 semanas",
+    nino: {
+      badge: "Alerta de crecida",
+      level: "warm",
+      detail: "Superposición del pulso del Alto Paraná con el aporte del río Paraguay; riesgo de superar niveles de alerta y evacuación ribereña.",
+    },
+    nina: {
+      badge: "Bajante marcada",
+      level: "cool",
+      detail: "Afloramiento de bancos de arena, retracción de humedales y complicaciones en tomas de agua potable y navegación de barcazas.",
+    },
+    neutral: {
+      badge: "Oscilación media",
+      level: "neutral",
+      detail: "Niveles hidrométricos dentro de la franja media histórica para la época del año.",
+    },
+  },
+  {
+    id: "tramo-medio",
+    step: "Tramo 3",
+    title: "Paraná Medio y Río Uruguay (Santa Fe · Paraná · Concordia)",
+    stations: "Goya, Reconquista, La Paz, Santa Fe, Paraná y salto Grande",
+    lag: "Desfase: 4 a 6 semanas",
+    nino: {
+      badge: "Ocupación de valle aluvial",
+      level: "warm",
+      detail: "La onda de crecida inunda el valle de inundación e islas; exige traslado anticipado de hacienda isleña y monitoreo de defensas urbanas.",
+    },
+    nina: {
+      badge: "Desconexión de lagunas",
+      level: "cool",
+      detail: "Se secan riachos secundarios y lagunas del valle aluvial; alto peligro de incendios en pastizales de islas y menor reproducción ictícola.",
+    },
+    neutral: {
+      badge: "Pulso estacional normal",
+      level: "neutral",
+      detail: "Conectividad normal entre el cauce principal y las lagunas del sistema fluvial.",
+    },
+  },
+  {
+    id: "tramo-inferior",
+    step: "Tramo 4",
+    title: "Paraná Inferior y Polo Rosafé (Rosario · San Lorenzo · Delta)",
+    stations: "Gran Rosario, San Nicolás, Zárate y Río de la Plata",
+    lag: "Desfase: 6 a 8 semanas",
+    nino: {
+      badge: "Caudal alto + Sudestadas",
+      level: "warm",
+      detail: "Óptimo calado para buques de ultramar, pero la combinación de río alto con vientos del sudeste provoca anegamientos en el Delta.",
+    },
+    nina: {
+      badge: "Calado portuario crítico",
+      level: "cool",
+      detail: "Los buques graneleros deben salir con menor carga ('falso flete') desde las terminales del Gran Rosario por menor profundidad en la hidrovía.",
+    },
+    neutral: {
+      badge: "Calado estándar",
+      level: "neutral",
+      detail: "Operación portuaria y despacho de buques conforme al calado de diseño de la vía navegable troncal.",
+    },
+  },
+];
+
+const andesNodes: HydroNode[] = [
+  {
+    id: "cuyo-nieve",
+    step: "Cordillera Central",
+    title: "Cuencas de San Juan y Mendoza",
+    stations: "Ríos San Juan, Mendoza, Tunuyán, Diamante y Atuel",
+    lag: "Nieve en JJA → Deshielo en OND–DJF",
+    nino: {
+      badge: "Mayor recarga nívea",
+      level: "warm",
+      detail: "El bloqueo en el Pacífico sur desvía frentes húmedos hacia la cordillera central en invierno (jun–ago), mejorando el escurrimiento de verano para los oasis de riego.",
+    },
+    nina: {
+      badge: "Sequía nívea invernal",
+      level: "cool",
+      detail: "Menor ingreso de sistemas frontales en alta montaña; inviernos secos que restringen la dotación de agua en canales y diques durante la primavera y el verano.",
+    },
+    neutral: {
+      badge: "Nieve variable",
+      level: "neutral",
+      detail: "Acumulación nívea determinada por el paso de frentes fríos individuales sin forzante tropical dominante.",
+    },
+  },
+  {
+    id: "comahue-nieve",
+    step: "Norpatagonia",
+    title: "Cuencas del Comahue (Neuquén · Limay · Río Negro)",
+    stations: "Embalses El Chocón, Piedra del Águila, Alicurá y Alto Valle",
+    lag: "Lluvia/Nieve invernal → Primaveral",
+    nino: {
+      badge: "Buena oferta hidroeléctrica",
+      level: "warm",
+      detail: "Inviernos más fríos y nevadores en la cordillera neuquina y rionegrina; favorece centros de esquí y reservas de generación hidroeléctrica.",
+    },
+    nina: {
+      badge: "Bajos caudales e incendios",
+      level: "cool",
+      detail: "Menor recarga invernal y veranos más cálidos y secos que disparan el índice meteorológico de peligro de incendios en bosques andinos.",
+    },
+    neutral: {
+      badge: "Modulado por el SAM",
+      level: "neutral",
+      detail: "El régimen pluvio-nival responde principalmente a la fase del Modo Anular del Sur (SAM).",
+    },
+  },
+];
+---
+
+<div class="hydro-monitor" data-hydro-monitor>
+  <div class="hydro-toolbar">
+    <div>
+      <span class="mono hydro-toolbar-label">Simular respuesta hidrológica bajo:</span>
+    </div>
+    <div class="sim-scenarios" role="group" aria-label="Escenario hidrológico">
+      <button type="button" class="sim-scen-btn is-nino is-active" data-hydro-scen="nino">
+        Fase El Niño (Crecida / Nieve)
+      </button>
+      <button type="button" class="sim-scen-btn is-nina" data-hydro-scen="nina">
+        Fase La Niña (Bajante / Sequía)
+      </button>
+      <button type="button" class="sim-scen-btn is-neutral" data-hydro-scen="neutral">
+        Fase Neutral
+      </button>
+    </div>
+  </div>
+
+  <div class="hydro-columns">
+    <div class="hydro-col">
+      <div class="hydro-col-head">
+        <span class="eyebrow" style="margin-bottom:4px;">Eje Fluvial · Cuenca del Plata</span>
+        <h3>Propagación de la onda en el Río Paraná y Uruguay</h3>
+        <p>
+          El caudal en Argentina depende en gran medida de lo que llueve en el sur de Brasil y Paraguay. La onda viaja río abajo con un <strong>desfase de 3 a 8 semanas</strong>:
+        </p>
+      </div>
+
+      <div class="hydro-timeline">
+        {
+          paranaNodes.map((node) => (
+            <div
+              class="hydro-node"
+              data-hydro-node
+              data-nino-badge={node.nino.badge}
+              data-nino-level={node.nino.level}
+              data-nino-detail={node.nino.detail}
+              data-nina-badge={node.nina.badge}
+              data-nina-level={node.nina.level}
+              data-nina-detail={node.nina.detail}
+              data-neutral-badge={node.neutral.badge}
+              data-neutral-level={node.neutral.level}
+              data-neutral-detail={node.neutral.detail}
+            >
+              <div class="hydro-node-top">
+                <span class="mono hydro-step">{node.step} · {node.lag}</span>
+                <span class={`year-phase-badge is-${node.nino.level}`} data-node-badge>
+                  {node.nino.badge}
+                </span>
+              </div>
+              <h4>{node.title}</h4>
+              <p class="mono hydro-stations">{node.stations}</p>
+              <p class="hydro-detail" data-node-detail>{node.nino.detail}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="hydro-col">
+      <div class="hydro-col-head">
+        <span class="eyebrow" style="margin-bottom:4px;">Eje Cordillerano · Nieve y Deshielo</span>
+        <h3>Acumulación nívea en Cuyo y Comahue</h3>
+        <p>
+          En el oeste árido el agua llega por los frentes invernales del Pacífico (mayo–agosto) que se acumulan como nieve y escurren en <strong>primavera y verano</strong>:
+        </p>
+      </div>
+
+      <div class="hydro-timeline">
+        {
+          andesNodes.map((node) => (
+            <div
+              class="hydro-node"
+              data-hydro-node
+              data-nino-badge={node.nino.badge}
+              data-nino-level={node.nino.level}
+              data-nino-detail={node.nino.detail}
+              data-nina-badge={node.nina.badge}
+              data-nina-level={node.nina.level}
+              data-nina-detail={node.nina.detail}
+              data-neutral-badge={node.neutral.badge}
+              data-neutral-level={node.neutral.level}
+              data-neutral-detail={node.neutral.detail}
+            >
+              <div class="hydro-node-top">
+                <span class="mono hydro-step">{node.step} · {node.lag}</span>
+                <span class={`year-phase-badge is-${node.nino.level}`} data-node-badge>
+                  {node.nino.badge}
+                </span>
+              </div>
+              <h4>{node.title}</h4>
+              <p class="mono hydro-stations">{node.stations}</p>
+              <p class="hydro-detail" data-node-detail>{node.nino.detail}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="callout" style="margin-top:18px;">
+        <p style="font-size:0.88rem;margin:0;">
+          <strong>¿Por qué importa el desfase?</strong> Un trimestre de El Niño fuerte en primavera puede traducirse en crecida en Santa Fe y Rosario recién entrado el verano, mientras que una buena nevada invernal en Mendoza define el agua disponible para riego seis meses después.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initHydroMonitors() {
+    document.querySelectorAll<HTMLElement>("[data-hydro-monitor]").forEach((root) => {
+      if (root.dataset.bound === "true") return;
+      root.dataset.bound = "true";
+
+      const btns = root.querySelectorAll<HTMLButtonElement>("[data-hydro-scen]");
+      const nodes = root.querySelectorAll<HTMLElement>("[data-hydro-node]");
+
+      btns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const scen = btn.dataset.hydroScen || "nino";
+          btns.forEach((b) => b.classList.toggle("is-active", b === btn));
+
+          nodes.forEach((node) => {
+            const badgeEl = node.querySelector<HTMLElement>("[data-node-badge]");
+            const detailEl = node.querySelector<HTMLElement>("[data-node-detail]");
+            const badge = node.getAttribute(`data-${scen}-badge`) || "";
+            const level = node.getAttribute(`data-${scen}-level`) || "neutral";
+            const detail = node.getAttribute(`data-${scen}-detail`) || "";
+
+            if (badgeEl) {
+              badgeEl.textContent = badge;
+              badgeEl.className = `year-phase-badge is-${level}`;
+            }
+            if (detailEl) {
+              detailEl.textContent = detail;
+            }
+          });
+        });
+      });
+    });
+  }
+
+  initHydroMonitors();
+</script>

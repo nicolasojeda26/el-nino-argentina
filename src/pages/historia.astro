@@ -2,20 +2,20 @@
 import Layout from "../layouts/Layout.astro";
 import OniChart from "../components/OniChart.astro";
 import AnalogChart from "../components/AnalogChart.astro";
+import YearLookup from "../components/YearLookup.astro";
 import DataTools from "../components/DataTools.astro";
 import AdSlot from "../components/AdSlot.astro";
-import { getOni } from "../data/oni";
-import { historicEvents } from "../data/content";
+import { extractOniEpisodes, formatAnomaly, getOni } from "../data/oni";
 
 const points = await getOni();
-const nino = historicEvents.filter((e) => e.type === "El Niño");
-const nina = historicEvents.filter((e) => e.type === "La Niña");
-const fmt = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
+const episodes = extractOniEpisodes(points).reverse(); // Más recientes primero por defecto
+const ninoCount = episodes.filter((e) => e.type === "El Niño").length;
+const ninaCount = episodes.filter((e) => e.type === "La Niña").length;
 ---
 
 <Layout
-  title="Historia de El Niño y La Niña en Argentina"
-  description="Los eventos de El Niño y La Niña más importantes de la historia reciente, comparador de años análogos y serie completa del índice ONI para descargar."
+  title="Historia de El Niño y La Niña en Argentina (1950–hoy)"
+  description="Buscador histórico por año, comparador de campañas análogas y catálogo completo filtrable de todos los eventos de El Niño y La Niña desde 1950."
   breadcrumbs={[
     { name: "Inicio", path: "/" },
     { name: "Historia", path: "/historia/" },
@@ -24,12 +24,20 @@ const fmt = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
   <div class="container breadcrumbs"><a href="/">Inicio</a> · Historia</div>
 
   <section class="section container">
-    <p class="eyebrow">Registro histórico</p>
+    <p class="eyebrow">Registro histórico · 1950 – hoy</p>
     <h1>El Niño y La Niña en la historia</h1>
     <p class="lead">
-      El índice ONI de NOAA se remonta a 1950. Estos son los eventos más intensos y sus
-      impactos documentados en Argentina.
+      El índice ONI de la NOAA registra más de siete décadas de oscilaciones en el Pacífico ecuatorial, con <strong>{episodes.length} episodios oficiales</strong> ({ninoCount} de El Niño y {ninaCount} de La Niña). Consultá qué ocurría en cualquier año o filtrá el catálogo completo.
     </p>
+  </section>
+
+  <section class="section container" id="buscador-anual">
+    <p class="eyebrow">Consulta rápida por año</p>
+    <h2>¿Qué fase había en el año...?</h2>
+    <p class="lead" style="margin-bottom:22px;">
+      Elegí cualquier año desde 1950 para ver sus 12 trimestres móviles, su pico máximo y mínimo y qué impacto tuvo en Argentina:
+    </p>
+    <YearLookup points={points} defaultYear={1998} />
   </section>
 
   <section class="section container">
@@ -52,42 +60,109 @@ const fmt = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
 
   <AdSlot label="Publicidad" slot="historia" />
 
-  <section class="section container">
-    <h2>Grandes eventos de El Niño</h2>
-    <div class="table-wrap" style="margin-bottom:40px;">
-      <table>
-        <thead>
-          <tr><th>Período</th><th>Intensidad</th><th>ONI máx.</th><th>Impacto en Argentina</th></tr>
-        </thead>
-        <tbody>
-          {
-            nino.map((e) => (
-              <tr>
-                <td><strong>{e.period}</strong></td>
-                <td style="color:var(--nino);font-weight:600">{e.intensity}</td>
-                <td style="font-family:var(--mono)">{fmt(e.peak)}</td>
-                <td style="white-space:normal">{e.impact}</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+  <section class="section container" id="catalogo-eventos" data-history-catalog>
+    <p class="eyebrow">Catálogo completo NOAA (1950–hoy)</p>
+    <h2>Todos los episodios de El Niño y La Niña</h2>
+    <p class="lead" style="margin-bottom:22px;">
+      Se considera un episodio oficial cuando la anomalía del ONI supera o iguala el umbral de ±0,5 °C durante al menos 5 trimestres móviles consecutivos. Filtrá y ordená la tabla:
+    </p>
+
+    <div class="history-filters">
+      <div class="history-filter-group">
+        <span class="mono history-filter-label">Fase:</span>
+        <div class="sim-scenarios" role="group" aria-label="Filtrar por fase">
+          <button type="button" class="sim-scen-btn is-neutral is-active" data-hist-phase="all">
+            Todos ({episodes.length})
+          </button>
+          <button type="button" class="sim-scen-btn is-nino" data-hist-phase="El Niño">
+            El Niño ({ninoCount})
+          </button>
+          <button type="button" class="sim-scen-btn is-nina" data-hist-phase="La Niña">
+            La Niña ({ninaCount})
+          </button>
+        </div>
+      </div>
+
+      <div class="history-filter-group">
+        <label for="hist-intensity" class="mono history-filter-label">Intensidad:</label>
+        <select id="hist-intensity" class="prov-select" data-hist-intensity>
+          <option value="all">Todas las intensidades</option>
+          <option value="Muy fuerte">Muy fuerte (≥ 2,0 °C)</option>
+          <option value="Fuerte">Fuerte (1,5 a 1,9 °C)</option>
+          <option value="Moderado">Moderado (1,0 a 1,4 °C)</option>
+          <option value="Débil">Débil (0,5 a 0,9 °C)</option>
+        </select>
+      </div>
+
+      <div class="history-filter-group">
+        <label for="hist-sort" class="mono history-filter-label">Ordenar por:</label>
+        <select id="hist-sort" class="prov-select" data-hist-sort>
+          <option value="recent">Más recientes primero</option>
+          <option value="oldest">Más antiguos primero</option>
+          <option value="peak">Mayor intensidad (°C)</option>
+          <option value="duration">Mayor duración (trimestres)</option>
+        </select>
+      </div>
+
+      <div class="history-filter-group">
+        <label for="hist-search" class="mono history-filter-label">Buscar año o texto:</label>
+        <input
+          id="hist-search"
+          type="search"
+          class="prov-select history-search-input"
+          placeholder="Ej: 1998, Paraná, sequía..."
+          data-hist-search
+        />
+      </div>
     </div>
 
-    <h2>Grandes eventos de La Niña</h2>
+    <div class="history-status-bar mono">
+      <span data-hist-count>Mostrando {episodes.length} de {episodes.length} episodios</span>
+      <button type="button" class="link-reset" data-hist-reset hidden>Limpiar filtros ✕</button>
+    </div>
+
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Período</th><th>Intensidad</th><th>ONI mín.</th><th>Impacto en Argentina</th></tr>
+          <tr>
+            <th>Período</th>
+            <th>Fase</th>
+            <th>Intensidad</th>
+            <th>Pico ONI</th>
+            <th>Duración</th>
+            <th>Impacto y contexto en Argentina</th>
+          </tr>
         </thead>
-        <tbody>
+        <tbody data-hist-tbody>
           {
-            nina.map((e) => (
-              <tr>
-                <td><strong>{e.period}</strong></td>
-                <td style="color:var(--nina);font-weight:600">{e.intensity}</td>
-                <td style="font-family:var(--mono)">{fmt(e.peak)}</td>
-                <td style="white-space:normal">{e.impact}</td>
+            episodes.map((e, idx) => (
+              <tr
+                data-hist-row
+                data-type={e.type}
+                data-intensity={e.intensity}
+                data-peak={Math.abs(e.peak)}
+                data-duration={e.duration}
+                data-order={idx}
+                data-search={`${e.period} ${e.rangeLabel} ${e.type} ${e.intensity} ${e.impact}`.toLowerCase()}
+              >
+                <td>
+                  <strong>{e.period}</strong>
+                  <div class="mono" style="font-size:0.75rem;color:var(--muted)">{e.rangeLabel}</div>
+                </td>
+                <td style={`color:${e.type === "El Niño" ? "var(--nino)" : "var(--nina)"};font-weight:700`}>
+                  {e.type}
+                </td>
+                <td>
+                  <span class={`year-phase-badge is-${e.type === "El Niño" ? "warm" : "cool"}`}>
+                    {e.intensity}
+                  </span>
+                </td>
+                <td class="mono">
+                  <strong>{formatAnomaly(e.peak)}°C</strong>
+                  <div style="font-size:0.74rem;color:var(--muted)">{e.peakSeason}</div>
+                </td>
+                <td class="mono">{e.duration} trim.</td>
+                <td style="white-space:normal;min-width:260px;">{e.impact}</td>
               </tr>
             ))
           }
@@ -95,7 +170,91 @@ const fmt = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
       </table>
     </div>
     <p style="color:var(--muted);font-size:0.85rem;margin-top:14px;">
-      Los valores de ONI son aproximados e ilustrativos; consultá la serie oficial de NOAA para precisión.
+      Datos calculados directamente a partir de la serie histórica oficial del índice ONI (ERSST.v5) del Climate Prediction Center de la NOAA.
     </p>
   </section>
 </Layout>
+
+<script>
+  function initHistoryCatalog() {
+    const root = document.querySelector<HTMLElement>("[data-history-catalog]");
+    if (!root || root.dataset.bound === "true") return;
+    root.dataset.bound = "true";
+
+    const phaseBtns = root.querySelectorAll<HTMLButtonElement>("[data-hist-phase]");
+    const intensitySelect = root.querySelector<HTMLSelectElement>("[data-hist-intensity]");
+    const sortSelect = root.querySelector<HTMLSelectElement>("[data-hist-sort]");
+    const searchInput = root.querySelector<HTMLInputElement>("[data-hist-search]");
+    const countEl = root.querySelector<HTMLElement>("[data-hist-count]");
+    const resetBtn = root.querySelector<HTMLButtonElement>("[data-hist-reset]");
+    const tbody = root.querySelector<HTMLElement>("[data-hist-tbody]");
+    if (!tbody) return;
+
+    const rows = Array.from(tbody.querySelectorAll<HTMLTableRowElement>("[data-hist-row]"));
+    const total = rows.length;
+    let activePhase = "all";
+
+    const applyFilters = () => {
+      const intensity = intensitySelect?.value || "all";
+      const sortBy = sortSelect?.value || "recent";
+      const query = (searchInput?.value || "").trim().toLowerCase();
+
+      const sorted = [...rows].sort((a, b) => {
+        const orderA = Number(a.dataset.order || 0);
+        const orderB = Number(b.dataset.order || 0);
+        if (sortBy === "oldest") return orderB - orderA;
+        if (sortBy === "peak") {
+          const pDiff = Number(b.dataset.peak || 0) - Number(a.dataset.peak || 0);
+          return pDiff !== 0 ? pDiff : orderA - orderB;
+        }
+        if (sortBy === "duration") {
+          const dDiff = Number(b.dataset.duration || 0) - Number(a.dataset.duration || 0);
+          return dDiff !== 0 ? dDiff : orderA - orderB;
+        }
+        return orderA - orderB;
+      });
+
+      let visibleCount = 0;
+      sorted.forEach((row) => {
+        const matchPhase = activePhase === "all" || row.dataset.type === activePhase;
+        const matchInt = intensity === "all" || row.dataset.intensity === intensity;
+        const matchSearch = !query || (row.dataset.search || "").includes(query);
+        const show = matchPhase && matchInt && matchSearch;
+        row.hidden = !show;
+        if (show) visibleCount++;
+        tbody.appendChild(row);
+      });
+
+      if (countEl) {
+        countEl.textContent = `Mostrando ${visibleCount} de ${total} episodios`;
+      }
+      if (resetBtn) {
+        const isFiltered = activePhase !== "all" || intensity !== "all" || query !== "" || sortBy !== "recent";
+        resetBtn.hidden = !isFiltered;
+      }
+    };
+
+    phaseBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        activePhase = btn.dataset.histPhase || "all";
+        phaseBtns.forEach((b) => b.classList.toggle("is-active", b === btn));
+        applyFilters();
+      });
+    });
+
+    intensitySelect?.addEventListener("change", applyFilters);
+    sortSelect?.addEventListener("change", applyFilters);
+    searchInput?.addEventListener("input", applyFilters);
+
+    resetBtn?.addEventListener("click", () => {
+      activePhase = "all";
+      phaseBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.histPhase === "all"));
+      if (intensitySelect) intensitySelect.value = "all";
+      if (sortSelect) sortSelect.value = "recent";
+      if (searchInput) searchInput.value = "";
+      applyFilters();
+    });
+  }
+
+  initHistoryCatalog();
+</script>

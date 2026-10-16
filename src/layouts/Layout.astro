@@ -89,7 +89,17 @@ const schemas = [baseSchema, breadcrumbSchema, ...(Array.isArray(jsonLd) ? jsonL
     <meta name="robots" content={robots} />
     <link rel="canonical" href={canonical} />
 
-    <meta name="theme-color" content="#f4f1e9" />
+    <meta name="theme-color" content="#f4f1e9" id="metaThemeColor" />
+    <script is:inline>
+      try {
+        const saved = localStorage.getItem("enso-theme");
+        if (saved === "dark" || saved === "light") {
+          document.documentElement.setAttribute("data-theme", saved);
+          const meta = document.getElementById("metaThemeColor");
+          if (meta) meta.setAttribute("content", saved === "dark" ? "#071322" : "#f4f1e9");
+        }
+      } catch {}
+    </script>
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />

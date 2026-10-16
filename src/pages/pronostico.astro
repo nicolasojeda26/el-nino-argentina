@@ -4,6 +4,8 @@ import OniChart from "../components/OniChart.astro";
 import EnsoScale from "../components/EnsoScale.astro";
 import ForecastProbs from "../components/ForecastProbs.astro";
 import AnalogChart from "../components/AnalogChart.astro";
+import DataTools from "../components/DataTools.astro";
+import ImpactSimulator from "../components/ImpactSimulator.astro";
 import Icon from "../components/Icon.astro";
 import AdSlot from "../components/AdSlot.astro";
 import { getOni, buildStatus, formatAnomaly, seasonLabel, getNextNoaaRelease } from "../data/oni";
@@ -94,6 +96,7 @@ const jsonLd = {
       La evolución del ONI permite ver cómo el Pacífico pasó de una fase a otra.
     </p>
     <OniChart points={points} count={44} />
+    <DataTools />
   </section>
 
   <section class="section container">
@@ -103,6 +106,15 @@ const jsonLd = {
       Superponé la curva del año en curso con los eventos de El Niño y La Niña más relevantes para comparar trayectoria e intensidad trimestre a trimestre:
     </p>
     <AnalogChart points={points} />
+  </section>
+
+  <section class="section container no-print">
+    <p class="eyebrow">Simulador por actividad</p>
+    <h2>¿Qué esperar en tu provincia y sector?</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      Simulá los impactos y medidas de manejo recomendadas para tu provincia y actividad según el escenario climático:
+    </p>
+    <ImpactSimulator />
   </section>
 
   <AdSlot label="Publicidad" slot="pronostico" />

@@ -5,6 +5,7 @@ import OniChart from "../components/OniChart.astro";
 import EnsoScale from "../components/EnsoScale.astro";
 import ArgentinaMap from "../components/ArgentinaMap.astro";
 import DataTools from "../components/DataTools.astro";
+import YearLookup from "../components/YearLookup.astro";
 import AdSlot from "../components/AdSlot.astro";
 import Icon from "../components/Icon.astro";
 import Sun from "../components/Sun.astro";
@@ -37,11 +38,18 @@ const jsonLd = {
   creator: { "@type": "Organization", name: "NOAA Climate Prediction Center" },
   temporalCoverage: "1950/..",
   variableMeasured: "Oceanic Niño Index",
-  distribution: {
-    "@type": "DataDownload",
-    encodingFormat: "text/csv",
-    contentUrl: new URL("/datos/oni.csv", Astro.site ?? site.url).href,
-  },
+  distribution: [
+    {
+      "@type": "DataDownload",
+      encodingFormat: "text/csv",
+      contentUrl: new URL("/datos/oni.csv", Astro.site ?? site.url).href,
+    },
+    {
+      "@type": "DataDownload",
+      encodingFormat: "application/json",
+      contentUrl: new URL("/datos/oni.json", Astro.site ?? site.url).href,
+    },
+  ],
 };
 ---
 
@@ -187,6 +195,15 @@ const jsonLd = {
       </div>
       <ArgentinaMap />
     </div>
+  </section>
+
+  <section class="section container">
+    <p class="eyebrow">Archivo interactivo (1950–hoy)</p>
+    <h2>¿Qué fase había en el año...?</h2>
+    <p class="lead" style="margin-bottom:22px;">
+      Buscá cualquier año desde 1950 para ver sus 12 trimestres móviles y cómo impactó en Argentina:
+    </p>
+    <YearLookup points={points} defaultYear={1998} />
   </section>
 
   <section class="section container">

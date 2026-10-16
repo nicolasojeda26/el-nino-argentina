@@ -1,0 +1,335 @@
+---
+import {
+  ANALOG_SEASONS,
+  extractOniEpisodes,
+  formatAnomaly,
+  seasonLabel,
+  type OniPoint,
+} from "../data/oni";
+
+interface Props {
+  points: OniPoint[];
+  defaultYear?: number;
+}
+
+const { points, defaultYear = 1998 } = Astro.props;
+const episodes = extractOniEpisodes(points);
+
+const yearsMap = new Map<number, OniPoint[]>();
+for (const p of points) {
+  const list = yearsMap.get(p.year) ?? [];
+  list.push(p);
+  yearsMap.set(p.year, list);
+}
+
+const allYears = Array.from(yearsMap.keys()).sort((a, b) => b - a);
+const initialYear = yearsMap.has(defaultYear) ? defaultYear : (allYears[0] ?? 1998);
+
+interface YearRecord {
+  year: number;
+  dominant: "El Niño" | "La Niña" | "Transición" | "Neutral";
+  dominantClass: "warm" | "cool" | "neutral";
+  maxAnom: string;
+  maxSeason: string;
+  minAnom: string;
+  minSeason: string;
+  ninoCount: number;
+  ninaCount: number;
+  seasons: {
+    code: string;
+    label: string;
+    anomaly: number | null;
+    formatted: string;
+    phase: "nino" | "nina" | "neutral";
+  }[];
+  episodes: {
+    period: string;
+    rangeLabel: string;
+    type: "El Niño" | "La Niña";
+    intensity: string;
+    peak: string;
+    peakSeason: string;
+    impact: string;
+  }[];
+  summary: string;
+}
+
+const yearRecords: Record<number, YearRecord> = {};
+
+for (const y of allYears) {
+  const pts = yearsMap.get(y) ?? [];
+  const bySeason = new Map(pts.map((p) => [p.season, p.anomaly]));
+  const maxPt = pts.reduce((a, b) => (b.anomaly > a.anomaly ? b : a), pts[0]);
+  const minPt = pts.reduce((a, b) => (b.anomaly < a.anomaly ? b : a), pts[0]);
+  const ninoCount = pts.filter((p) => p.anomaly >= 0.5).length;
+  const ninaCount = pts.filter((p) => p.anomaly <= -0.5).length;
+
+  let dominant: YearRecord["dominant"] = "Neutral";
+  let dominantClass: YearRecord["dominantClass"] = "neutral";
+
+  if (ninoCount >= 3 && ninaCount >= 3) {
+    dominant = "Transición";
+    dominantClass = Math.abs(maxPt.anomaly) >= Math.abs(minPt.anomaly) ? "warm" : "cool";
+  } else if (ninoCount >= 4 || (ninoCount >= 2 && maxPt.anomaly >= 0.8 && ninoCount > ninaCount)) {
+    dominant = "El Niño";
+    dominantClass = "warm";
+  } else if (ninaCount >= 4 || (ninaCount >= 2 && minPt.anomaly <= -0.8 && ninaCount > ninoCount)) {
+    dominant = "La Niña";
+    dominantClass = "cool";
+  }
+
+  const matchingEps = episodes
+    .filter((ep) => ep.years.includes(y))
+    .map((ep) => ({
+      period: ep.period,
+      rangeLabel: ep.rangeLabel,
+      type: ep.type,
+      intensity: ep.intensity,
+      peak: formatAnomaly(ep.peak),
+      peakSeason: ep.peakSeason,
+      impact: ep.impact,
+    }));
+
+  let summary = "";
+  if (matchingEps.length > 0) {
+    summary = matchingEps.map((e) => `${e.type} (${e.period}, ${e.intensity.toLowerCase()}): ${e.impact}`).join(" ");
+  } else if (ninoCount > 0 || ninaCount > 0) {
+    summary = `Año con ${ninoCount} trimestre(s) en umbral cálido y ${ninaCount} en umbral frío, sin llegar a consolidar un episodio sostenido de 5 trimestres consecutivos.`;
+  } else {
+    summary = "Durante todo el año el Pacífico ecuatorial se mantuvo dentro del rango neutral (entre −0,5 °C y +0,5 °C), predominando la variabilidad climática regional sobre el territorio argentino.";
+  }
+
+  yearRecords[y] = {
+    year: y,
+    dominant,
+    dominantClass,
+    maxAnom: formatAnomaly(maxPt.anomaly),
+    maxSeason: maxPt.season,
+    minAnom: formatAnomaly(minPt.anomaly),
+    minSeason: minPt.season,
+    ninoCount,
+    ninaCount,
+    seasons: ANALOG_SEASONS.map((code) => {
+      const val = bySeason.get(code) ?? null;
+      const phase = val === null ? "neutral" : val >= 0.5 ? "nino" : val <= -0.5 ? "nina" : "neutral";
+      return {
+        code,
+        label: seasonLabel(code),
+        anomaly: val,
+        formatted: val !== null ? formatAnomaly(val) : "s/d",
+        phase,
+      };
+    }),
+    episodes: matchingEps,
+    summary,
+  };
+}
+
+const iconicYears = [
+  { year: 1983, label: "1983 · Crecida histórica" },
+  { year: 1989, label: "1989 · La Niña fuerte" },
+  { year: 1998, label: "1998 · El Niño récord" },
+  { year: 2009, label: "2009 · Transición" },
+  { year: 2016, label: "2016 · Pico +2,6°C" },
+  { year: 2018, label: "2018 · Sequía Pampa" },
+  { year: 2022, label: "2022 · Niña triple" },
+  { year: 2024, label: "2024 · El Niño fuerte" },
+].filter((item) => yearsMap.has(item.year));
+
+const initial = yearRecords[initialYear];
+---
+
+<div class="year-lookup" data-year-lookup>
+  <div class="year-lookup-controls">
+    <div class="year-lookup-field">
+      <label for="year-lookup-select" class="mono">Elegí un año (1950–{allYears[0]}):</label>
+      <div class="year-lookup-stepper">
+        <button type="button" class="btn-step" data-year-Step="-1" aria-label="Año anterior" title="Año anterior">←</button>
+        <select id="year-lookup-select" class="prov-select" data-year-select>
+          {
+            allYears.map((y) => {
+              const r = yearRecords[y];
+              return (
+                <option value={y} selected={y === initialYear}>
+                  {y} — {r.dominant} (máx {r.maxAnom}° / mín {r.minAnom}°)
+                </option>
+              );
+            })
+          }
+        </select>
+        <button type="button" class="btn-step" data-year-step="1" aria-label="Año siguiente" title="Año siguiente">→</button>
+      </div>
+    </div>
+
+    <div class="year-lookup-quick">
+      <span class="mono year-lookup-quick-label">Años clave en Argentina:</span>
+      <div class="chips" style="margin-top:6px;">
+        {
+          iconicYears.map((item) => (
+            <button
+              type="button"
+              class={`chip ${item.year === initialYear ? "is-active" : ""}`}
+              data-year-chip={item.year}
+            >
+              {item.label}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="year-lookup-card" data-year-card aria-live="polite">
+    <div class="year-lookup-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:4px;">Archivo climático anual</span>
+        <h3 class="year-lookup-title">
+          Año <span data-y-year>{initial.year}</span>
+          <span class={`year-phase-badge is-${initial.dominantClass}`} data-y-badge>
+            {initial.dominant}
+          </span>
+        </h3>
+      </div>
+
+      <dl class="year-lookup-kpis">
+        <div>
+          <dt>Pico máximo</dt>
+          <dd><strong data-y-max>{initial.maxAnom}°C</strong> <span class="mono" data-y-max-s>({initial.maxSeason})</span></dd>
+        </div>
+        <div>
+          <dt>Pico mínimo</dt>
+          <dd><strong data-y-min>{initial.minAnom}°C</strong> <span class="mono" data-y-min-s>({initial.minSeason})</span></dd>
+        </div>
+        <div>
+          <dt>Trimestres Niño / Niña</dt>
+          <dd><span style="color:var(--nino);font-weight:700" data-y-nino>{initial.ninoCount}</span> / <span style="color:var(--nina);font-weight:700" data-y-nina>{initial.ninaCount}</span></dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="year-bars-grid" data-y-bars>
+      {
+        initial.seasons.map((s) => {
+          const absH = s.anomaly !== null ? Math.min(100, Math.round((Math.abs(s.anomaly) / 2.6) * 100)) : 0;
+          const isPos = (s.anomaly ?? 0) >= 0;
+          return (
+            <div class={`year-bar-col is-${s.phase}`} title={`${s.code} (${s.label}): ${s.formatted} °C`}>
+              <div class="year-bar-val mono">{s.formatted}</div>
+              <div class="year-bar-track">
+                <div class="year-bar-zero"></div>
+                {s.anomaly !== null && (
+                  <div
+                    class={`year-bar-fill ${isPos ? "is-pos" : "is-neg"}`}
+                    style={`height:${Math.max(4, absH / 2)}%;${isPos ? "bottom:50%" : "top:50%"}`}
+                  />
+                )}
+              </div>
+              <div class="year-bar-code mono">{s.code}</div>
+            </div>
+          );
+        })
+      }
+    </div>
+
+    <div class="year-lookup-summary">
+      <strong>Contexto en Argentina y el Pacífico:</strong>{" "}
+      <span data-y-summary>{initial.summary}</span>
+    </div>
+  </div>
+
+  <script type="application/json" data-year-records set:html={JSON.stringify(yearRecords)} />
+</div>
+
+<script>
+  function initYearLookups() {
+    document.querySelectorAll<HTMLElement>("[data-year-lookup]").forEach((root) => {
+      if (root.dataset.bound === "true") return;
+      root.dataset.bound = "true";
+
+      const jsonEl = root.querySelector<HTMLScriptElement>("[data-year-records]");
+      const select = root.querySelector<HTMLSelectElement>("[data-year-select]");
+      if (!jsonEl || !select) return;
+
+      const records = JSON.parse(jsonEl.textContent || "{}");
+      const years = Object.keys(records)
+        .map(Number)
+        .sort((a, b) => a - b);
+
+      const yearEl = root.querySelector<HTMLElement>("[data-y-year]");
+      const badgeEl = root.querySelector<HTMLElement>("[data-y-badge]");
+      const maxEl = root.querySelector<HTMLElement>("[data-y-max]");
+      const maxSEl = root.querySelector<HTMLElement>("[data-y-max-s]");
+      const minEl = root.querySelector<HTMLElement>("[data-y-min]");
+      const minSEl = root.querySelector<HTMLElement>("[data-y-min-s]");
+      const ninoEl = root.querySelector<HTMLElement>("[data-y-nino]");
+      const ninaEl = root.querySelector<HTMLElement>("[data-y-nina]");
+      const barsEl = root.querySelector<HTMLElement>("[data-y-bars]");
+      const summaryEl = root.querySelector<HTMLElement>("[data-y-summary]");
+      const chips = root.querySelectorAll<HTMLButtonElement>("[data-year-chip]");
+      const stepBtns = root.querySelectorAll<HTMLButtonElement>("[data-year-step], [data-year-Step]");
+
+      const renderYear = (y: number) => {
+        const rec = records[y];
+        if (!rec) return;
+        select.value = String(y);
+        if (yearEl) yearEl.textContent = String(rec.year);
+        if (badgeEl) {
+          badgeEl.textContent = rec.dominant;
+          badgeEl.className = `year-phase-badge is-${rec.dominantClass}`;
+        }
+        if (maxEl) maxEl.textContent = `${rec.maxAnom}°C`;
+        if (maxSEl) maxSEl.textContent = `(${rec.maxSeason})`;
+        if (minEl) minEl.textContent = `${rec.minAnom}°C`;
+        if (minSEl) minSEl.textContent = `(${rec.minSeason})`;
+        if (ninoEl) ninoEl.textContent = String(rec.ninoCount);
+        if (ninaEl) ninaEl.textContent = String(rec.ninaCount);
+        if (summaryEl) summaryEl.textContent = rec.summary;
+
+        if (barsEl) {
+          barsEl.innerHTML = rec.seasons
+            .map((s: { code: string; label: string; anomaly: number | null; formatted: string; phase: string }) => {
+              const absH = s.anomaly !== null ? Math.min(100, Math.round((Math.abs(s.anomaly) / 2.6) * 100)) : 0;
+              const isPos = (s.anomaly ?? 0) >= 0;
+              const fillHtml =
+                s.anomaly !== null
+                  ? `<div class="year-bar-fill ${isPos ? "is-pos" : "is-neg"}" style="height:${Math.max(4, absH / 2)}%;${isPos ? "bottom:50%" : "top:50%"}"></div>`
+                  : "";
+              return `<div class="year-bar-col is-${s.phase}" title="${s.code} (${s.label}): ${s.formatted} °C">
+                <div class="year-bar-val mono">${s.formatted}</div>
+                <div class="year-bar-track"><div class="year-bar-zero"></div>${fillHtml}</div>
+                <div class="year-bar-code mono">${s.code}</div>
+              </div>`;
+            })
+            .join("");
+        }
+
+        chips.forEach((c) => {
+          c.classList.toggle("is-active", Number(c.dataset.yearChip) === y);
+        });
+      };
+
+      select.addEventListener("change", () => {
+        renderYear(Number(select.value));
+      });
+
+      chips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          renderYear(Number(chip.dataset.yearChip));
+        });
+      });
+
+      stepBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const dir = Number(btn.dataset.yearStep || btn.dataset.yearstep || btn.getAttribute("data-year-Step") || 0);
+          const curIdx = years.indexOf(Number(select.value));
+          const nextIdx = curIdx + dir;
+          if (nextIdx >= 0 && nextIdx < years.length) {
+            renderYear(years[nextIdx]);
+          }
+        });
+      });
+    });
+  }
+
+  initYearLookups();
+</script>

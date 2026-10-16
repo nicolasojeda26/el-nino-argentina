@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import AdSlot from "../components/AdSlot.astro";
+import ArgentinaMap from "../components/ArgentinaMap.astro";
 import { regions } from "../data/content";
 
 const comparisons: { region: string; nino: string; nina: string }[] = [
@@ -28,6 +29,10 @@ const comparisons: { region: string; nino: string; nina: string }[] = [
   </section>
 
   <section class="container">
+    <ArgentinaMap />
+  </section>
+
+  <section class="section container">
     <div class="grid grid-3">
       {
         regions.map((r) => (

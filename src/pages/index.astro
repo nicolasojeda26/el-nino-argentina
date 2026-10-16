@@ -2,9 +2,10 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import OniChart from "../components/OniChart.astro";
+import ArgentinaMap from "../components/ArgentinaMap.astro";
 import AdSlot from "../components/AdSlot.astro";
 import { getOni, buildStatus, formatAnomaly, seasonLabel } from "../data/oni";
-import { regions, site, outlook } from "../data/content";
+import { site, outlook } from "../data/content";
 
 const points = await getOni();
 const s = buildStatus(points);
@@ -150,20 +151,9 @@ const jsonLd = {
     <p class="eyebrow">Territorio</p>
     <h2>Impactos por región</h2>
     <p class="lead" style="margin-bottom:24px;">
-      El efecto de El Niño no es igual en todo el país. Estas son las señales más probables.
+      El efecto de El Niño no es igual en todo el país. Explorá el mapa y elegí tu región.
     </p>
-    <div class="grid grid-3">
-      {
-        regions.map((r) => (
-          <div class="card">
-            <div class="icon">{r.icon}</div>
-            <h3>{r.name}</h3>
-            <p>{r.summary}</p>
-            <a class="more" href={`/impactos/${r.slug}/`}>Ver detalle →</a>
-          </div>
-        ))
-      }
-    </div>
+    <ArgentinaMap />
   </section>
 
   <section class="section container">

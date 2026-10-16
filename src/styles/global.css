@@ -11,11 +11,26 @@
   --muted: #7f9ab1;
   --warm: #ff7a4d;
   --warm-soft: #ffb199;
-  --cool: #43c2f0;
-  --cool-soft: #9fdcf5;
+  --cool: #5aa9e6;
+  --cool-soft: #a9d4f5;
   --neutral: #8aa8bf;
-  --accent: #ffca3a;
+  --accent: #f7c948;
   --good: #4ade80;
+
+  /* Paleta argentina: celeste, blanco y sol */
+  --arg-blue: #6cb2e8;
+  --arg-blue-deep: #3f8fd0;
+  --arg-white: #f2f7fc;
+  --arg-sun: #f6b40e;
+  --arg-sun-soft: #ffd45e;
+
+  /* Colores por región del mapa */
+  --region-litoral: #5aa9e6;
+  --region-pampeana: #f5b301;
+  --region-cuyo: #b07cc6;
+  --region-noa: #e2683c;
+  --region-patagonia: #4fc3b0;
+
   --radius: 16px;
   --radius-sm: 10px;
   --maxw: 1140px;
@@ -36,8 +51,8 @@ body {
   margin: 0;
   font-family: var(--font);
   background:
-    radial-gradient(1200px 600px at 80% -10%, rgba(67, 194, 240, 0.12), transparent 60%),
-    radial-gradient(1000px 500px at 10% 0%, rgba(255, 122, 77, 0.08), transparent 55%),
+    radial-gradient(1200px 600px at 80% -10%, rgba(108, 178, 232, 0.14), transparent 60%),
+    radial-gradient(900px 480px at 8% 0%, rgba(246, 180, 14, 0.06), transparent 55%),
     var(--bg);
   color: var(--text);
   line-height: 1.65;
@@ -122,6 +137,19 @@ p {
   border-bottom: 1px solid var(--border);
 }
 
+.site-header::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(
+    180deg,
+    var(--arg-blue) 0 40%,
+    var(--arg-white) 40% 60%,
+    var(--arg-blue) 60% 100%
+  );
+}
+
 .site-header .inner {
   display: flex;
   align-items: center;
@@ -148,7 +176,7 @@ p {
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--warm), var(--cool));
+  background: radial-gradient(circle at 50% 42%, var(--arg-sun-soft), var(--arg-sun) 62%, #d99400);
   display: grid;
   place-items: center;
   font-size: 14px;
@@ -207,7 +235,7 @@ p {
 }
 
 .hero h1 span {
-  background: linear-gradient(100deg, var(--warm), var(--accent));
+  background: linear-gradient(100deg, #b9dcf7, var(--arg-sun));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -803,5 +831,154 @@ tbody tr:last-child td {
   * {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* ---------- Mapa de Argentina ---------- */
+.armap {
+  display: grid;
+  grid-template-columns: minmax(190px, 280px) 1fr;
+  gap: clamp(18px, 4vw, 44px);
+  align-items: center;
+  margin: 0;
+}
+
+.armap-canvas {
+  display: flex;
+  justify-content: center;
+}
+
+.armap-svg {
+  width: 100%;
+  height: auto;
+  max-width: 280px;
+  display: block;
+  overflow: visible;
+}
+
+.armap-provs {
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
+}
+
+.prov path {
+  fill: var(--region-c, #33465a);
+  stroke: var(--bg);
+  stroke-width: 0.8;
+  vector-effect: non-scaling-stroke;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
+}
+
+.prov:hover path,
+.prov.is-active path {
+  filter: brightness(1.12) saturate(1.08);
+}
+
+.prov:focus-visible path {
+  outline: none;
+  stroke: var(--arg-white);
+  stroke-width: 1.8;
+}
+
+.armap.has-hover .prov:not(.is-active) path {
+  opacity: 0.26;
+}
+
+[data-region="litoral"] {
+  --region-c: var(--region-litoral);
+}
+[data-region="pampeana"] {
+  --region-c: var(--region-pampeana);
+}
+[data-region="cuyo"] {
+  --region-c: var(--region-cuyo);
+}
+[data-region="noa"] {
+  --region-c: var(--region-noa);
+}
+[data-region="patagonia"] {
+  --region-c: var(--region-patagonia);
+}
+
+.armap-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  align-content: center;
+}
+
+.leg {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+  padding: 12px 15px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.leg.is-active {
+  border-color: var(--region-c);
+  background: color-mix(in srgb, var(--region-c) 14%, transparent);
+  transform: translateX(3px);
+}
+
+.armap.has-hover .leg:not(.is-active) {
+  opacity: 0.45;
+}
+
+.swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  flex: none;
+  margin-top: 3px;
+  background: var(--region-c, #33465a);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.leg-name {
+  display: block;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.leg-name:hover {
+  color: var(--region-c);
+}
+
+.leg-prov {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.armap-cap {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.armap-attr {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  opacity: 0.75;
+}
+
+@media (max-width: 900px) {
+  .armap {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .armap-svg {
+    max-width: 250px;
   }
 }

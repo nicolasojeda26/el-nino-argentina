@@ -1,0 +1,111 @@
+---
+import EnsoScale from "../components/EnsoScale.astro";
+import Sun from "../components/Sun.astro";
+import { site } from "../data/content";
+import { buildStatus, formatAnomaly, getOni } from "../data/oni";
+import "../styles/global.css";
+
+const points = await getOni();
+const s = buildStatus(points);
+const stateClass = s.state === "El Niño" ? "warm" : s.state === "La Niña" ? "cool" : "neutral";
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <title>Widget ENSO — {site.name}</title>
+    <style>
+      body {
+        margin: 0;
+        background: var(--band);
+        color: var(--on-ink);
+        padding: 16px 18px;
+        overflow: hidden;
+      }
+      body::before {
+        display: none;
+      }
+      .w-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border-bottom: 1px solid var(--rule-ink);
+        padding-bottom: 10px;
+      }
+      .w-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--on-ink);
+        font-weight: 800;
+        font-size: 0.92rem;
+        text-decoration: none;
+      }
+      .w-main {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 0 4px;
+      }
+      .w-val {
+        font-family: var(--mono);
+        font-size: 2.5rem;
+        font-weight: 600;
+        line-height: 1;
+        color: var(--nino-soft);
+      }
+      .w-val.cool {
+        color: var(--nina-soft);
+      }
+      .w-val.neutral {
+        color: var(--on-ink);
+      }
+      .w-val small {
+        font-size: 0.36em;
+        color: var(--on-ink-muted);
+        margin-left: 4px;
+      }
+      .w-state {
+        text-align: right;
+      }
+      .w-state strong {
+        display: block;
+        font-size: 1.15rem;
+        color: var(--on-ink);
+      }
+      .w-state span {
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--sol);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="w-head">
+      <a class="w-brand" href={site.url} target="_blank" rel="noopener">
+        <Sun size={18} />
+        <span>El Niño Argentina</span>
+      </a>
+      <span class="mono" style="color:var(--on-ink-muted);font-size:0.65rem;">
+        ONI {s.latest.season} {s.latest.year}
+      </span>
+    </div>
+    <div class="w-main">
+      <div class={`w-val ${stateClass}`}>
+        {formatAnomaly(s.latest.anomaly)}<small>°C</small>
+      </div>
+      <div class="w-state">
+        <strong>{s.state}</strong>
+        <span>{s.state === "Neutral" ? "Fase neutral" : `Intensidad ${s.intensity.toLowerCase()}`}</span>
+      </div>
+    </div>
+    <EnsoScale value={s.latest.anomaly} />
+  </body>
+</html>

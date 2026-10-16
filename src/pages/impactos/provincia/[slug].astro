@@ -1,0 +1,132 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import AdSlot from "../../../components/AdSlot.astro";
+import Icon from "../../../components/Icon.astro";
+import { provincesData, regions, site } from "../../../data/content";
+import { buildStatus, formatAnomaly, getOni } from "../../../data/oni";
+
+export function getStaticPaths() {
+  return provincesData.map((prov) => ({
+    params: { slug: prov.slug },
+    props: { prov },
+  }));
+}
+
+const { prov } = Astro.props;
+const region = regions.find((r) => r.slug === prov.regionSlug) ?? regions[0];
+const siblings = provincesData.filter(
+  (p) => p.regionSlug === prov.regionSlug && p.slug !== prov.slug,
+);
+
+const s = buildStatus(await getOni());
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: `El Niño y La Niña en ${prov.name}: impactos climáticos y agro`,
+  inLanguage: "es-AR",
+  url: new URL(Astro.url.pathname, Astro.site ?? site.url).href,
+  isPartOf: { "@type": "WebSite", name: site.name, url: site.url },
+  about: {
+    "@type": "AdministrativeArea",
+    name: prov.name,
+    containedInPlace: { "@type": "Country", name: "Argentina" },
+  },
+};
+---
+
+<Layout
+  title={`El Niño en ${prov.name}: lluvias, sequía e impacto productivo`}
+  description={`Cómo afectan El Niño y La Niña a la provincia de ${prov.name} (${region.name}): lluvias, riesgos hídricos, sectores productivos (${prov.sectors}) y estado actual del ONI.`}
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: "Inicio", path: "/" },
+    { name: "Impactos", path: "/impactos/" },
+    { name: region.name, path: `/impactos/${region.slug}/` },
+    { name: prov.name, path: `/impactos/provincia/${prov.slug}/` },
+  ]}
+>
+  <div class="container breadcrumbs">
+    <a href="/">Inicio</a> · <a href="/impactos/">Impactos</a> ·{" "}
+    <a href={`/impactos/${region.slug}/`}>{region.name}</a> · {prov.name}
+  </div>
+
+  <section class="section container">
+    <div class="region-badge" data-region={region.slug}>
+      <Icon name={region.iconName} size={30} />
+    </div>
+    <p class="eyebrow" style="margin-top:18px;">
+      {region.name} · Exposición al ENSO: {prov.exposure}
+    </p>
+    <h1>El Niño y La Niña en {prov.name}</h1>
+    <p class="lead">
+      Principales actividades sensibles al clima en la jurisdicción: <strong>{prov.sectors}</strong>.
+    </p>
+
+    <div class="callout" style="margin-top:24px;">
+      <p>
+        <strong>Estado actual ({s.latest.season} {s.latest.year}):</strong> el índice ONI es de{" "}
+        <strong>{formatAnomaly(s.latest.anomaly)} °C</strong>, en fase{" "}
+        <strong>{s.state}</strong>
+        {s.state !== "Neutral" ? ` (${s.intensity.toLowerCase()})` : ""}.{" "}
+        {s.state === "El Niño"
+          ? prov.ninoImpact
+          : s.state === "La Niña"
+            ? prov.ninaImpact
+            : "En fase neutral predominan los forzantes meteorológicos regionales de corto plazo."}
+      </p>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h2>Escenarios climáticos en {prov.name}</h2>
+    <div class="grid grid-2" style="margin-top:22px;">
+      <div class="card" data-phase="nino">
+        <div class="icon"><Icon name="flame" size={28} /></div>
+        <h3>Durante El Niño (fase cálida)</h3>
+        <p>{prov.ninoImpact}</p>
+      </div>
+      <div class="card" data-phase="nina">
+        <div class="icon"><Icon name="snow" size={28} /></div>
+        <h3>Durante La Niña (fase fría)</h3>
+        <p>{prov.ninaImpact}</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;border:1px solid var(--rule);">
+      <h3 style="margin-top:0;">Riesgo crítico a monitorear en {prov.name}</h3>
+      <p style="margin-bottom:14px;">{prov.keyRisk}</p>
+      <h4 class="mono" style="color:var(--muted);margin-bottom:8px;">Recomendaciones regionales ({region.name})</h4>
+      <ul style="color:var(--text-soft);padding-left:1.2em;margin:0;">
+        {region.recommendations.map((rec) => <li style="margin-bottom:6px;">{rec}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <AdSlot label="Publicidad" slot={`prov-${prov.slug}`} />
+
+  {
+    siblings.length > 0 && (
+      <section class="section container">
+        <h2>Otras provincias en {region.name}</h2>
+        <div class="grid grid-3" style="margin-top:20px;">
+          {siblings.map((p) => (
+            <a class="card" href={`/impactos/provincia/${p.slug}/`}>
+              <span class="tag">Exposición {p.exposure}</span>
+              <h3>{p.name}</h3>
+              <p style="font-size:0.88rem;">{p.sectors}</p>
+            </a>
+          ))}
+        </div>
+        <div class="hero-cta">
+          <a class="btn btn-ghost" href={`/impactos/${region.slug}/`}>
+            ← Volver a la región {region.name}
+          </a>
+          <a class="btn btn-ghost" href="/impactos/">
+            Ver mapa nacional
+          </a>
+        </div>
+      </section>
+    )
+  }
+</Layout>

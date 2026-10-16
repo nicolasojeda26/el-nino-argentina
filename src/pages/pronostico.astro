@@ -2,12 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 import OniChart from "../components/OniChart.astro";
 import EnsoScale from "../components/EnsoScale.astro";
+import ForecastProbs from "../components/ForecastProbs.astro";
+import AnalogChart from "../components/AnalogChart.astro";
 import AdSlot from "../components/AdSlot.astro";
-import { getOni, buildStatus, formatAnomaly, seasonLabel } from "../data/oni";
+import { getOni, buildStatus, formatAnomaly, seasonLabel, getNextNoaaRelease } from "../data/oni";
 import { site, sources, outlook } from "../data/content";
 
 const points = await getOni();
 const s = buildStatus(points);
+const nextRelease = getNextNoaaRelease();
 const stateClass = s.state === "El Niño" ? "warm" : s.state === "La Niña" ? "cool" : "neutral";
 const recent = points.slice(-12).reverse();
 
@@ -31,7 +34,7 @@ const jsonLd = {
 
 <Layout
   title="Pronóstico de El Niño en Argentina"
-  description="Estado actual del ENSO, tendencia del ONI y qué se espera para Argentina según la fase activa (El Niño, La Niña o neutral)."
+  description="Estado actual del ENSO, probabilidades por trimestre, años análogos y qué se espera para Argentina según la fase activa."
   jsonLd={jsonLd}
   breadcrumbs={[
     { name: "Inicio", path: "/" },
@@ -46,9 +49,8 @@ const jsonLd = {
     <p class="lead">
       El ONI más reciente es <strong>{formatAnomaly(s.latest.anomaly)} °C</strong> ({s.latest.season} {s.latest.year}),
       lo que indica condiciones <strong>{s.state}</strong>{s.state !== "Neutral" ? ` de intensidad ${s.intensity.toLowerCase()}` : ""}.
-      La tendencia respecto al trimestre anterior es <strong>{s.trend}</strong>.
+      La tendencia respecto al trimestre anterior es <strong>{s.trend}</strong>. Próximo boletín oficial de NOAA: <strong>{nextRelease.shortLabel}</strong> (en {nextRelease.daysLeft} días).
     </p>
-
   </section>
 
   <section class="band band-rays">
@@ -56,7 +58,7 @@ const jsonLd = {
       <div class="panel">
         <div class="panel-head">
           <span class="mono" style="color:var(--sol)">● Fase actual</span>
-          <span class="mono">ONI {s.latest.season} {s.latest.year}</span>
+          <span class="mono">ONI {s.latest.season} {s.latest.year} · Próximo parte: {nextRelease.shortLabel}</span>
         </div>
         <div class="panel-main">
           <div class={`panel-value ${stateClass}`}>{formatAnomaly(s.latest.anomaly)}<small>°C</small></div>
@@ -76,11 +78,30 @@ const jsonLd = {
   </section>
 
   <section class="section container">
+    <p class="eyebrow">Perspectiva trimestral</p>
+    <h2>Probabilidad por fase en los próximos trimestres</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      Estimación de evolución para los próximos 6 trimestres móviles a partir de la anomalía actual y la persistencia estacional del Pacífico ecuatorial:
+    </p>
+    <ForecastProbs points={points} />
+  </section>
+
+  <section class="section container">
+    <p class="eyebrow">Evolución reciente</p>
     <h2>Tendencia de los últimos años</h2>
     <p class="lead" style="margin-bottom:24px;">
       La evolución del ONI permite ver cómo el Pacífico pasó de una fase a otra.
     </p>
     <OniChart points={points} count={44} />
+  </section>
+
+  <section class="section container">
+    <p class="eyebrow">Comparador histórico</p>
+    <h2>¿A qué año se parece la campaña actual?</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      Superponé la curva del año en curso con los eventos de El Niño y La Niña más relevantes para comparar trayectoria e intensidad trimestre a trimestre:
+    </p>
+    <AnalogChart points={points} />
   </section>
 
   <AdSlot label="Publicidad" slot="pronostico" />

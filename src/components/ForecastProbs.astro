@@ -1,0 +1,61 @@
+---
+import type { OniPoint } from "../data/oni";
+import { getForecastProbabilities } from "../data/oni";
+
+interface Props {
+  points: OniPoint[];
+}
+
+const { points } = Astro.props;
+const probs = getForecastProbabilities(points);
+---
+
+<div class="prob-wrap">
+  <div class="prob-head">
+    <div class="prob-legend">
+      <span><i style="background:var(--nino)"></i> El Niño</span>
+      <span><i style="background:var(--neutral)"></i> Neutral</span>
+      <span><i style="background:var(--nina)"></i> La Niña</span>
+    </div>
+    <span class="mono" style="color:var(--muted);font-size:0.68rem;">Probabilidad estacional (%)</span>
+  </div>
+
+  <div class="prob-rows">
+    {
+      probs.map((p) => {
+        const domClass =
+          p.dominant === "El Niño" ? "nino" : p.dominant === "La Niña" ? "nina" : "neutral";
+        return (
+          <div class="prob-row">
+            <div class="prob-meta">
+              <strong class="mono">{p.season} {p.year}</strong>
+              <span class="prob-period">{p.periodLabel}</span>
+            </div>
+
+            <div class="prob-bar" role="img" aria-label={`${p.season} ${p.year}: El Niño ${p.nino}%, Neutral ${p.neutral}%, La Niña ${p.nina}%`}>
+              {p.nino > 0 && (
+                <div class="prob-seg seg-nino" style={`width:${p.nino}%`} title={`El Niño: ${p.nino}%`}>
+                  {p.nino >= 14 ? `${p.nino}%` : ""}
+                </div>
+              )}
+              {p.neutral > 0 && (
+                <div class="prob-seg seg-neutral" style={`width:${p.neutral}%`} title={`Neutral: ${p.neutral}%`}>
+                  {p.neutral >= 14 ? `${p.neutral}%` : ""}
+                </div>
+              )}
+              {p.nina > 0 && (
+                <div class="prob-seg seg-nina" style={`width:${p.nina}%`} title={`La Niña: ${p.nina}%`}>
+                  {p.nina >= 14 ? `${p.nina}%` : ""}
+                </div>
+              )}
+            </div>
+
+            <div class={`prob-dom dom-${domClass}`}>
+              {p.dominant}
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</div>

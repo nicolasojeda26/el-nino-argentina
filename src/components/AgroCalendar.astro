@@ -1,0 +1,58 @@
+---
+import { AGRO_MONTHS, agroCalendar } from "../data/content";
+---
+
+<div class="agro-wrap">
+  <div class="table-wrap">
+    <table class="agro-table">
+      <thead>
+        <tr>
+          <th>Cultivo</th>
+          {AGRO_MONTHS.map((m) => <th style="text-align:center">{m}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          agroCalendar.map((row) => (
+            <tr>
+              <td>
+                <strong>{row.crop}</strong>
+                <span class="agro-win">{row.window}</span>
+              </td>
+              {AGRO_MONTHS.map((m) => {
+                const cell = row.months[m] ?? { type: "inactivo", label: "—" };
+                return (
+                  <td class={`agro-cell stage-${cell.type}`} title={`${row.crop} en ${m}: ${cell.label}`}>
+                    <span>{cell.label}</span>
+                  </td>
+                );
+              })}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="agro-legend">
+    <span><i class="swatch-stage stage-siembra"></i> Siembra / Vegetativo</span>
+    <span><i class="swatch-stage stage-critico"></i> Período crítico (definición de rinde)</span>
+    <span><i class="swatch-stage stage-cosecha"></i> Madurez / Cosecha</span>
+  </div>
+
+  <div class="grid grid-2" style="margin-top:22px;">
+    {
+      agroCalendar.map((row) => (
+        <div class="card">
+          <h3 style="margin-top:0;font-size:1.05rem;">{row.crop}</h3>
+          <p style="font-size:0.88rem;margin-bottom:8px;">
+            <strong style="color:var(--nino)">Con El Niño:</strong> {row.ninoNote}
+          </p>
+          <p style="font-size:0.88rem;margin-bottom:0;">
+            <strong style="color:var(--nina)">Con La Niña:</strong> {row.ninaNote}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</div>

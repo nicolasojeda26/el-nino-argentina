@@ -1,0 +1,52 @@
+---
+import { site } from "../data/content";
+
+const embedCode = `<iframe src="${site.url}/widget/" width="100%" height="220" style="border:0;max-width:480px;border-radius:3px;" loading="lazy" title="Monitor El Niño Argentina"></iframe>`;
+---
+
+<div class="data-tools">
+  <div class="data-tools-actions">
+    <a class="btn btn-ghost" href="/datos/oni.csv" download="oni-noaa-argentina.csv">
+      ↓ Descargar serie ONI (.CSV)
+    </a>
+    <details class="embed-details">
+      <summary class="btn btn-ghost">⟨/⟩ Insertar monitor en tu web</summary>
+      <div class="embed-panel">
+        <p style="font-size:0.88rem;margin-bottom:10px;">
+          Copiá este código HTML para mostrar el indicador ENSO actualizado en tu portal, blog o medio:
+        </p>
+        <div class="embed-code-row">
+          <input
+            type="text"
+            readonly
+            value={embedCode}
+            class="embed-input"
+            aria-label="Código HTML para insertar widget"
+            data-embed-input
+          />
+          <button type="button" class="btn btn-primary" data-embed-copy>Copiar código</button>
+        </div>
+      </div>
+    </details>
+  </div>
+</div>
+
+<script>
+  for (const btn of document.querySelectorAll<HTMLButtonElement>("[data-embed-copy]")) {
+    btn.addEventListener("click", async () => {
+      const parent = btn.closest(".embed-code-row");
+      const input = parent?.querySelector<HTMLInputElement>("[data-embed-input]");
+      if (!input) return;
+      try {
+        await navigator.clipboard.writeText(input.value);
+        const prev = btn.textContent;
+        btn.textContent = "¡Copiado!";
+        setTimeout(() => {
+          btn.textContent = prev;
+        }, 2000);
+      } catch {
+        input.select();
+      }
+    });
+  }
+</script>

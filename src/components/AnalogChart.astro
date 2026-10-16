@@ -1,0 +1,173 @@
+---
+import type { OniPoint } from "../data/oni";
+import { ANALOG_SEASONS, formatAnomaly, getAnalogSeries } from "../data/oni";
+
+interface Props {
+  points: OniPoint[];
+}
+
+const { points } = Astro.props;
+const series = getAnalogSeries(points);
+
+const W = 1000;
+const H = 320;
+const padL = 52;
+const padR = 24;
+const padT = 30;
+const padB = 38;
+const plotW = W - padL - padR;
+const plotH = H - padT - padB;
+const maxScale = 3.0;
+const y0 = padT + plotH / 2;
+const yScale = plotH / 2 / maxScale;
+const yFor = (v: number) => y0 - v * yScale;
+const xFor = (i: number) => padL + (i / (ANALOG_SEASONS.length - 1)) * plotW;
+
+const ticks = [-3, -2, -1, 0, 1, 2, 3];
+const monoFont = '"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace';
+
+const neutralTop = yFor(0.5);
+const neutralBottom = yFor(-0.5);
+
+const builtSeries = series.map((s) => {
+  const coords: { x: number; y: number; v: number; season: string }[] = [];
+  s.values.forEach((v, i) => {
+    if (v !== null && Number.isFinite(v)) {
+      coords.push({ x: xFor(i), y: yFor(v), v, season: ANALOG_SEASONS[i] });
+    }
+  });
+  const d = coords.map((pt, idx) => `${idx === 0 ? "M" : "L"}${pt.x.toFixed(1)},${pt.y.toFixed(1)}`).join(" ");
+  return { ...s, coords, d };
+});
+---
+
+<div class="chart-wrap analog-wrap" data-analog-chart>
+  <div class="chart-toolbar">
+    <div class="chart-readout">
+      <span class="chart-readout-dot"></span>
+      <span>Activar / desactivar campañas históricas para comparar:</span>
+    </div>
+    <div class="analog-toggles">
+      {
+        builtSeries.map((s) => (
+          <button
+            type="button"
+            class={`analog-btn${s.defaultActive ? " is-active" : ""}`}
+            data-analog-toggle={s.id}
+            aria-pressed={s.defaultActive ? "true" : "false"}
+          >
+            <i style={`background:${s.color}`} />
+            {s.label}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    role="img"
+    aria-label="Comparador de curvas ONI de años análogos trimestre a trimestre"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <rect
+      x={padL}
+      y={neutralTop}
+      width={plotW}
+      height={Math.max(neutralBottom - neutralTop, 1)}
+      style="fill:rgba(234,242,249,0.05)"
+    />
+
+    {
+      ticks.map((v) => (
+        <g>
+          <line
+            x1={padL}
+            x2={W - padR}
+            y1={yFor(v)}
+            y2={yFor(v)}
+            stroke={v === 0 ? "rgba(234,242,249,0.38)" : "rgba(234,242,249,0.1)"}
+            stroke-width={v === 0 ? 1.4 : 1}
+            stroke-dasharray={v === 0 ? "0" : "3 6"}
+          />
+          <text
+            x={padL - 10}
+            y={yFor(v) + 4}
+            text-anchor="end"
+            fill="#7d94a8"
+            font-size="12"
+            font-family={monoFont}
+          >
+            {v > 0 ? `+${v}` : v}
+          </text>
+        </g>
+      ))
+    }
+
+    {
+      ANALOG_SEASONS.map((season, i) => (
+        <text
+          x={xFor(i)}
+          y={H - 12}
+          text-anchor="middle"
+          fill="#7d94a8"
+          font-size="12"
+          font-family={monoFont}
+        >
+          {season}
+        </text>
+      ))
+    }
+
+    {
+      builtSeries.map((s) => (
+        <g
+          class={`analog-line-group${s.defaultActive ? "" : " is-hidden"}`}
+          data-analog-series={s.id}
+        >
+          <path
+            d={s.d}
+            fill="none"
+            stroke={s.color}
+            stroke-width={s.isCurrent ? "3.4" : "2"}
+            stroke-dasharray={s.isCurrent ? "0" : "0"}
+            opacity={s.isCurrent ? "1" : "0.82"}
+          />
+          {s.coords.map((pt) => (
+            <circle
+              cx={pt.x}
+              cy={pt.y}
+              r={s.isCurrent ? "4.5" : "3"}
+              fill={s.color}
+            >
+              <title>{`${s.label} · ${pt.season}: ${formatAnomaly(pt.v)} °C`}</title>
+            </circle>
+          ))}
+        </g>
+      ))
+    }
+  </svg>
+
+  <div class="legend">
+    <span><i style="background:var(--sol)"></i> Año en curso</span>
+    <span><i style="background:var(--nino)"></i> Grandes eventos El Niño</span>
+    <span><i style="background:var(--nina)"></i> La Niña triple (2021)</span>
+    <span>Franja gris: zona neutral (−0,5° a +0,5°)</span>
+  </div>
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>("[data-analog-chart]")) {
+    const btns = root.querySelectorAll<HTMLButtonElement>("[data-analog-toggle]");
+    for (const btn of btns) {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.analogToggle;
+        const active = !btn.classList.contains("is-active");
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", String(active));
+        const grp = root.querySelector<SVGGElement>(`[data-analog-series="${id}"]`);
+        grp?.classList.toggle("is-hidden", !active);
+      });
+    }
+  }
+</script>

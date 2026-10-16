@@ -1086,6 +1086,341 @@ p {
   text-decoration: none;
 }
 
+/* ---------- Probabilidades trimestrales ---------- */
+.prob-wrap {
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  padding: 22px;
+}
+
+.prob-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 16px;
+}
+
+.prob-legend {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.prob-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.prob-legend i {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+}
+
+.prob-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prob-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 96px;
+  gap: 14px;
+  align-items: center;
+}
+
+.prob-meta strong {
+  display: block;
+  color: var(--ink);
+  font-size: 0.8rem;
+}
+
+.prob-period {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.prob-bar {
+  display: flex;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--paper-3);
+}
+
+.prob-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--blanco);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.seg-nino {
+  background: var(--nino);
+}
+
+.seg-neutral {
+  background: var(--neutral);
+}
+
+.seg-nina {
+  background: var(--nina);
+}
+
+.prob-dom {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: right;
+}
+
+.dom-nino {
+  color: var(--nino);
+}
+
+.dom-nina {
+  color: var(--nina);
+}
+
+.dom-neutral {
+  color: var(--muted);
+}
+
+/* ---------- Años análogos ---------- */
+.analog-toggles {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.analog-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px;
+  border: 1px solid var(--rule-ink);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--on-ink-muted);
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.analog-btn i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.analog-btn.is-active {
+  background: rgba(234, 242, 249, 0.1);
+  color: var(--on-ink);
+  border-color: var(--on-ink-soft);
+}
+
+.analog-line-group.is-hidden {
+  display: none;
+}
+
+/* ---------- Calendario agrícola ---------- */
+.agro-win {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.agro-cell {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  padding: 10px 8px;
+}
+
+.stage-siembra {
+  background: rgba(91, 169, 222, 0.18);
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.stage-critico {
+  background: rgba(228, 87, 46, 0.22);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.stage-cosecha {
+  background: rgba(245, 179, 1, 0.25);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.stage-inactivo {
+  color: var(--muted);
+  font-size: 0.64rem;
+}
+
+.agro-legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.agro-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.swatch-stage {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  border: 1px solid var(--rule);
+}
+
+/* ---------- Buscador de provincias ---------- */
+.prov-finder-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 16px 18px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+}
+
+.prov-select {
+  flex: 1;
+  min-width: 220px;
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  background: var(--blanco);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.94rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+
+.prov-preview {
+  margin-top: 16px;
+  padding: 22px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.prov-preview[hidden] {
+  display: none;
+}
+
+.prov-preview-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Herramientas de datos (CSV / Widget) ---------- */
+.data-tools {
+  margin-top: 16px;
+}
+
+.data-tools-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.embed-details summary {
+  list-style: none;
+}
+
+.embed-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.embed-panel {
+  margin-top: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--rule-ink);
+  background: rgba(234, 242, 249, 0.04);
+  max-width: 620px;
+}
+
+.section .embed-panel {
+  border-color: var(--rule);
+  background: var(--paper-2);
+}
+
+.embed-code-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.embed-input {
+  flex: 1;
+  min-width: 220px;
+  padding: 9px 11px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  border: 1px solid var(--rule);
+  background: var(--blanco);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+}
+
+@media (max-width: 640px) {
+  .prob-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .prob-dom {
+    text-align: left;
+  }
+}
+
+.share-btn:hover {
+  background: var(--paper-3);
+  border-color: var(--ink);
+  text-decoration: none;
+}
+
 /* ---------- Tablas ---------- */
 .table-wrap {
   overflow-x: auto;

@@ -2,6 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import AdSlot from "../components/AdSlot.astro";
 import ArgentinaMap from "../components/ArgentinaMap.astro";
+import ProvinceFinder from "../components/ProvinceFinder.astro";
+import AgroCalendar from "../components/AgroCalendar.astro";
 import Icon from "../components/Icon.astro";
 import { regions } from "../data/content";
 
@@ -15,8 +17,8 @@ const comparisons: { region: string; nino: string; nina: string }[] = [
 ---
 
 <Layout
-  title="Impactos de El Niño por región en Argentina"
-  description="Cómo afecta El Niño y La Niña a cada región de Argentina: Litoral, Pampa, Cuyo, NOA y Patagonia. Lluvias, sequías, ríos y agro."
+  title="Impactos de El Niño por región y provincia en Argentina"
+  description="Cómo afecta El Niño y La Niña a cada región y provincia de Argentina: Litoral, Pampa, Cuyo, NOA y Patagonia. Calendario agrícola, lluvias, sequías y ríos."
   breadcrumbs={[
     { name: "Inicio", path: "/" },
     { name: "Impactos", path: "/impactos/" },
@@ -29,7 +31,7 @@ const comparisons: { region: string; nino: string; nina: string }[] = [
     <h1>Impactos de El Niño en Argentina</h1>
     <p class="lead">
       El efecto del ENSO no es uniforme en el país. La señal es más fuerte en el
-      centro-este y el Litoral, y más débil en Cuyo y la Patagonia. Elegí tu región:
+      centro-este y el Litoral, y más débil en Cuyo y la Patagonia. Elegí tu región o buscá tu provincia:
     </p>
   </section>
 
@@ -40,7 +42,9 @@ const comparisons: { region: string; nino: string; nina: string }[] = [
   </section>
 
   <section class="section container">
-    <div class="grid grid-3">
+    <p class="eyebrow">Regiones climáticas</p>
+    <h2>Las 5 grandes regiones</h2>
+    <div class="grid grid-3" style="margin-top:24px;">
       {
         regions.map((r) => (
           <a class="card" href={`/impactos/${r.slug}/`}>
@@ -54,10 +58,28 @@ const comparisons: { region: string; nino: string; nina: string }[] = [
     </div>
   </section>
 
+  <section class="section container" id="provincias">
+    <p class="eyebrow">Por jurisdicción</p>
+    <h2>Buscador por provincia</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      Seleccioná tu provincia para consultar qué esperar con El Niño y La Niña, los sectores productivos más expuestos y los riesgos locales.
+    </p>
+    <ProvinceFinder />
+  </section>
+
   <AdSlot label="Publicidad" slot="impactos" />
 
+  <section class="section container" id="calendario-agricola">
+    <p class="eyebrow">Campaña agrícola</p>
+    <h2>Calendario agrícola vs. ciclo ENSO</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      Cómo coinciden las etapas de siembra, período crítico (floración y llenado) y cosecha de los principales cultivos argentinos con la señal de El Niño y La Niña:
+    </p>
+    <AgroCalendar />
+  </section>
+
   <section class="section container">
-    <h2>Comparación rápida</h2>
+    <h2>Comparación rápida por región</h2>
     <div class="table-wrap" style="margin-top:20px;">
       <table>
         <thead>

@@ -131,3 +131,186 @@ export function buildStatus(points: OniPoint[]): EnsoStatus {
 export function formatAnomaly(v: number): string {
   return `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(2)}`;
 }
+
+/** Segundo jueves de un mes dado (0-indexed). */
+function secondThursday(year: number, month: number): Date {
+  const first = new Date(Date.UTC(year, month, 1, 15, 0, 0));
+  const day = first.getUTCDay(); // 0 = Sun ... 4 = Thu
+  const offsetToFirstThu = (4 - day + 7) % 7;
+  const secondThuDay = 1 + offsetToFirstThu + 7;
+  return new Date(Date.UTC(year, month, secondThuDay, 15, 0, 0));
+}
+
+/** Calcula la fecha del próximo boletín mensual de NOAA (segundo jueves de cada mes). */
+export function getNextNoaaRelease(now: Date = new Date()): {
+  date: Date;
+  shortLabel: string;
+  daysLeft: number;
+} {
+  let target = secondThursday(now.getUTCFullYear(), now.getUTCMonth());
+  if (target.getTime() <= now.getTime()) {
+    const nextMonth = now.getUTCMonth() + 1;
+    const y = now.getUTCFullYear() + (nextMonth > 11 ? 1 : 0);
+    const m = nextMonth % 12;
+    target = secondThursday(y, m);
+  }
+  const diffMs = target.getTime() - now.getTime();
+  const daysLeft = Math.max(1, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+  const shortLabel = new Intl.DateTimeFormat("es-AR", {
+    day: "numeric",
+    month: "short",
+  }).format(target);
+  return { date: target, shortLabel, daysLeft };
+}
+
+export interface SeasonProb {
+  season: string;
+  periodLabel: string;
+  year: number;
+  nino: number;
+  neutral: number;
+  nina: number;
+  dominant: EnsoState;
+}
+
+/**
+ * Genera el abanico de probabilidades trimestrales para los próximos 6 trimestres
+ * móviles a partir del estado, anomalía y tendencia actual del ONI.
+ */
+export function getForecastProbabilities(points: OniPoint[]): SeasonProb[] {
+  const s = buildStatus(points);
+  const startIdx = SEASONS.indexOf(s.latest.season as (typeof SEASONS)[number]);
+  const baseIdx = startIdx >= 0 ? startIdx : 0;
+  let currentYear = s.latest.year;
+
+  const result: SeasonProb[] = [];
+  let projectedAnom = s.latest.anomaly + s.delta * 0.35;
+
+  for (let step = 1; step <= 6; step++) {
+    const idx = (baseIdx + step) % 12;
+    const season = SEASONS[idx];
+    if (idx === 0) currentYear++;
+
+    // Amortiguamiento gradual hacia la media climatológica (persistencia primaveral/otoñal)
+    projectedAnom = projectedAnom * 0.78;
+
+    let nino = 33;
+    let neutral = 34;
+    let nina = 33;
+
+    if (projectedAnom >= 0.25) {
+      const strength = Math.min(1, projectedAnom / 1.8);
+      nino = Math.round(45 + strength * 47);
+      nina = Math.max(2, Math.round(12 - strength * 10));
+      neutral = 100 - nino - nina;
+    } else if (projectedAnom <= -0.25) {
+      const strength = Math.min(1, Math.abs(projectedAnom) / 1.6);
+      nina = Math.round(45 + strength * 45);
+      nino = Math.max(2, Math.round(12 - strength * 10));
+      neutral = 100 - nina - nino;
+    } else {
+      neutral = Math.round(54 - Math.abs(projectedAnom) * 30);
+      nino = Math.round((100 - neutral) / 2 + projectedAnom * 35);
+      nina = 100 - neutral - nino;
+    }
+
+    const dominant: EnsoState =
+      nino >= neutral && nino >= nina
+        ? "El Niño"
+        : nina >= neutral && nina >= nino
+          ? "La Niña"
+          : "Neutral";
+
+    result.push({
+      season,
+      periodLabel: seasonLabel(season),
+      year: currentYear,
+      nino,
+      neutral,
+      nina,
+      dominant,
+    });
+  }
+
+  return result;
+}
+
+export interface AnalogSeries {
+  id: string;
+  label: string;
+  tag: string;
+  color: string;
+  isCurrent?: boolean;
+  defaultActive: boolean;
+  values: (number | null)[];
+}
+
+export const ANALOG_SEASONS: readonly string[] = SEASONS;
+
+/**
+ * Devuelve las curvas trimestrales (DJF a NDJ) de años históricos emblemáticos
+ * junto con el año en curso para el comparador de Años Análogos.
+ */
+export function getAnalogSeries(points: OniPoint[]): AnalogSeries[] {
+  const byYearSeason = new Map<string, number>();
+  for (const p of points) {
+    byYearSeason.set(`${p.year}-${p.season}`, p.anomaly);
+  }
+
+  const buildYearValues = (year: number): (number | null)[] =>
+    SEASONS.map((season) => byYearSeason.get(`${year}-${season}`) ?? null);
+
+  const latestYear = points[points.length - 1]?.year ?? new Date().getFullYear();
+
+  return [
+    {
+      id: String(latestYear),
+      label: `${latestYear} (Actual)`,
+      tag: "En curso",
+      color: "var(--sol)",
+      isCurrent: true,
+      defaultActive: true,
+      values: buildYearValues(latestYear),
+    },
+    {
+      id: "1997",
+      label: "1997 (Niño +2,4°)",
+      tag: "El Niño muy fuerte",
+      color: "var(--nino)",
+      defaultActive: true,
+      values: buildYearValues(1997),
+    },
+    {
+      id: "2015",
+      label: "2015 (Niño +2,6°)",
+      tag: "Récord histórico",
+      color: "#ff8c61",
+      defaultActive: true,
+      values: buildYearValues(2015),
+    },
+    {
+      id: "2023",
+      label: "2023 (Niño +2,0°)",
+      tag: "El Niño fuerte",
+      color: "#d97724",
+      defaultActive: false,
+      values: buildYearValues(2023),
+    },
+    {
+      id: "1982",
+      label: "1982 (Niño +2,2°)",
+      tag: "El Niño muy fuerte",
+      color: "#b55239",
+      defaultActive: false,
+      values: buildYearValues(1982),
+    },
+    {
+      id: "2021",
+      label: "2021 (Niña −1,3°)",
+      tag: "La Niña triple",
+      color: "var(--nina)",
+      defaultActive: true,
+      values: buildYearValues(2021),
+    },
+  ];
+}

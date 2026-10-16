@@ -4,14 +4,16 @@ import Layout from "../layouts/Layout.astro";
 import OniChart from "../components/OniChart.astro";
 import EnsoScale from "../components/EnsoScale.astro";
 import ArgentinaMap from "../components/ArgentinaMap.astro";
+import DataTools from "../components/DataTools.astro";
 import AdSlot from "../components/AdSlot.astro";
 import Icon from "../components/Icon.astro";
 import Sun from "../components/Sun.astro";
-import { getOni, buildStatus, formatAnomaly } from "../data/oni";
+import { getOni, buildStatus, formatAnomaly, getNextNoaaRelease } from "../data/oni";
 import { regions, site, outlook } from "../data/content";
 
 const points = await getOni();
 const s = buildStatus(points);
+const nextRelease = getNextNoaaRelease();
 
 const stateClass = s.state === "El Niño" ? "warm" : s.state === "La Niña" ? "cool" : "neutral";
 const trendIcon = s.trend === "subiendo" ? "↑" : s.trend === "bajando" ? "↓" : "→";
@@ -35,6 +37,11 @@ const jsonLd = {
   creator: { "@type": "Organization", name: "NOAA Climate Prediction Center" },
   temporalCoverage: "1950/..",
   variableMeasured: "Oceanic Niño Index",
+  distribution: {
+    "@type": "DataDownload",
+    encodingFormat: "text/csv",
+    contentUrl: new URL("/datos/oni.csv", Astro.site ?? site.url).href,
+  },
 };
 ---
 
@@ -100,8 +107,10 @@ const jsonLd = {
             <dd>{formatAnomaly(peak.anomaly)}° <span class="mono">{peak.season} {peak.year}</span></dd>
           </div>
           <div>
-            <dt>Próximo dato NOAA</dt>
-            <dd class="small">Actualización mensual</dd>
+            <dt>Próximo boletín NOAA</dt>
+            <dd class="small">
+              {nextRelease.shortLabel} <span class="mono">({nextRelease.daysLeft} d)</span>
+            </dd>
           </div>
         </dl>
       </div>
@@ -114,6 +123,7 @@ const jsonLd = {
           por debajo de −0,5 °C, de La Niña.
         </p>
         <OniChart points={points} count={32} />
+        <DataTools />
       </div>
     </div>
   </section>

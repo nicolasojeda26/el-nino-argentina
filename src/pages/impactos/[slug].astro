@@ -2,7 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import AdSlot from "../../components/AdSlot.astro";
 import Icon from "../../components/Icon.astro";
-import { regions, site } from "../../data/content";
+import { provincesData, regions, site } from "../../data/content";
 
 export function getStaticPaths() {
   return regions.map((region) => ({ params: { slug: region.slug }, props: { region } }));
@@ -10,6 +10,7 @@ export function getStaticPaths() {
 
 const { region } = Astro.props;
 const others = regions.filter((r) => r.slug !== region.slug);
+const regionProvinces = provincesData.filter((p) => p.regionSlug === region.slug);
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -78,6 +79,22 @@ const jsonLd = {
       <ul style="color:var(--text-soft);padding-left:1.2em;margin:0;">
         {region.recommendations.map((p) => <li style="margin-bottom:8px;">{p}</li>)}
       </ul>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h2>Provincias en {region.name}</h2>
+    <div class="grid grid-3" style="margin-top:20px;">
+      {
+        regionProvinces.map((p) => (
+          <a class="card" href={`/impactos/provincia/${p.slug}/`}>
+            <span class="tag">Exposición {p.exposure}</span>
+            <h3>{p.name}</h3>
+            <p style="font-size:0.88rem;">{p.sectors}</p>
+            <span class="more">Ver ficha provincial →</span>
+          </a>
+        ))
+      }
     </div>
   </section>
 

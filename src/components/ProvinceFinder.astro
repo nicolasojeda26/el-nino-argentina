@@ -1,0 +1,87 @@
+---
+import { provincesData, regions } from "../data/content";
+
+const regionNames = Object.fromEntries(regions.map((r) => [r.slug, r.name]));
+const defaultProv = provincesData[0];
+---
+
+<div class="prov-finder" data-prov-finder>
+  <div class="prov-finder-bar">
+    <label for="provSelect" class="mono">Elegí tu provincia:</label>
+    <select id="provSelect" class="prov-select" data-prov-select>
+      {
+        provincesData.map((p) => (
+          <option value={p.slug}>{p.name} ({regionNames[p.regionSlug]})</option>
+        ))
+      }
+    </select>
+    <a class="btn btn-primary prov-go" id="provGoLink" href={`/impactos/provincia/${defaultProv.slug}/`}>
+      Ver ficha completa →
+    </a>
+  </div>
+
+  {
+    provincesData.map((p, idx) => (
+      <div
+        class="prov-preview"
+        data-prov-card={p.slug}
+        data-region={p.regionSlug}
+        hidden={idx !== 0 ? true : undefined}
+      >
+        <div class="prov-preview-head">
+          <div>
+            <span class="eyebrow" style="margin-bottom:6px;">
+              {regionNames[p.regionSlug]} · Exposición {p.exposure.toLowerCase()}
+            </span>
+            <h3 style="margin:0;font-size:1.45rem;">{p.name}</h3>
+          </div>
+          <a class="more" href={`/impactos/provincia/${p.slug}/`}>
+            Abrir página de {p.name} →
+          </a>
+        </div>
+        <p style="font-size:0.9rem;margin:10px 0 18px;">
+          <strong>Sectores clave:</strong> {p.sectors}.
+        </p>
+        <div class="grid grid-2">
+          <div class="card" style="padding:18px;">
+            <strong class="mono" style="color:var(--nino)">● Con El Niño</strong>
+            <p style="font-size:0.9rem;margin-top:8px;">{p.ninoImpact}</p>
+          </div>
+          <div class="card" style="padding:18px;">
+            <strong class="mono" style="color:var(--nina)">● Con La Niña</strong>
+            <p style="font-size:0.9rem;margin-top:8px;">{p.ninaImpact}</p>
+          </div>
+        </div>
+      </div>
+    ))
+  }
+
+  <div class="chips" style="margin-top:20px;">
+    {
+      provincesData.map((p) => (
+        <a class="chip" data-region={p.regionSlug} href={`/impactos/provincia/${p.slug}/`}>
+          <span class="swatch" aria-hidden="true" />
+          {p.name}
+        </a>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>("[data-prov-finder]")) {
+    const select = root.querySelector<HTMLSelectElement>("[data-prov-select]");
+    const goLink = root.querySelector<HTMLAnchorElement>("#provGoLink");
+    const cards = root.querySelectorAll<HTMLElement>("[data-prov-card]");
+
+    select?.addEventListener("change", () => {
+      const slug = select.value;
+      for (const c of cards) {
+        c.hidden = c.dataset.provCard !== slug;
+      }
+      if (goLink) {
+        goLink.href = `/impactos/provincia/${slug}/`;
+      }
+    });
+  }
+</script>

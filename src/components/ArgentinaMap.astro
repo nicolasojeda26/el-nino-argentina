@@ -1,5 +1,5 @@
 ---
-import { regions } from "../data/content";
+import { provinceByName, regions } from "../data/content";
 import map from "../data/argentina-map.json";
 
 const { viewBox, provinces } = map;
@@ -21,17 +21,21 @@ const provincesByRegion = regions.reduce<Record<string, string[]>>((acc, r) => {
     >
       <g class="armap-provs">
         {
-          provinces.map((p) => (
-            <a
-              class="prov"
-              href={`/impactos/${p.region}/`}
-              data-region={p.region}
-              aria-label={`${p.name}: ver impactos en ${regionMeta[p.region]?.name ?? p.region}`}
-            >
-              <path d={p.d} />
-              <title>{p.name}</title>
-            </a>
-          ))
+          provinces.map((p) => {
+            const pInfo = provinceByName[p.name];
+            const href = pInfo ? `/impactos/provincia/${pInfo.slug}/` : `/impactos/${p.region}/`;
+            return (
+              <a
+                class="prov"
+                href={href}
+                data-region={p.region}
+                aria-label={`${p.name}: ver impactos en ${p.name} (${regionMeta[p.region]?.name ?? p.region})`}
+              >
+                <path d={p.d} />
+                <title>{`${p.name} — clic para ver ficha provincial`}</title>
+              </a>
+            );
+          })
         }
       </g>
     </svg>

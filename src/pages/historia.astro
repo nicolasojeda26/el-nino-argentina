@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import OniChart from "../components/OniChart.astro";
+import AnalogChart from "../components/AnalogChart.astro";
+import DataTools from "../components/DataTools.astro";
 import AdSlot from "../components/AdSlot.astro";
 import { getOni } from "../data/oni";
 import { historicEvents } from "../data/content";
@@ -13,7 +15,7 @@ const fmt = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
 
 <Layout
   title="Historia de El Niño y La Niña en Argentina"
-  description="Los eventos de El Niño y La Niña más importantes de la historia reciente y su impacto en Argentina, con la serie completa del índice ONI."
+  description="Los eventos de El Niño y La Niña más importantes de la historia reciente, comparador de años análogos y serie completa del índice ONI para descargar."
   breadcrumbs={[
     { name: "Inicio", path: "/" },
     { name: "Historia", path: "/historia/" },
@@ -36,6 +38,16 @@ const fmt = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
       Décadas de oscilación entre fases cálidas (El Niño) y frías (La Niña). Usá los botones para hacer zoom temporal.
     </p>
     <OniChart points={points} count={points.length} height={300} interactiveRange />
+    <DataTools />
+  </section>
+
+  <section class="section container">
+    <p class="eyebrow">Años análogos</p>
+    <h2>Comparador de campañas históricas</h2>
+    <p class="lead" style="margin-bottom:22px;">
+      Compará cómo evolucionaron los eventos más intensos del registro trimestre a trimestre frente al año actual:
+    </p>
+    <AnalogChart points={points} />
   </section>
 
   <AdSlot label="Publicidad" slot="historia" />

@@ -7,6 +7,23 @@ export const site = {
   domain: "elniño.net.ar",
   email: "litoraldevctes@gmail.com",
   adsenseClient: "ca-pub-2347772486638856",
+  adsSlots: {
+    "home-top": "",
+    pronostico: "",
+    glosario: "",
+    historia: "",
+    faq: "",
+    "el-nino": "",
+    "la-nina": "",
+    impactos: "",
+    noticias: "",
+    noticia: "",
+    "impactos-litoral": "",
+    "impactos-pampeana": "",
+    "impactos-cuyo": "",
+    "impactos-noa": "",
+    "impactos-patagonia": "",
+  } as Record<string, string>,
   author: "El Niño Argentina",
 };
 

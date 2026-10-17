@@ -9,17 +9,18 @@ interface Props {
 
 const { slot = "", label = "Espacio publicitario", format = "auto" } = Astro.props;
 const client = site.adsenseClient;
-const isNumericSlot = /^\d+$/.test(slot.trim());
+const name = slot.trim();
+const unitId = /^\d+$/.test(name) ? name : (site.adsSlots[name] ?? "");
 ---
 
 {
-  client && isNumericSlot ? (
+  client && /^\d+$/.test(unitId) ? (
     <div class="ad ad-live">
       <ins
         class="adsbygoogle"
         style="display:block;width:100%;min-height:96px;"
         data-ad-client={client}
-        data-ad-slot={slot.trim()}
+        data-ad-slot={unitId}
         data-ad-format={format}
         data-full-width-responsive="true"
       />

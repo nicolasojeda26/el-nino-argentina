@@ -6,7 +6,7 @@ export const site = {
   url: "https://xn--elnio-rta.net.ar",
   domain: "elniño.net.ar",
   email: "litoraldevctes@gmail.com",
-  adsenseClient: "ca-pub-2347772486638856",
+  adsenseClient: "ca-pub-2347772486638866",
   adsSlots: {
     "home-top": "",
     pronostico: "",

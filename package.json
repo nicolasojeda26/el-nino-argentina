@@ -11,11 +11,13 @@
     "preview": "astro preview",
     "check": "astro check",
     "update:oni": "node scripts/update-oni.mjs",
+    "update:alertas": "node scripts/update-alertas.mjs",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.4.0"
+    "astro": "^7.4.0",
+    "maplibre-gl": "^6.15.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

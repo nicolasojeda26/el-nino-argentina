@@ -1,6 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import AlertTicker from "../components/AlertTicker.astro";
 import { site } from "../data/content";
 import "../styles/global.css";
 
@@ -135,6 +136,7 @@ const schemas = [baseSchema, breadcrumbSchema, ...(Array.isArray(jsonLd) ? jsonL
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <Header />
+    <AlertTicker />
     <main id="contenido">
       <slot />
     </main>

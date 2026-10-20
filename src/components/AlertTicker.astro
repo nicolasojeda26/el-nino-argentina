@@ -1,0 +1,269 @@
+---
+import alertas from "../data/alertas.json";
+import Icon from "./Icon.astro";
+
+const tz = "America/Argentina/Buenos_Aires";
+const nf = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 2 });
+const dayMonth = new Intl.DateTimeFormat("es-AR", {
+  day: "2-digit",
+  month: "2-digit",
+  timeZone: tz,
+});
+const timeOnly = new Intl.DateTimeFormat("es-AR", {
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+  timeZone: tz,
+});
+
+const generatedAt = new Date(alertas.generatedAt);
+const updatedLabel = Number.isFinite(generatedAt.getTime())
+  ? `${dayMonth.format(generatedAt)} ${timeOnly.format(generatedAt)}`
+  : "";
+
+const dayKey = (date: Date) => date.toLocaleDateString("en-CA", { timeZone: tz });
+const today = dayKey(new Date());
+const tomorrow = dayKey(new Date(Date.now() + 86_400_000));
+
+const expiryLabel = (iso: string) => {
+  const date = new Date(iso);
+  if (!Number.isFinite(date.getTime())) return "";
+  const key = dayKey(date);
+  const time = timeOnly.format(date);
+  if (key === today) return `hasta hoy ${time}`;
+  if (key === tomorrow) return `hasta mañana ${time}`;
+  return `hasta el ${dayMonth.format(date)} ${time}`;
+};
+
+const trendLabel = (trend: string) =>
+  trend === "crece" ? "en crecida" : trend === "baja" ? "en bajante" : trend;
+
+const inaItems = alertas.ina
+  .filter((station) => station.alert !== "ok")
+  .sort((a, b) => {
+    const order = { evacuacion: 0, alerta: 1 };
+    return (
+      (order[a.alert as keyof typeof order] ?? 2) - (order[b.alert as keyof typeof order] ?? 2) ||
+      a.river.localeCompare(b.river) ||
+      a.station.localeCompare(b.station)
+    );
+  })
+  .slice(0, 10)
+  .map((station) => ({
+    source: "INA",
+    level: station.alert,
+    label: station.alert === "evacuacion" ? "Evacuación" : "Alerta hídrica",
+    text: `${station.river ? `${station.river} · ` : ""}${station.station}: ${nf.format(station.value)} ${station.unit}${station.trend ? `, ${trendLabel(station.trend)}` : ""}`,
+    meta: `INA · ${station.updated}`,
+    href: station.url,
+    weight: station.alert === "evacuacion" ? 0 : 1,
+  }));
+
+const eventWeight = (event: string) => (/lluv|torment/i.test(event) ? 0 : 1);
+
+const smnGroups = new Map<
+  string,
+  { event: string; area: string; level: string; levelLabel: string; rank: number; expires: string }
+>();
+
+for (const alert of alertas.smn) {
+  if (!/lluv|torment|viento/i.test(alert.event)) continue;
+  const key = `${alert.event}|${alert.area}|${alert.level}|${alert.expires}`;
+  if (!smnGroups.has(key)) {
+    smnGroups.set(key, {
+      event: alert.event,
+      area: alert.area,
+      level: alert.level,
+      levelLabel: alert.levelLabel,
+      rank: alert.rank,
+      expires: alert.expires,
+    });
+  }
+}
+
+const smnItems = [...smnGroups.values()]
+  .sort(
+    (a, b) =>
+      a.rank - b.rank ||
+      eventWeight(a.event) - eventWeight(b.event) ||
+      new Date(a.expires).getTime() - new Date(b.expires).getTime(),
+  )
+  .slice(0, 6)
+  .map((alert) => ({
+    source: "SMN",
+    level: alert.level,
+    label: `Alerta ${alert.levelLabel.toLowerCase()}`,
+    text: `${alert.event} en ${alert.area}`,
+    meta: `SMN · ${expiryLabel(alert.expires)}`,
+    href: "https://www.smn.gob.ar/alertas",
+    weight: alert.rank <= 1 ? 0.5 : 1.5,
+  }));
+
+const items = [...inaItems, ...smnItems].sort((a, b) => a.weight - b.weight);
+const evacuationCount = alertas.ina.filter((station) => station.alert === "evacuacion").length;
+const inaAlertCount = alertas.ina.filter((station) => station.alert === "alerta").length;
+const summary = `${evacuationCount} estaciones en evacuación, ${inaAlertCount} con alerta hídrica y ${smnGroups.size} avisos meteorológicos del SMN`;
+---
+
+{
+  items.length > 0 && (
+    <section
+      class="alerts-bar"
+      data-alerts
+      data-interval="6500"
+      aria-label={`Alertas en vivo: ${summary}. Fuentes: Servicio Meteorológico Nacional e Instituto Nacional del Agua.`}
+    >
+      <div class="container alerts-inner">
+        <span class="alerts-badge">
+          <span class="alerts-dot" aria-hidden="true" />
+          Alertas
+        </span>
+
+        <div class="alerts-viewport">
+          <ul class="alerts-track">
+            {items.map((item, index) => (
+              <li
+                class:list={["alert-slide", `lvl-${item.level}`, { "is-active": index === 0 }]}
+                aria-hidden={index === 0 ? undefined : "true"}
+              >
+                <a
+                  class="alert-link"
+                  href={item.href}
+                  tabindex={index === 0 ? undefined : -1}
+                  rel={item.source === "INA" ? "noopener" : undefined}
+                >
+                  <span class="alert-level">{item.label}</span>
+                  <span class="alert-text">{item.text}</span>
+                  <span class="alert-meta">{item.meta}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="alerts-actions">
+          <span class="alerts-updated">Act. {updatedLabel}</span>
+          <button type="button" class="alerts-btn" data-alert-prev aria-label="Alerta anterior">
+            <Icon name="chevron-left" size={14} />
+          </button>
+          <button type="button" class="alerts-btn" data-alert-next aria-label="Alerta siguiente">
+            <Icon name="chevron-right" size={14} />
+          </button>
+          <button
+            type="button"
+            class="alerts-btn alerts-pause"
+            data-alert-pause
+            aria-label="Pausar rotación"
+            aria-pressed="false"
+          >
+            <span class="icon-pause"><Icon name="pause" size={13} /></span>
+            <span class="icon-play"><Icon name="play" size={13} /></span>
+          </button>
+        </div>
+
+        <span class="visually-hidden" data-alert-status aria-live="polite" />
+      </div>
+    </section>
+  )
+}
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-alerts]");
+  if (root) {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>(".alert-slide"));
+    const prev = root.querySelector<HTMLButtonElement>("[data-alert-prev]");
+    const next = root.querySelector<HTMLButtonElement>("[data-alert-next]");
+    const pause = root.querySelector<HTMLButtonElement>("[data-alert-pause]");
+    const status = root.querySelector<HTMLElement>("[data-alert-status]");
+    const interval = Number(root.dataset.interval) || 6500;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let current = 0;
+    let timer: number | undefined;
+    let userPaused = false;
+
+    const show = (index: number, announce = false) => {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        const active = i === current;
+        slide.classList.toggle("is-active", active);
+        slide.setAttribute("aria-hidden", String(!active));
+        slide.toggleAttribute("inert", !active);
+        const link = slide.querySelector<HTMLAnchorElement>("a");
+        if (link) {
+          if (active) link.removeAttribute("tabindex");
+          else link.setAttribute("tabindex", "-1");
+        }
+      });
+      if (announce && status) {
+        status.textContent = `Alerta ${current + 1} de ${slides.length}`;
+      }
+    };
+
+    const stop = () => {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = undefined;
+      }
+    };
+
+    const start = () => {
+      stop();
+      if (reduceMotion || userPaused || slides.length < 2) return;
+      timer = window.setInterval(() => show(current + 1), interval);
+    };
+
+    const setPaused = (value: boolean) => {
+      userPaused = value;
+      root.toggleAttribute("data-paused", value);
+      pause?.setAttribute("aria-pressed", String(value));
+      pause?.setAttribute("aria-label", value ? "Reanudar rotación" : "Pausar rotación");
+      if (value) stop();
+      else start();
+    };
+
+    prev?.addEventListener("click", () => {
+      show(current - 1, true);
+      start();
+    });
+
+    next?.addEventListener("click", () => {
+      show(current + 1, true);
+      start();
+    });
+
+    pause?.addEventListener("click", () => setPaused(!userPaused));
+
+    root.addEventListener("pointerenter", stop);
+    root.addEventListener("pointerleave", () => {
+      if (!userPaused) start();
+    });
+    root.addEventListener("focusin", stop);
+    root.addEventListener("focusout", (event) => {
+      if (!root.contains(event.relatedTarget as Node | null) && !userPaused) start();
+    });
+    root.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        show(current - 1, true);
+        start();
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        show(current + 1, true);
+        start();
+      }
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop();
+      else if (!userPaused) start();
+    });
+
+    if (slides.length < 2) {
+      prev?.setAttribute("hidden", "");
+      next?.setAttribute("hidden", "");
+      pause?.setAttribute("hidden", "");
+    }
+
+    start();
+  }
+</script>

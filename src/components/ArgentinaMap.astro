@@ -1,4 +1,5 @@
 ---
+import "maplibre-gl/dist/maplibre-gl.css";
 import { provinceByName, regions } from "../data/content";
 import map from "../data/argentina-map.json";
 
@@ -10,45 +11,83 @@ const provincesByRegion = regions.reduce<Record<string, string[]>>((acc, r) => {
   return acc;
 }, {});
 
-const defaultStatus = "Explorá el mapa: tocá o pasá el cursor por cualquier provincia o región";
+const allProvinces = Object.values(provinceByName).sort((a, b) =>
+  a.name.localeCompare(b.name, "es"),
+);
+const regionNames = Object.fromEntries(regions.map((r) => [r.slug, r.name]));
+const defaultStatus =
+  "Mapa 3D: arrastrá para explorar, usá los botones para hacer zoom y tocá una provincia, alerta o estación";
 ---
 
-<figure class="armap" data-default-status={defaultStatus}>
-  <div class="armap-canvas">
+<figure
+  class="armap armap-3d"
+  data-default-status={defaultStatus}
+  data-region-names={JSON.stringify(regionNames)}
+>
+  <div class="armap-toolbar">
     <div class="armap-status" data-map-status aria-live="polite">
       <span class="armap-status-dot"></span>
       <span data-map-status-text>{defaultStatus}</span>
     </div>
-    <svg
-      class="armap-svg"
-      viewBox={viewBox}
-      role="img"
-      aria-label="Mapa de Argentina dividido en cinco regiones climáticas y 24 jurisdicciones"
-    >
-      <g class="armap-provs">
-        {
-          provinces.map((p) => {
-            const pInfo = provinceByName[p.name];
-            const href = pInfo ? `/impactos/provincia/${pInfo.slug}/` : `/impactos/${p.region}/`;
-            const regName = regionMeta[p.region]?.name ?? p.region;
-            return (
-              <a
-                class="prov"
-                href={href}
-                data-region={p.region}
-                data-prov-name={p.name}
-                data-region-name={regName}
-                aria-label={`${p.name}: ver impactos en ${p.name} (${regName})`}
-              >
-                <path d={p.d} />
-                <title>{`${p.name} (${regName}) — clic para ver ficha provincial`}</title>
-              </a>
-            );
-          })
-        }
-      </g>
-    </svg>
+    <div class="armap-controls" role="group" aria-label="Vista del mapa">
+      <button type="button" class="armap-btn" data-map-pitch aria-pressed="true">3D</button>
+      <button type="button" class="armap-btn" data-map-globe aria-pressed="false">Globo</button>
+      <button type="button" class="armap-btn" data-map-reset>Centrar</button>
+    </div>
   </div>
+
+  <div class="armap-canvas">
+    <div
+      class="armap-gl"
+      data-map3d
+      tabindex="0"
+      role="region"
+      aria-label="Mapa interactivo de Argentina con relieve, provincias, alertas del SMN y estaciones del INA"
+    >
+    </div>
+    <div class="armap-live" data-map-live hidden></div>
+
+    <div class="armap-fallback" data-map-fallback>
+      <svg
+        class="armap-svg"
+        viewBox={viewBox}
+        role="img"
+        aria-label="Mapa de Argentina dividido en cinco regiones climáticas y 24 jurisdicciones"
+      >
+        <g class="armap-provs">
+          {
+            provinces.map((p) => {
+              const pInfo = provinceByName[p.name];
+              const href = pInfo ? `/impactos/provincia/${pInfo.slug}/` : `/impactos/${p.region}/`;
+              const regName = regionMeta[p.region]?.name ?? p.region;
+              return (
+                <a
+                  class="prov"
+                  href={href}
+                  data-region={p.region}
+                  data-prov-name={p.name}
+                  data-region-name={regName}
+                  aria-label={`${p.name}: ver impactos en ${p.name} (${regName})`}
+                >
+                  <path d={p.d} />
+                  <title>{`${p.name} (${regName}) — clic para ver ficha provincial`}</title>
+                </a>
+              );
+            })
+          }
+        </g>
+      </svg>
+      <p class="armap-fallback-note" data-map-fallback-note>Cargando mapa 3D…</p>
+    </div>
+  </div>
+
+  <ul class="armap-key" aria-label="Referencias del mapa">
+    <li><span class="key-dot key-amarillo" aria-hidden="true"></span>Alerta SMN</li>
+    <li><span class="key-dot key-naranja" aria-hidden="true"></span>Alerta naranja</li>
+    <li><span class="key-dot key-rojo" aria-hidden="true"></span>Alerta roja / evacuación</li>
+    <li><span class="key-dot key-ina" aria-hidden="true"></span>Estación INA</li>
+    <li><span class="key-line" aria-hidden="true"></span>Límite provincial</li>
+  </ul>
 
   <ul class="armap-legend">
     {
@@ -66,51 +105,813 @@ const defaultStatus = "Explorá el mapa: tocá o pasá el cursor por cualquier p
     }
   </ul>
 
+  <details class="armap-prov-list">
+    <summary>Ver las 24 jurisdicciones</summary>
+    <ul>
+      {
+        allProvinces.map((p) => (
+          <li>
+            <a href={`/impactos/provincia/${p.slug}/`}>{p.name}</a>
+            <span>{regionMeta[p.regionSlug]?.name ?? p.regionSlug}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </details>
+
   <figcaption class="armap-cap">
-    Hacé clic sobre una provincia en el mapa para abrir su ficha individual, o sobre el nombre de una región en la lista para ver el resumen regional.
-    <span class="armap-attr">Geometría: Natural Earth (dominio público).</span>
+    Arrastrá para explorar, hacé zoom con los botones y tocá una provincia, un polígono de alerta o una
+    estación para ver el detalle. En escritorio, la rueda del mouse no secuestra el scroll de la página.
+    <span class="armap-attr">
+      Mapa: MapLibre GL · Datos: OpenFreeMap / OpenStreetMap · Relieve: Mapterhorn · Provincias: Natural
+      Earth · Alertas: SMN / INA.
+    </span>
   </figcaption>
 </figure>
 
 <script>
-  const root = document.querySelector<HTMLElement>(".armap");
+  import type { Map as MapLibreMap, MapGeoJSONFeature } from "maplibre-gl";
+  import maplibreWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
+
+  type SmnAlert = {
+    id: string;
+    event: string;
+    level: string;
+    levelLabel: string;
+    area: string;
+    expires: string;
+    description?: string;
+    instruction?: string;
+    url?: string;
+    polygons?: number[][][];
+  };
+
+  type InaStation = {
+    station: string;
+    river: string;
+    kind: string;
+    value: number | null;
+    unit: string;
+    status: string;
+    trend: string;
+    alert: string;
+    updated?: string;
+    lat: number;
+    lon: number;
+    url?: string;
+  };
+
+  type AlertData = {
+    smn?: SmnAlert[];
+    ina?: InaStation[];
+    counts?: Record<string, number>;
+  };
+
+  const root = document.querySelector<HTMLElement>(".armap-3d");
+
   if (root) {
-    const scope = root.closest("section") ?? document;
-    const all = Array.from(scope.querySelectorAll<HTMLElement>("[data-region]"));
+    const glEl = root.querySelector<HTMLElement>("[data-map3d]");
+    const liveEl = root.querySelector<HTMLElement>("[data-map-live]");
+    const fallbackNote = root.querySelector<HTMLElement>("[data-map-fallback-note]");
     const statusText = root.querySelector<HTMLElement>("[data-map-status-text]");
+    const pitchBtn = root.querySelector<HTMLButtonElement>("[data-map-pitch]");
+    const globeBtn = root.querySelector<HTMLButtonElement>("[data-map-globe]");
+    const resetBtn = root.querySelector<HTMLButtonElement>("[data-map-reset]");
     const defaultStatus = root.dataset.defaultStatus ?? "";
+    const regionNames: Record<string, string> = JSON.parse(
+      root.dataset.regionNames ?? "{}",
+    );
 
-    const setActive = (region: string | null, provEl?: HTMLElement | null) => {
-      root.classList.toggle("has-hover", region !== null);
-      for (const el of all) {
-        const on = region !== null && el.dataset.region === region;
-        el.classList.toggle("is-active", on);
-        el.classList.toggle("is-hovered-prov", el === provEl);
-      }
+    let map: MapLibreMap | null = null;
+    let maplibregl: typeof import("maplibre-gl") | null = null;
+    let is3D = true;
+    let isGlobe = false;
+    let appliedTheme: "light" | "dark" | null = null;
+    let hoveredSlug: string | null = null;
+    let launched = false;
 
-      if (!statusText) return;
-      if (!region) {
-        statusText.textContent = defaultStatus;
-        return;
-      }
-      const provName = provEl?.dataset.provName;
-      const regName = provEl?.dataset.regionName;
-      if (provName && regName) {
-        statusText.textContent = `${provName} · ${regName} — Clic para ver provincia`;
-      } else if (regName) {
-        statusText.textContent = `Región: ${regName}`;
-      } else {
-        const leg = root.querySelector<HTMLElement>(`.leg[data-region="${region}"]`);
-        statusText.textContent = `Región: ${leg?.dataset.regionName ?? region}`;
+    const setStatus = (text: string) => {
+      if (statusText) statusText.textContent = text;
+    };
+
+    const fail = (message: string) => {
+      root.classList.remove("map-loading");
+      root.classList.add("map-failed");
+      if (fallbackNote) fallbackNote.textContent = message;
+      setStatus(
+        "Mapa 3D no disponible. Usá el mapa esquemático o abrí una provincia desde la lista.",
+      );
+    };
+
+    const supportsWebGL2 = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        return Boolean(
+          window.WebGL2RenderingContext && canvas.getContext("webgl2"),
+        );
+      } catch {
+        return false;
       }
     };
 
-    for (const el of all) {
-      const region = el.dataset.region ?? null;
-      el.addEventListener("pointerenter", () => setActive(region, el));
-      el.addEventListener("pointerleave", () => setActive(null, null));
-      el.addEventListener("focusin", () => setActive(region, el));
-      el.addEventListener("focusout", () => setActive(null, null));
+    const thumb = (value: number | null, unit: string) => {
+      if (value === null || value === undefined || Number.isNaN(value)) {
+        return "s/d";
+      }
+      return `${new Intl.NumberFormat("es-AR", { maximumFractionDigits: 2 }).format(value)} ${unit}`;
+    };
+
+    const dateLabel = (iso?: string) => {
+      if (!iso) return "";
+      const date = new Date(iso);
+      if (Number.isNaN(date.getTime())) return "";
+      return new Intl.DateTimeFormat("es-AR", {
+        dateStyle: "short",
+        timeStyle: "short",
+        hour12: false,
+      }).format(date);
+    };
+
+    const escapeHtml = (value: unknown) =>
+      String(value ?? "").replace(
+        /[&<>"']/g,
+        (char) =>
+          ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;",
+          })[char] ?? char,
+      );
+
+    const themeName = (): "light" | "dark" =>
+      document.documentElement.getAttribute("data-theme") === "dark"
+        ? "dark"
+        : "light";
+
+    const styleUrl = (theme: "light" | "dark") =>
+      theme === "dark"
+        ? "https://tiles.openfreemap.org/styles/dark"
+        : "https://tiles.openfreemap.org/styles/positron";
+
+    const start = async () => {
+      if (launched) return;
+      launched = true;
+      if (!glEl) return;
+      if (!supportsWebGL2()) {
+        fail("Este navegador no tiene WebGL 2: mostrando el mapa esquemático.");
+        return;
+      }
+
+      root.classList.add("map-loading");
+      setStatus("Cargando mapa 3D…");
+
+      try {
+        const [ml, provincesResponse, alertsResponse] = await Promise.all([
+          import("maplibre-gl"),
+          fetch("/data/argentina-provinces.geojson"),
+          fetch("/data/alertas.json").catch(() => null),
+        ]);
+
+        if (!provincesResponse.ok) {
+          throw new Error(`Geometría provincial: HTTP ${provincesResponse.status}`);
+        }
+
+        const provincesGeo = await provincesResponse.json();
+        const alerts: AlertData =
+          alertsResponse && alertsResponse.ok
+            ? await alertsResponse.json()
+            : { smn: [], ina: [] };
+
+        const alertFeatures = (alerts.smn ?? []).flatMap((alert, alertIndex) =>
+          (alert.polygons ?? []).map((ring, polygonIndex) => ({
+            type: "Feature" as const,
+            id: `${alert.id}-${alertIndex}-${polygonIndex}`,
+            geometry: { type: "Polygon" as const, coordinates: [ring] },
+            properties: {
+              event: alert.event,
+              level: alert.level,
+              levelLabel: alert.levelLabel,
+              area: alert.area,
+              expires: alert.expires,
+              description: alert.description ?? "",
+              instruction: alert.instruction ?? "",
+              url: alert.url ?? "",
+            },
+          })),
+        );
+
+        const stationFeatures = (alerts.ina ?? []).map((station, index) => ({
+          type: "Feature" as const,
+          id: index,
+          geometry: {
+            type: "Point" as const,
+            coordinates: [station.lon, station.lat],
+          },
+          properties: {
+            station: station.station,
+            river: station.river,
+            kind: station.kind,
+            value: station.value,
+            unit: station.unit,
+            status: station.status,
+            trend: station.trend,
+            alert: station.alert,
+            updated: station.updated ?? "",
+            url: station.url ?? "",
+          },
+        }));
+
+        maplibregl = ml;
+        ml.setWorkerUrl(maplibreWorkerUrl);
+        appliedTheme = themeName();
+
+        map = new ml.Map({
+          container: glEl,
+          style: styleUrl(appliedTheme),
+          bounds: [
+            [-73.6, -55.25],
+            [-53.55, -21.65],
+          ],
+          fitBoundsOptions: { padding: 22, pitch: 26, bearing: -6 },
+          minZoom: 2.2,
+          maxZoom: 12,
+          maxPitch: 75,
+          scrollZoom: false,
+          cooperativeGestures: window.matchMedia("(pointer: coarse)").matches,
+          attributionControl: {
+            compact: true,
+            customAttribution:
+              'Base: <a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
+          },
+          canvasContextAttributes: { antialias: true },
+        });
+
+        map.addControl(
+          new ml.NavigationControl({ visualizePitch: true, showCompass: true }),
+          "top-right",
+        );
+        map.addControl(
+          new ml.ScaleControl({ unit: "metric", maxWidth: 110 }),
+          "bottom-left",
+        );
+
+        const firstLayerOfType = (types: string[]) =>
+          map
+            ?.getStyle()
+            .layers?.find((layer) => types.includes(layer.type))?.id;
+
+        const applyTerrain = () => {
+          if (!map) return;
+          if (is3D) {
+            map.setTerrain({ source: "terrain", exaggeration: 1.35 });
+          } else {
+            map.setTerrain(null);
+          }
+        };
+
+        const applySky = () => {
+          if (!map || typeof map.setSky !== "function") return;
+          const dark = appliedTheme === "dark";
+          try {
+            map.setSky({
+              "sky-color": dark ? "#0b1c2e" : "#a9c9e2",
+              "horizon-color": dark ? "#071322" : "#f4f1e9",
+              "fog-color": dark ? "#071322" : "#f4f1e9",
+              "sky-horizon-blend": 0.55,
+              "horizon-fog-blend": 0.6,
+              "fog-ground-blend": 0.55,
+            });
+          } catch {
+            /* estilos sin soporte de cielo */
+          }
+        };
+
+        const installOverlays = () => {
+          if (!map || !maplibregl) return;
+
+          if (!map.getSource("terrain")) {
+            map.addSource("terrain", {
+              type: "raster-dem",
+              url: "https://tiles.mapterhorn.com/tilejson.json",
+              tileSize: 512,
+              encoding: "terrarium",
+              attribution: "Mapterhorn",
+            });
+          }
+
+          if (!map.getSource("hillshade-dem")) {
+            map.addSource("hillshade-dem", {
+              type: "raster-dem",
+              url: "https://tiles.mapterhorn.com/tilejson.json",
+              tileSize: 512,
+              encoding: "terrarium",
+            });
+          }
+
+          const firstLineOrSymbol = firstLayerOfType(["line", "symbol"]);
+          const firstSymbol = firstLayerOfType(["symbol"]);
+
+          if (!map.getLayer("hillshade")) {
+            map.addLayer(
+              {
+                id: "hillshade",
+                type: "hillshade",
+                source: "hillshade-dem",
+                paint: {
+                  "hillshade-exaggeration": 0.32,
+                  "hillshade-shadow-color": "#1c2c3a",
+                  "hillshade-highlight-color": "#fffdf6",
+                  "hillshade-accent-color": "#6b7b8a",
+                },
+              },
+              firstLineOrSymbol,
+            );
+          }
+
+          if (!map.getSource("provincias")) {
+            map.addSource("provincias", {
+              type: "geojson",
+              data: provincesGeo,
+              promoteId: "slug",
+            });
+          }
+
+          if (!map.getLayer("prov-fill")) {
+            map.addLayer(
+              {
+                id: "prov-fill",
+                type: "fill",
+                source: "provincias",
+                paint: {
+                  "fill-color": [
+                    "match",
+                    ["get", "region"],
+                    "litoral",
+                    "#2e86c1",
+                    "pampeana",
+                    "#e9a800",
+                    "cuyo",
+                    "#8e4585",
+                    "noa",
+                    "#d2521f",
+                    "patagonia",
+                    "#2e9e8f",
+                    "#8794a3",
+                  ],
+                  "fill-opacity": [
+                    "case",
+                    ["boolean", ["feature-state", "hover"], false],
+                    0.58,
+                    0.36,
+                  ],
+                },
+              },
+              firstLineOrSymbol,
+            );
+          }
+
+          if (!map.getLayer("prov-line")) {
+            map.addLayer(
+              {
+                id: "prov-line",
+                type: "line",
+                source: "provincias",
+                paint: {
+                  "line-color": "rgba(255,253,246,0.72)",
+                  "line-width": 1,
+                  "line-opacity": 0.9,
+                },
+              },
+              firstSymbol,
+            );
+          }
+
+          if (alertFeatures.length && !map.getSource("alertas")) {
+            map.addSource("alertas", {
+              type: "geojson",
+              data: {
+                type: "FeatureCollection",
+                features: alertFeatures,
+              },
+            });
+          }
+
+          if (alertFeatures.length && !map.getLayer("alert-fill")) {
+            map.addLayer(
+              {
+                id: "alert-fill",
+                type: "fill-extrusion",
+                source: "alertas",
+                paint: {
+                  "fill-extrusion-color": [
+                    "match",
+                    ["get", "level"],
+                    "rojo",
+                    "#d64545",
+                    "naranja",
+                    "#e08a1e",
+                    "amarillo",
+                    "#e9b400",
+                    "#9fb0c0",
+                  ],
+                  "fill-extrusion-height": [
+                    "match",
+                    ["get", "level"],
+                    "rojo",
+                    62000,
+                    "naranja",
+                    46000,
+                    "amarillo",
+                    30000,
+                    18000,
+                  ],
+                  "fill-extrusion-opacity": 0.34,
+                },
+              },
+              firstSymbol,
+            );
+          }
+
+          if (alertFeatures.length && !map.getLayer("alert-line")) {
+            map.addLayer(
+              {
+                id: "alert-line",
+                type: "line",
+                source: "alertas",
+                paint: {
+                  "line-color": [
+                    "match",
+                    ["get", "level"],
+                    "rojo",
+                    "#ff8f8f",
+                    "naranja",
+                    "#ffc27a",
+                    "amarillo",
+                    "#ffe08a",
+                    "#c7d6e4",
+                  ],
+                  "line-width": 1.3,
+                  "line-opacity": 0.85,
+                },
+              },
+              firstSymbol,
+            );
+          }
+
+          if (stationFeatures.length && !map.getSource("estaciones")) {
+            map.addSource("estaciones", {
+              type: "geojson",
+              data: {
+                type: "FeatureCollection",
+                features: stationFeatures,
+              },
+            });
+          }
+
+          if (stationFeatures.length && !map.getLayer("station-pulse")) {
+            map.addLayer({
+              id: "station-pulse",
+              type: "circle",
+              source: "estaciones",
+              filter: ["!=", ["get", "alert"], "ok"],
+              paint: {
+                "circle-color": [
+                  "match",
+                  ["get", "alert"],
+                  "evacuacion",
+                  "#d64545",
+                  "alerta",
+                  "#e08a1e",
+                  "#2e86c1",
+                ],
+                "circle-radius": 10,
+                "circle-opacity": 0.25,
+                "circle-pitch-alignment": "viewport",
+              },
+            });
+          }
+
+          if (stationFeatures.length && !map.getLayer("station-dot")) {
+            map.addLayer({
+              id: "station-dot",
+              type: "circle",
+              source: "estaciones",
+              paint: {
+                "circle-color": [
+                  "match",
+                  ["get", "alert"],
+                  "evacuacion",
+                  "#d64545",
+                  "alerta",
+                  "#e08a1e",
+                  "ok",
+                  "#7d8fa3",
+                  "#2e86c1",
+                ],
+                "circle-radius": [
+                  "match",
+                  ["get", "alert"],
+                  "evacuacion",
+                  7,
+                  "alerta",
+                  6,
+                  4,
+                ],
+                "circle-stroke-width": 2,
+                "circle-stroke-color": "#fffdf6",
+                "circle-opacity": 0.96,
+                "circle-pitch-alignment": "viewport",
+              },
+            });
+          }
+
+          applyTerrain();
+          applySky();
+
+          root.classList.remove("map-loading", "map-failed");
+          root.classList.add("map-ready");
+          setStatus(defaultStatus);
+
+          const counts = alerts.counts;
+          if (liveEl && counts) {
+            const parts: string[] = [];
+            if (counts.inaEvacuation) {
+              parts.push(`${counts.inaEvacuation} evacuaciones INA`);
+            }
+            if (counts.inaAlerts) {
+              parts.push(`${counts.inaAlerts} alertas hídricas`);
+            }
+            if (counts.smn) {
+              parts.push(`${counts.smn} avisos SMN`);
+            }
+            if (parts.length) {
+              liveEl.textContent = parts.join(" · ");
+              liveEl.hidden = false;
+            }
+          }
+        };
+
+        map.on("style.load", installOverlays);
+        map.on("load", installOverlays);
+
+        map.on("error", (event) => {
+          console.warn("[mapa]", event.error?.message ?? event);
+        });
+
+        const pickFeature = (
+          point: { x: number; y: number },
+        ): MapGeoJSONFeature | undefined => {
+          if (!map) return undefined;
+          const layers = ["station-dot", "alert-fill", "prov-fill"].filter(
+            (id) => map?.getLayer(id),
+          );
+          if (!layers.length) return undefined;
+          const features = map.queryRenderedFeatures([point.x, point.y], { layers });
+          return (
+            features.find((f) => f.layer.id === "station-dot") ??
+            features.find((f) => f.layer.id === "alert-fill") ??
+            features.find((f) => f.layer.id === "prov-fill")
+          );
+        };
+
+        const setProvinceHover = (slug: string | null) => {
+          if (!map || !map.getSource("provincias")) return;
+          if (hoveredSlug && hoveredSlug !== slug) {
+            map.setFeatureState(
+              { source: "provincias", id: hoveredSlug },
+              { hover: false },
+            );
+          }
+          if (slug) {
+            map.setFeatureState(
+              { source: "provincias", id: slug },
+              { hover: true },
+            );
+          }
+          hoveredSlug = slug;
+        };
+
+        map.on("mousemove", (event) => {
+          const feature = pickFeature(event.point);
+          if (!feature) {
+            setProvinceHover(null);
+            if (map) map.getCanvas().style.cursor = "";
+            setStatus(defaultStatus);
+            return;
+          }
+
+          if (map) map.getCanvas().style.cursor = "pointer";
+          const props = feature.properties ?? {};
+
+          if (feature.layer.id === "station-dot") {
+            setProvinceHover(null);
+            setStatus(
+              `INA · ${props.station} (${props.river}): ${thumb(props.value, props.unit)} · ${props.status} — clic para detalles`,
+            );
+          } else if (feature.layer.id === "alert-fill") {
+            setProvinceHover(null);
+            setStatus(
+              `SMN · ${props.event} · alerta ${props.levelLabel} · ${props.area} — clic para detalles`,
+            );
+          } else {
+            const slug = String(props.slug ?? "");
+            setProvinceHover(slug || null);
+            setStatus(
+              `${props.name} · ${regionNames[props.region] ?? props.region} — clic para abrir la ficha provincial`,
+            );
+          }
+        });
+
+        map.getCanvas().addEventListener("mouseleave", () => {
+          setProvinceHover(null);
+          if (map) map.getCanvas().style.cursor = "";
+          setStatus(defaultStatus);
+        });
+
+        map.on("click", (event) => {
+          if (!map || !maplibregl) return;
+          const feature = pickFeature(event.point);
+          if (!feature) return;
+          const props = feature.properties ?? {};
+
+          if (feature.layer.id === "prov-fill") {
+            const slug = String(props.slug ?? "");
+            if (slug) window.location.assign(`/impactos/provincia/${slug}/`);
+            return;
+          }
+
+          let html = "";
+
+          if (feature.layer.id === "station-dot") {
+            html = `
+              <div class="map-popup">
+                <p class="map-popup-kicker">INA · ${escapeHtml(props.kind)}</p>
+                <strong>${escapeHtml(props.station)}</strong>
+                <p>Río ${escapeHtml(props.river)}</p>
+                <p class="map-popup-value">${escapeHtml(thumb(props.value, props.unit))} · ${escapeHtml(props.status)}</p>
+                <p>Tendencia: ${escapeHtml(props.trend)}${props.updated ? ` · ${escapeHtml(props.updated)}` : ""}</p>
+                ${
+                  props.url
+                    ? `<a href="${escapeHtml(props.url)}" target="_blank" rel="noopener noreferrer">Ver serie completa ↗</a>`
+                    : ""
+                }
+              </div>`;
+          } else if (feature.layer.id === "alert-fill") {
+            html = `
+              <div class="map-popup">
+                <p class="map-popup-kicker">SMN · Alerta ${escapeHtml(props.levelLabel)}</p>
+                <strong>${escapeHtml(props.event)}</strong>
+                <p>${escapeHtml(props.area)}</p>
+                <p>Vigente hasta ${escapeHtml(dateLabel(props.expires))}</p>
+                ${props.description ? `<p>${escapeHtml(props.description)}</p>` : ""}
+                ${
+                  props.instruction
+                    ? `<details><summary>Recomendaciones</summary><p>${escapeHtml(props.instruction)}</p></details>`
+                    : ""
+                }
+                ${
+                  props.url
+                    ? `<a href="${escapeHtml(props.url)}" target="_blank" rel="noopener noreferrer">Aviso oficial ↗</a>`
+                    : ""
+                }
+              </div>`;
+          }
+
+          if (html) {
+            new maplibregl.Popup({
+              closeButton: true,
+              maxWidth: "320px",
+              className: "armap-popup",
+            })
+              .setLngLat(event.lngLat)
+              .setHTML(html)
+              .addTo(map);
+          }
+        });
+
+        const syncButtons = () => {
+          if (pitchBtn) {
+            pitchBtn.textContent = is3D ? "3D" : "2D";
+            pitchBtn.setAttribute("aria-pressed", String(is3D));
+          }
+          if (globeBtn) {
+            globeBtn.textContent = isGlobe ? "Plano" : "Globo";
+            globeBtn.setAttribute("aria-pressed", String(isGlobe));
+          }
+        };
+
+        const set3D = (next: boolean) => {
+          is3D = next;
+          syncButtons();
+          if (!map) return;
+          if (isGlobe) {
+            isGlobe = false;
+            map.setProjection({ type: "mercator" });
+          }
+          applyTerrain();
+          map.easeTo({
+            pitch: is3D ? 26 : 0,
+            bearing: is3D ? -6 : 0,
+            duration: 800,
+          });
+        };
+
+        const setGlobe = (next: boolean) => {
+          if (!map) return;
+          isGlobe = next;
+          syncButtons();
+          map.setProjection({ type: next ? "globe" : "mercator" });
+          map.easeTo({
+            pitch: next || !is3D ? 0 : 26,
+            bearing: next || !is3D ? 0 : -6,
+            duration: 750,
+          });
+        };
+
+        pitchBtn?.addEventListener("click", () => set3D(!is3D));
+        globeBtn?.addEventListener("click", () => setGlobe(!isGlobe));
+        resetBtn?.addEventListener("click", () => {
+          if (!map) return;
+          map.fitBounds(
+            [
+              [-73.6, -55.25],
+              [-53.55, -21.65],
+            ],
+            {
+              padding: 36,
+              pitch: isGlobe ? 0 : is3D ? 26 : 0,
+              bearing: isGlobe ? 0 : is3D ? -6 : 0,
+              duration: 1100,
+            },
+          );
+        });
+
+        const reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        );
+        let pulseFrame = 0;
+        const animatePulse = (time: number) => {
+          if (!reduceMotion.matches && map?.getLayer("station-pulse")) {
+            const wave = (Math.sin(time / 520) + 1) / 2;
+            map.setPaintProperty(
+              "station-pulse",
+              "circle-radius",
+              8 + wave * 13,
+            );
+            map.setPaintProperty(
+              "station-pulse",
+              "circle-opacity",
+              0.32 - wave * 0.2,
+            );
+          }
+          pulseFrame = requestAnimationFrame(animatePulse);
+        };
+        pulseFrame = requestAnimationFrame(animatePulse);
+
+        const themeObserver = new MutationObserver(() => {
+          if (!map) return;
+          const next = themeName();
+          if (next === appliedTheme) return;
+          appliedTheme = next;
+          map.setStyle(styleUrl(next), { diff: false });
+        });
+        themeObserver.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["data-theme"],
+        });
+
+        window.addEventListener(
+          "pagehide",
+          () => {
+            cancelAnimationFrame(pulseFrame);
+            themeObserver.disconnect();
+            map?.remove();
+            map = null;
+          },
+          { once: true },
+        );
+      } catch (error) {
+        console.error("[mapa]", error);
+        fail("No se pudo cargar el mapa 3D. Mostrando el mapa esquemático.");
+      }
+    };
+
+    if ("IntersectionObserver" in window) {
+      setStatus("Mapa 3D listo para cargar cuando llegues a esta sección");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            observer.disconnect();
+            void start();
+          }
+        },
+        { rootMargin: "240px" },
+      );
+      if (glEl) observer.observe(glEl);
+    } else {
+      void start();
     }
   }
 </script>

@@ -7,6 +7,12 @@ export const site = {
   domain: "elniño.net.ar",
   email: "litoraldevctes@gmail.com",
   adsenseClient: "ca-pub-2347772486638866",
+  analytics: {
+    gaMeasurementId: "",
+    gaPropertyId: "",
+    googleOAuthClientId: "",
+  },
+  googleSiteVerification: "",
   adsSlots: {
     "home-top": "",
     pronostico: "",

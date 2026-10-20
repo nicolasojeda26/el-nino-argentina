@@ -5,10 +5,7 @@ const SMN_FEED = "https://ssl.smn.gob.ar/feeds/CAP/rss_alertaCAP_nuevo_2026.xml"
 const INA_BASE =
   "https://alerta.ina.gob.ar/geoserver/ows?service=WFS&version=1.1.0&request=GetFeature&outputFormat=application/json&srsName=EPSG:4326&typeName=";
 const INA_LAYERS = ["a5:ultimas_alturas_reporte", "a5:ultimos_caudales_reporte"];
-const TARGET_FILES = [
-  path.resolve("./src/data/alertas.json"),
-  path.resolve("./public/data/alertas.json"),
-];
+const TARGET_FILE = path.resolve("./src/data/alertas.json");
 
 const UA = "el-nino-portal/1.0 (+https://xn--elnio-rta.net.ar)";
 
@@ -207,7 +204,7 @@ function sameData(a, b) {
 async function main() {
   let previous = null;
   try {
-    previous = JSON.parse(await fs.readFile(TARGET_FILES[0], "utf-8"));
+    previous = JSON.parse(await fs.readFile(TARGET_FILE, "utf-8"));
   } catch {
     // first run
   }
@@ -256,10 +253,8 @@ async function main() {
     ina,
   };
 
-  for (const file of TARGET_FILES) {
-    await fs.mkdir(path.dirname(file), { recursive: true });
-    await fs.writeFile(file, JSON.stringify(data, null, 2) + "\n", "utf-8");
-  }
+  await fs.mkdir(path.dirname(TARGET_FILE), { recursive: true });
+  await fs.writeFile(TARGET_FILE, JSON.stringify(data, null, 2) + "\n", "utf-8");
   console.log(
     `Actualizado: ${smn.length} avisos SMN (${data.counts.smnRed} rojos, ${data.counts.smnOrange} naranjas, ${data.counts.smnYellow} amarillos) y ${data.counts.inaAlerts} estaciones INA en alerta/evacuación.`,
   );

@@ -271,7 +271,7 @@ const defaultStatus =
         const [ml, provincesResponse, alertsResponse] = await Promise.all([
           import("maplibre-gl"),
           fetch("/data/argentina-provinces.geojson"),
-          fetch("/data/alertas.json").catch(() => null),
+          fetch("/datos/alertas.json").catch(() => null),
         ]);
 
         if (!provincesResponse.ok) {

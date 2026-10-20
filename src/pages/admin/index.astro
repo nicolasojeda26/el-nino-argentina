@@ -1,0 +1,569 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { site } from "../../data/content";
+
+const ga = site.analytics;
+const configured = Boolean(ga.gaPropertyId && ga.googleOAuthClientId);
+const measurementReady = Boolean(ga.gaMeasurementId);
+const searchReady = Boolean(site.googleSiteVerification);
+---
+
+<Layout
+  title="Panel de tráfico"
+  description="Panel privado de métricas de El Niño Argentina."
+  robots="noindex, nofollow"
+  analytics={false}
+>
+  <section class="section container admin-page">
+    <div class="admin-head">
+      <div>
+        <p class="eyebrow">Administración</p>
+        <h1>Panel de tráfico</h1>
+        <p class="lead">
+          Visitas, páginas, origen del tráfico y dispositivos de El Niño Argentina, leídos
+          directamente de Google Analytics 4. La página no se indexa y las métricas solo se
+          muestran después de iniciar sesión con una cuenta con acceso a la propiedad.
+        </p>
+      </div>
+      <span class="admin-badge">Solo lectura</span>
+    </div>
+
+    {
+      !configured && (
+        <div class="admin-setup">
+          <h2>Falta conectar Google Analytics</h2>
+          <p>
+            El panel queda inactivo hasta completar estos pasos. Los identificadores son
+            públicos y se configuran en <code>src/data/content.ts</code>.
+          </p>
+          <ol class="admin-steps">
+            <li>
+              Creá una propiedad <strong>Google Analytics 4</strong> y copiá el{" "}
+              <strong>Measurement ID</strong> (<code>G-...</code>) y el{" "}
+              <strong>Property ID</strong> (número).
+            </li>
+            <li>
+              En Google Cloud Console habilitá <strong>Google Analytics Data API</strong>.
+            </li>
+            <li>
+              Creá un <strong>OAuth Client ID</strong> de tipo aplicación web, agregá{" "}
+              <code>{site.url}</code> como origen autorizado y pegá el Client ID. Si la app
+              está en modo prueba, agregá tu cuenta como usuario de prueba.
+            </li>
+            <li>
+              En Search Console verificá el sitio con la etiqueta HTML, pegá el token en{" "}
+              <code>googleSiteVerification</code> y enviá el sitemap.
+            </li>
+          </ol>
+          <div class="admin-config-list">
+            <div>
+              <span>GA4 Measurement ID</span>
+              <code>{ga.gaMeasurementId || "Pendiente"}</code>
+            </div>
+            <div>
+              <span>Medición GA4</span>
+              <code>{measurementReady ? "Activa" : "Pendiente"}</code>
+            </div>
+            <div>
+              <span>GA4 Property ID</span>
+              <code>{ga.gaPropertyId || "Pendiente"}</code>
+            </div>
+            <div>
+              <span>OAuth Client ID</span>
+              <code>{ga.googleOAuthClientId || "Pendiente"}</code>
+            </div>
+            <div>
+              <span>Verificación Search Console</span>
+              <code>{searchReady ? "Lista" : "Pendiente"}</code>
+            </div>
+            <div>
+              <span>Sitemap</span>
+              <code>/sitemap-index.xml</code>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    {
+      configured && (
+        <>
+          <div class="admin-auth" data-admin-auth>
+            <div>
+              <h2>Conectá tu cuenta de Google</h2>
+              <p>
+                Usá la cuenta que tiene permiso de lectura sobre la propiedad GA4. El token
+                queda solo en esta pestaña y no se guarda en el sitio.
+              </p>
+            </div>
+            <button class="btn btn-primary" type="button" data-admin-signin>
+              Entrar con Google
+            </button>
+          </div>
+
+          <p class="admin-status" data-admin-status role="status" aria-live="polite"></p>
+
+          <div
+            class="admin-dashboard"
+            data-admin-dashboard
+            data-property-id={ga.gaPropertyId}
+            data-client-id={ga.googleOAuthClientId}
+            hidden
+          >
+            <div class="admin-toolbar">
+              <p data-admin-updated>Sin actualizar</p>
+              <div class="admin-toolbar-actions">
+                <button class="btn btn-ghost" type="button" data-admin-refresh>
+                  Actualizar
+                </button>
+                <button class="btn btn-ghost" type="button" data-admin-signout>
+                  Salir
+                </button>
+              </div>
+            </div>
+
+            <div class="admin-kpis">
+              <article class="admin-kpi">
+                <span>Usuarios activos</span>
+                <strong data-kpi="activeUsers">—</strong>
+                <small data-delta="activeUsers"></small>
+              </article>
+              <article class="admin-kpi">
+                <span>Sesiones</span>
+                <strong data-kpi="sessions">—</strong>
+                <small data-delta="sessions"></small>
+              </article>
+              <article class="admin-kpi">
+                <span>Páginas vistas</span>
+                <strong data-kpi="screenPageViews">—</strong>
+                <small data-delta="screenPageViews"></small>
+              </article>
+              <article class="admin-kpi">
+                <span>Tasa de interacción</span>
+                <strong data-kpi="engagementRate">—</strong>
+                <small data-delta="engagementRate"></small>
+              </article>
+            </div>
+
+            <article class="admin-card admin-chart-card">
+              <div class="admin-card-head">
+                <h2>Últimos 28 días</h2>
+                <span>Usuarios activos por día</span>
+              </div>
+              <div
+                class="admin-chart"
+                data-admin-chart
+                role="img"
+                aria-label="Usuarios activos por día en los últimos 28 días"
+              >
+              </div>
+            </article>
+
+            <div class="admin-grid">
+              <article class="admin-card">
+                <h2>Páginas más vistas</h2>
+                <div data-admin-pages></div>
+              </article>
+              <article class="admin-card">
+                <h2>De dónde llega la gente</h2>
+                <div data-admin-sources></div>
+              </article>
+              <article class="admin-card">
+                <h2>Países</h2>
+                <div data-admin-countries></div>
+              </article>
+              <article class="admin-card">
+                <h2>Dispositivos</h2>
+                <div data-admin-devices></div>
+              </article>
+            </div>
+
+            <article class="admin-card">
+              <div class="admin-card-head">
+                <h2>Ahora mismo</h2>
+                <span>Últimos 30 minutos</span>
+              </div>
+              <div data-admin-realtime></div>
+            </article>
+          </div>
+        </>
+      )
+    }
+
+    <div class="admin-links">
+      <a href="https://analytics.google.com/" rel="noopener" target="_blank">Abrir Google Analytics</a>
+      <a href="https://search.google.com/search-console" rel="noopener" target="_blank">
+        Abrir Search Console
+      </a>
+      <a href="/sitemap-index.xml" target="_blank">Ver sitemap</a>
+    </div>
+  </section>
+</Layout>
+
+<script is:inline>
+  (() => {
+    const dashboard = document.querySelector("[data-admin-dashboard]");
+    if (!dashboard) return;
+    const propertyId = String(dashboard.dataset.propertyId || "")
+      .trim()
+      .replace(/^properties\//, "");
+    const clientId = String(dashboard.dataset.clientId || "").trim();
+    if (!propertyId || !clientId) return;
+
+    const authBox = document.querySelector("[data-admin-auth]");
+    const signInBtn = document.querySelector("[data-admin-signin]");
+    const signOutBtn = document.querySelector("[data-admin-signout]");
+    const refreshBtn = document.querySelector("[data-admin-refresh]");
+    const statusEl = document.querySelector("[data-admin-status]");
+    const updatedEl = document.querySelector("[data-admin-updated]");
+    const numberFmt = new Intl.NumberFormat("es-AR");
+    const decimalFmt = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 1 });
+    const currentRange = { startDate: "28daysAgo", endDate: "today" };
+    const previousRange = { startDate: "56daysAgo", endDate: "29daysAgo" };
+    let token = "";
+    let tokenClient = null;
+    let loading = false;
+
+    const setStatus = (message, kind = "") => {
+      if (!statusEl) return;
+      statusEl.textContent = message;
+      statusEl.dataset.kind = kind;
+    };
+
+    const formatMetric = (key, raw) => {
+      const value = Number(raw);
+      if (!Number.isFinite(value)) return "—";
+      if (key === "engagementRate") return `${decimalFmt.format(value * 100)}%`;
+      return numberFmt.format(value);
+    };
+
+    const showAuth = () => {
+      if (authBox) authBox.hidden = false;
+      dashboard.hidden = true;
+    };
+
+    const showDashboard = () => {
+      if (authBox) authBox.hidden = true;
+      dashboard.hidden = false;
+    };
+
+    const api = async (report, body) => {
+      const response = await fetch(
+        `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:${report}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        },
+      );
+      if (!response.ok) {
+        let message = `Error ${response.status}`;
+        try {
+          const error = await response.json();
+          message = error.error?.message || message;
+        } catch {}
+        if (response.status === 401 || response.status === 403) {
+          token = "";
+          showAuth();
+        }
+        throw new Error(message);
+      }
+      return response.json();
+    };
+
+    const runReport = (body) => api("runReport", body);
+    const runRealtime = (body) => api("runRealtimeReport", body);
+
+    const renderTable = (container, headers, rows) => {
+      if (!container) return;
+      container.replaceChildren();
+      if (!rows.length) {
+        const empty = document.createElement("p");
+        empty.className = "admin-empty";
+        empty.textContent = "Sin datos para este período.";
+        container.append(empty);
+        return;
+      }
+      const table = document.createElement("table");
+      table.className = "admin-table";
+      const thead = document.createElement("thead");
+      const headRow = document.createElement("tr");
+      for (const header of headers) {
+        const th = document.createElement("th");
+        th.textContent = header;
+        headRow.append(th);
+      }
+      thead.append(headRow);
+      const tbody = document.createElement("tbody");
+      for (const row of rows) {
+        const tr = document.createElement("tr");
+        for (const cell of row) {
+          const td = document.createElement("td");
+          td.textContent = cell;
+          tr.append(td);
+        }
+        tbody.append(tr);
+      }
+      table.append(thead, tbody);
+      container.append(table);
+    };
+
+    const setKpi = (key, current, previous) => {
+      const valueEl = document.querySelector(`[data-kpi="${key}"]`);
+      const deltaEl = document.querySelector(`[data-delta="${key}"]`);
+      if (valueEl) valueEl.textContent = formatMetric(key, current);
+      if (!deltaEl) return;
+      const now = Number(current);
+      const before = Number(previous);
+      if (!Number.isFinite(now) || !Number.isFinite(before) || before === 0) {
+        deltaEl.textContent = "Sin comparación";
+        return;
+      }
+      const diff = ((now - before) / before) * 100;
+      deltaEl.textContent = `${diff >= 0 ? "+" : ""}${decimalFmt.format(diff)}% vs. 28 días previos`;
+      deltaEl.dataset.trend = diff >= 0 ? "up" : "down";
+    };
+
+    const renderChart = (container, rows) => {
+      if (!container) return;
+      container.replaceChildren();
+      if (!rows.length) {
+        const empty = document.createElement("p");
+        empty.className = "admin-empty";
+        empty.textContent = "Sin datos para este período.";
+        container.append(empty);
+        return;
+      }
+      const max = Math.max(...rows.map((row) => row.value), 1);
+      for (const row of rows) {
+        const bar = document.createElement("span");
+        bar.className = "admin-bar";
+        bar.style.height = `${Math.max(3, (row.value / max) * 100)}%`;
+        const label = `${row.label}: ${numberFmt.format(row.value)} usuarios activos`;
+        bar.title = label;
+        bar.setAttribute("aria-label", label);
+        container.append(bar);
+      }
+      container.setAttribute(
+        "aria-label",
+        `Usuarios activos por día. Máximo ${numberFmt.format(max)} en el período.`,
+      );
+    };
+
+    const loadOverview = async () => {
+      const data = await runReport({
+        dateRanges: [currentRange, previousRange],
+        metrics: [
+          { name: "activeUsers" },
+          { name: "sessions" },
+          { name: "screenPageViews" },
+          { name: "engagementRate" },
+        ],
+      });
+      const current = data.totals?.[0]?.metricValues ?? [];
+      const previous = data.totals?.[1]?.metricValues ?? [];
+      ["activeUsers", "sessions", "screenPageViews", "engagementRate"].forEach((key, index) => {
+        setKpi(key, current[index]?.value, previous[index]?.value);
+      });
+    };
+
+    const loadTrend = async () => {
+      const data = await runReport({
+        dateRanges: [currentRange],
+        dimensions: [{ name: "date" }],
+        metrics: [{ name: "activeUsers" }],
+        orderBys: [{ dimension: { dimensionName: "date" } }],
+      });
+      const rows = (data.rows ?? []).map((row) => {
+        const raw = row.dimensionValues?.[0]?.value ?? "";
+        return {
+          label: raw.length === 8 ? `${raw.slice(6, 8)}/${raw.slice(4, 6)}` : raw,
+          value: Number(row.metricValues?.[0]?.value ?? 0),
+        };
+      });
+      renderChart(document.querySelector("[data-admin-chart]"), rows);
+    };
+
+    const loadPages = async () => {
+      const data = await runReport({
+        dateRanges: [currentRange],
+        dimensions: [{ name: "pagePath" }],
+        metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
+        limit: 10,
+        orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
+      });
+      const rows = (data.rows ?? []).map((row) => [
+        row.dimensionValues?.[0]?.value ?? "",
+        numberFmt.format(Number(row.metricValues?.[0]?.value ?? 0)),
+        numberFmt.format(Number(row.metricValues?.[1]?.value ?? 0)),
+      ]);
+      renderTable(document.querySelector("[data-admin-pages]"), ["Página", "Vistas", "Usuarios"], rows);
+    };
+
+    const loadSources = async () => {
+      const data = await runReport({
+        dateRanges: [currentRange],
+        dimensions: [{ name: "sessionSourceMedium" }],
+        metrics: [{ name: "sessions" }],
+        limit: 8,
+        orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+      });
+      const rows = (data.rows ?? []).map((row) => [
+        row.dimensionValues?.[0]?.value ?? "",
+        numberFmt.format(Number(row.metricValues?.[0]?.value ?? 0)),
+      ]);
+      renderTable(document.querySelector("[data-admin-sources]"), ["Origen / medio", "Sesiones"], rows);
+    };
+
+    const loadCountries = async () => {
+      const data = await runReport({
+        dateRanges: [currentRange],
+        dimensions: [{ name: "country" }],
+        metrics: [{ name: "activeUsers" }],
+        limit: 8,
+        orderBys: [{ metric: { metricName: "activeUsers" }, desc: true }],
+      });
+      const rows = (data.rows ?? []).map((row) => [
+        row.dimensionValues?.[0]?.value ?? "",
+        numberFmt.format(Number(row.metricValues?.[0]?.value ?? 0)),
+      ]);
+      renderTable(document.querySelector("[data-admin-countries]"), ["País", "Usuarios"], rows);
+    };
+
+    const loadDevices = async () => {
+      const data = await runReport({
+        dateRanges: [currentRange],
+        dimensions: [{ name: "deviceCategory" }],
+        metrics: [{ name: "activeUsers" }],
+        orderBys: [{ metric: { metricName: "activeUsers" }, desc: true }],
+      });
+      const labels = { desktop: "Escritorio", mobile: "Móvil", tablet: "Tablet" };
+      const rows = (data.rows ?? []).map((row) => {
+        const key = row.dimensionValues?.[0]?.value ?? "";
+        return [
+          labels[key] ?? key,
+          numberFmt.format(Number(row.metricValues?.[0]?.value ?? 0)),
+        ];
+      });
+      renderTable(document.querySelector("[data-admin-devices]"), ["Dispositivo", "Usuarios"], rows);
+    };
+
+    const loadRealtime = async () => {
+      const data = await runRealtime({
+        metrics: [{ name: "activeUsers" }],
+        dimensions: [{ name: "unifiedScreenName" }],
+        limit: 8,
+      });
+      const total = Number(data.totals?.[0]?.metricValues?.[0]?.value ?? 0);
+      const rows = (data.rows ?? []).map((row) => [
+        row.dimensionValues?.[0]?.value ?? "",
+        numberFmt.format(Number(row.metricValues?.[0]?.value ?? 0)),
+      ]);
+      const container = document.querySelector("[data-admin-realtime]");
+      if (!container) return;
+      container.replaceChildren();
+      const summary = document.createElement("p");
+      summary.className = "admin-realtime-total";
+      summary.textContent = `${numberFmt.format(total)} ${total === 1 ? "persona activa" : "personas activas"} ahora`;
+      container.append(summary);
+      const table = document.createElement("div");
+      container.append(table);
+      renderTable(table, ["Página", "Usuarios"], rows);
+    };
+
+    const refreshAll = async () => {
+      if (loading) return;
+      loading = true;
+      if (refreshBtn) refreshBtn.disabled = true;
+      setStatus("Actualizando métricas…");
+      const reports = await Promise.allSettled([
+        loadOverview(),
+        loadTrend(),
+        loadPages(),
+        loadSources(),
+        loadCountries(),
+        loadDevices(),
+        loadRealtime(),
+      ]);
+      const failed = reports.filter((report) => report.status === "rejected");
+      if (failed.length) {
+        const first = failed[0];
+        setStatus(
+          first.status === "rejected" && first.reason instanceof Error
+            ? first.reason.message
+            : "No se pudieron cargar algunas métricas.",
+          "error",
+        );
+      } else {
+        setStatus("Métricas actualizadas.", "ok");
+      }
+      if (updatedEl) {
+        updatedEl.textContent = `Actualizado ${new Date().toLocaleTimeString("es-AR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}`;
+      }
+      if (refreshBtn) refreshBtn.disabled = false;
+      loading = false;
+    };
+
+    const initClient = () => {
+      if (!window.google?.accounts?.oauth2) {
+        setStatus("No se pudo cargar Google Identity Services.", "error");
+        return;
+      }
+      tokenClient = window.google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: "https://www.googleapis.com/auth/analytics.readonly",
+        callback: (response) => {
+          if (response.error) {
+            setStatus("No se autorizó el acceso a Google Analytics.", "error");
+            return;
+          }
+          token = response.access_token;
+          showDashboard();
+          setStatus("Conectado. Cargando métricas…");
+          refreshAll();
+        },
+      });
+    };
+
+    if (window.google?.accounts?.oauth2) {
+      initClient();
+    } else {
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = initClient;
+      script.onerror = () => setStatus("No se pudo cargar Google Identity Services.", "error");
+      document.head.append(script);
+    }
+
+    if (signInBtn) {
+      signInBtn.addEventListener("click", () => {
+        if (!tokenClient) {
+          setStatus("Google todavía se está cargando. Probá de nuevo en unos segundos.", "error");
+          return;
+        }
+        tokenClient.requestAccessToken({ prompt: "" });
+      });
+    }
+
+    if (refreshBtn) refreshBtn.addEventListener("click", refreshAll);
+
+    if (signOutBtn) {
+      signOutBtn.addEventListener("click", () => {
+        if (token && window.google?.accounts?.oauth2) {
+          window.google.accounts.oauth2.revoke(token, () => {});
+        }
+        token = "";
+        showAuth();
+        setStatus("Sesión cerrada.");
+      });
+    }
+  })();
+</script>

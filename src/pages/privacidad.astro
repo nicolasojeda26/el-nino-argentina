@@ -1,12 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { site } from "../data/content";
-const updated = "16 de octubre de 2026";
+const updated = "20 de octubre de 2026";
 ---
 
 <Layout
   title="Política de Privacidad"
-  description="Política de privacidad de El Niño Argentina: qué datos se tratan, publicidad de Google AdSense, derechos de la Ley 25.326 y enlaces a la política de cookies."
+  description="Política de privacidad de El Niño Argentina: qué datos se tratan, Google Analytics 4, publicidad de Google AdSense, derechos de la Ley 25.326 y enlaces a la política de cookies."
   breadcrumbs={[
     { name: "Inicio", path: "/" },
     { name: "Privacidad", path: "/privacidad/" },
@@ -79,16 +79,21 @@ const updated = "16 de octubre de 2026";
       </li>
     </ul>
     <p>
-      Para medir audiencia de forma agregada se utiliza <strong>Cloudflare Web
-      Analytics</strong>, una herramienta sin cookies que no usa identificadores persistentes
-      ni sigue a los usuarios entre sitios. No se instalan cookies de medición de audiencia.
+      Para medir audiencia de forma agregada se utiliza <strong>Google Analytics 4</strong>,
+      que instala las cookies <code>_ga</code> y <code>_ga_*</code>. Esas cookies permiten
+      contar visitas y sesiones, conocer páginas vistas, país, dispositivo y origen del
+      tráfico. La dirección IP se anonimiza y los datos no se usan para publicidad. Podés
+      bloquearlas desde el navegador o con el{" "}
+      <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener" target="_blank">
+        complemento de inhabilitación de Google Analytics
+      </a>.
     </p>
 
     <h2>5. Control de cookies</h2>
     <p>
       Podés configurar tu navegador para bloquear o eliminar cookies en cualquier momento.
-      Las cookies de este sitio son de publicidad, no de funcionamiento: si las bloqueás, el
-      contenido sigue disponible. El detalle completo está en la{" "}
+      Las cookies de este sitio son de medición y publicidad, no de funcionamiento: si las
+      bloqueás, el contenido sigue disponible. El detalle completo está en la{" "}
       <a href="/cookies/">política de cookies</a>.
     </p>
 

@@ -1,7 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { site } from "../data/content";
-const updated = "16 de octubre de 2026";
+const updated = "20 de octubre de 2026";
+
+const analyticsCookies = [
+  { name: "_ga", use: "Distingue navegadores de forma agregada para medir audiencia. Dura hasta 2 años." },
+  { name: "_ga_*", use: "Mantiene el estado de la sesión de Google Analytics 4. Dura hasta 2 años." },
+];
 
 const thirdParty = [
   { name: "IDE / DSID", use: "Publicidad personalizada de Google en sitios de terceros: mide y limita la frecuencia de los anuncios." },
@@ -23,7 +28,7 @@ const jsonLd = {
 
 <Layout
   title="Política de cookies"
-  description="Qué cookies usa El Niño Argentina: cookies propias, cookies de Google AdSense, para qué sirven y cómo desactivarlas."
+  description="Qué cookies usa El Niño Argentina: cookies de Google Analytics 4 y AdSense, para qué sirven y cómo desactivarlas."
   jsonLd={jsonLd}
   breadcrumbs={[
     { name: "Inicio", path: "/" },
@@ -45,20 +50,49 @@ const jsonLd = {
 
     <h2>1. Cookies propias</h2>
     <p>
-      <strong>No utilizamos cookies propias de seguimiento ni de perfilado.</strong> Las
+      <strong>No utilizamos cookies propias de publicidad ni de perfilado.</strong> Las
       funciones interactivas del sitio —el buscador del <a href="/glosario/">glosario</a>,
       el menú de navegación, el mapa interactivo y las preguntas desplegables— funcionan
       enteramente en tu navegador y no guardan identificadores ni datos personales. El mapa
       descarga teselas de OpenFreeMap y relieve de Mapterhorn; esas solicitudes no instalan
-      cookies propias del sitio.
+      cookies propias del sitio. La medición de audiencia se describe en la sección 2.
     </p>
 
-    <h2>2. Medición de audiencia sin cookies</h2>
+    <h2>2. Medición de audiencia</h2>
     <p>
-      El sitio mide visitas con <strong>Cloudflare Web Analytics</strong>, que{" "}
-      <strong>no usa cookies ni identificadores persistentes</strong> y entrega métricas
-      agregadas (visitas, páginas vistas, país y dispositivo aproximados). No permite
-      seguirte entre sitios ni construir un perfil.
+      Cuando la medición está configurada, el sitio usa <strong>Google Analytics 4</strong>{" "}
+      para obtener métricas agregadas de audiencia: visitas, páginas vistas, duración de la
+      sesión, país, dispositivo y origen del tráfico. La dirección IP se anonimiza y no se
+      usa para publicidad. El panel privado de administración consulta esas métricas
+      agregadas mediante la API de Google Analytics y no recibe datos personales de los
+      visitantes.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Cookie</th>
+            <th>Para qué se usa</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            analyticsCookies.map((c) => (
+              <tr>
+                <td style="font-family:var(--mono);font-size:0.82rem;">{c.name}</td>
+                <td>{c.use}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:18px;">
+      Podés impedir la medición con el{" "}
+      <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener" target="_blank">
+        complemento de inhabilitación de Google Analytics
+      </a>{" "}
+      o bloqueando estas cookies en tu navegador.
     </p>
 
     <h2>3. Cookies de terceros: publicidad</h2>
@@ -152,7 +186,7 @@ const jsonLd = {
     </ul>
     <p>
       Si bloqueás todas las cookies, el contenido del sitio seguirá funcionando: las cookies
-      que se usan son de publicidad, no de funcionamiento.
+      que se usan son de medición y publicidad, no de funcionamiento.
     </p>
 
     <h2>6. Cambios y contacto</h2>

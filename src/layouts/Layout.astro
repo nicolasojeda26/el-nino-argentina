@@ -18,6 +18,7 @@ interface Props {
   image?: string;
   robots?: string;
   breadcrumbs?: Breadcrumb[];
+  analytics?: boolean;
 }
 
 const {
@@ -28,6 +29,7 @@ const {
   image,
   robots = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
   breadcrumbs,
+  analytics = true,
 } = Astro.props;
 
 const origin = Astro.site ?? site.url;
@@ -81,6 +83,7 @@ const schemas = [baseSchema, breadcrumbSchema, ...(Array.isArray(jsonLd) ? jsonL
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title={`${site.name} — Notas`} href="/rss.xml" />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
 
@@ -88,6 +91,9 @@ const schemas = [baseSchema, breadcrumbSchema, ...(Array.isArray(jsonLd) ? jsonL
     <meta name="description" content={description} />
     <meta name="author" content={site.author} />
     <meta name="robots" content={robots} />
+    {site.googleSiteVerification && (
+      <meta name="google-site-verification" content={site.googleSiteVerification} />
+    )}
     <link rel="canonical" href={canonical} />
 
     <meta name="theme-color" content="#f4f1e9" id="metaThemeColor" />
@@ -126,6 +132,25 @@ const schemas = [baseSchema, breadcrumbSchema, ...(Array.isArray(jsonLd) ? jsonL
       )
     }
     {site.adsenseClient && <meta name="google-adsense-account" content={site.adsenseClient} />}
+
+    {
+      analytics && site.analytics.gaMeasurementId && (
+        <>
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${site.analytics.gaMeasurementId}`}
+          />
+          <script is:inline define:vars={{ gaMeasurementId: site.analytics.gaMeasurementId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", gaMeasurementId, { anonymize_ip: true });
+          </script>
+        </>
+      )
+    }
 
     {
       schemas.map((schema) => (

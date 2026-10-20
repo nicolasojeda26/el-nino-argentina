@@ -27,7 +27,7 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [
     sitemap({
-      filter: (page) => !page.endsWith('/widget/'),
+      filter: (page) => !page.endsWith('/widget/') && !page.includes('/admin/'),
       serialize(item) {
         const url = item.url;
         const pathname = new URL(url).pathname;

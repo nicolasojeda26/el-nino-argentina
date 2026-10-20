@@ -2,6 +2,7 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import AlertTicker from "../components/AlertTicker.astro";
+import ConsentBanner from "../components/ConsentBanner.astro";
 import { site } from "../data/content";
 import "../styles/global.css";
 
@@ -136,18 +137,28 @@ const schemas = [baseSchema, breadcrumbSchema, ...(Array.isArray(jsonLd) ? jsonL
     {
       analytics && site.analytics.gaMeasurementId && (
         <>
-          <script
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${site.analytics.gaMeasurementId}`}
-          />
           <script is:inline define:vars={{ gaMeasurementId: site.analytics.gaMeasurementId }}>
             window.dataLayer = window.dataLayer || [];
             function gtag() {
               dataLayer.push(arguments);
             }
+            window.gtag = gtag;
+            // Consent Mode v2: la analítica queda denegada hasta que el visitante acepte.
+            // Solo se controla analytics_storage; la publicidad (AdSense) no se modifica.
+            var consent = null;
+            try {
+              consent = localStorage.getItem("enso-consent-analytics");
+            } catch (e) {}
+            gtag("consent", "default", {
+              analytics_storage: consent === "granted" ? "granted" : "denied",
+            });
             gtag("js", new Date());
             gtag("config", gaMeasurementId, { anonymize_ip: true });
           </script>
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${site.analytics.gaMeasurementId}`}
+          />
         </>
       )
     }
@@ -166,5 +177,6 @@ const schemas = [baseSchema, breadcrumbSchema, ...(Array.isArray(jsonLd) ? jsonL
       <slot />
     </main>
     <Footer />
+    {analytics && site.analytics.gaMeasurementId && <ConsentBanner />}
   </body>
 </html>

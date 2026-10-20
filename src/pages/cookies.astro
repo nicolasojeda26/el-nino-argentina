@@ -57,6 +57,12 @@ const jsonLd = {
       descarga teselas de OpenFreeMap y relieve de Mapterhorn; esas solicitudes no instalan
       cookies propias del sitio. La medición de audiencia se describe en la sección 2.
     </p>
+    <p>
+      El sitio guarda en el almacenamiento local de tu navegador (<code>localStorage</code>)
+      solo dos preferencias: el tema claro u oscuro (<code>enso-theme</code>) y tu elección
+      sobre la medición de audiencia (<code>enso-consent-analytics</code>). No se envían a
+      ningún servidor y podés borrarlas desde la configuración del navegador.
+    </p>
 
     <h2>2. Medición de audiencia</h2>
     <p>
@@ -87,12 +93,25 @@ const jsonLd = {
         </tbody>
       </table>
     </div>
-    <p style="margin-top:18px;">
-      Podés impedir la medición con el{" "}
+    <p style="margin-top:18px;" id="preferencias">
+      <strong>Estas cookies solo se instalan si las aceptás.</strong> En tu primera visita el
+      sitio te pregunta si aceptás la medición de audiencia. Mientras no aceptes, Google
+      Analytics funciona en modo de consentimiento denegado (Consent Mode v2): no instala
+      cookies <code>_ga</code> ni <code>_ga_*</code> y solo puede recibir señales anónimas sin
+      identificadores. Si rechazás después de haber aceptado, el sitio borra esas cookies.
+    </p>
+    <p>
+      <button type="button" class="btn btn-ghost" data-consent-open hidden>
+        Cambiar preferencias de medición
+      </button>
+    </p>
+    <p>
+      También podés impedir la medición con el{" "}
       <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener" target="_blank">
         complemento de inhabilitación de Google Analytics
       </a>{" "}
-      o bloqueando estas cookies en tu navegador.
+      o bloqueando estas cookies en tu navegador. Esta elección no cambia los anuncios de
+      AdSense, que se describen en la sección 3.
     </p>
 
     <h2>3. Cookies de terceros: publicidad</h2>

@@ -8,11 +8,11 @@ export const site = {
   email: "litoraldevctes@gmail.com",
   adsenseClient: "ca-pub-2347772486638866",
   analytics: {
-    gaMeasurementId: "",
-    gaPropertyId: "",
-    googleOAuthClientId: "",
+    gaMeasurementId: "G-4LXNS9PBZ4",
+    gaPropertyId: "559848852",
+    googleOAuthClientId: "931828689812-u596eeg9l3dn9bqkv1i2a19rbij1kut1.apps.googleusercontent.com",
   },
-  googleSiteVerification: "",
+  googleSiteVerification: "zJxHxDdHhlIaLE1S6rN5yLtR5jS-5btRtsMZK5taZDg",
   adsSlots: {
     "home-top": "",
     pronostico: "",

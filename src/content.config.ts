@@ -6,6 +6,7 @@ const noticias = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/noticias" }),
   schema: z.object({
     title: z.string(),
+    seoTitle: z.string().optional(),
     description: z.string(),
     date: z.coerce.date(),
     tag: z.string().default("El Niño"),

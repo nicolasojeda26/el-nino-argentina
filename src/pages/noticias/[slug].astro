@@ -55,7 +55,7 @@ const jsonLd = {
 ---
 
 <Layout
-  title={post.data.title}
+  title={post.data.seoTitle ?? post.data.title}
   description={post.data.description}
   type="article"
   jsonLd={jsonLd}
@@ -98,6 +98,10 @@ const jsonLd = {
       <a class="btn btn-ghost" href="/noticias/">← Volver a las notas</a>
       <a class="btn btn-primary" href="/pronostico/">Ver pronóstico actual</a>
     </div>
+    <p style="margin-top:20px;font-size:0.95rem;">
+      ¿Te quedó alguna duda sobre El Niño o La Niña? Revisá las{" "}
+      <a href="/preguntas/">preguntas frecuentes</a> o el <a href="/glosario/">glosario</a>.
+    </p>
   </article>
 
   {

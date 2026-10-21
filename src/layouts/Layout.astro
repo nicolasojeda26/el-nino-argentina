@@ -34,7 +34,11 @@ const {
 } = Astro.props;
 
 const origin = Astro.site ?? site.url;
-const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
+// El sufijo de marca solo se agrega si el título completo entra en ~65 caracteres
+// (Google corta los títulos largos y ya muestra el nombre del sitio aparte).
+const brandSuffix = ` | ${site.name}`;
+const fullTitle =
+  title.includes(site.name) || title.length + brandSuffix.length > 65 ? title : `${title}${brandSuffix}`;
 const canonical = new URL(Astro.url.pathname, origin).href;
 const ogImage = new URL(image ?? "/og.png", origin).href;
 const logo = new URL("/apple-touch-icon.png", origin).href;

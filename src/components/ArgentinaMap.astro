@@ -16,7 +16,7 @@ const allProvinces = Object.values(provinceByName).sort((a, b) =>
 );
 const regionNames = Object.fromEntries(regions.map((r) => [r.slug, r.name]));
 const defaultStatus =
-  "Mapa 3D: arrastrá para explorar, usá los botones para hacer zoom y tocá una provincia, alerta o estación";
+  "Mapa 3D: usá \"Ir a\" para ver una región en relieve, arrastrá para explorar y tocá una provincia, alerta o estación";
 ---
 
 <figure
@@ -36,6 +36,29 @@ const defaultStatus =
     </div>
   </div>
 
+  <div class="armap-subbar">
+    <div class="armap-regions" role="group" aria-label="Volar a una región">
+      <span class="armap-subbar-label">Ir a</span>
+      {
+        regions.map((r) => (
+          <button type="button" class="armap-chip" data-map-fly={r.slug} data-region={r.slug}>
+            <span class="armap-chip-dot" aria-hidden="true" />
+            {r.name}
+          </button>
+        ))
+      }
+    </div>
+    <div class="armap-layers" role="group" aria-label="Capas del mapa">
+      <span class="armap-subbar-label">Capas</span>
+      <button type="button" class="armap-chip" data-map-layer="alertas" aria-pressed="true">
+        Alertas SMN
+      </button>
+      <button type="button" class="armap-chip" data-map-layer="estaciones" aria-pressed="true">
+        Estaciones INA
+      </button>
+    </div>
+  </div>
+
   <div class="armap-canvas">
     <div
       class="armap-gl"
@@ -46,6 +69,7 @@ const defaultStatus =
     >
     </div>
     <div class="armap-live" data-map-live hidden></div>
+    <div class="armap-tip" data-map-tip hidden></div>
 
     <div class="armap-fallback" data-map-fallback>
       <svg
@@ -120,8 +144,9 @@ const defaultStatus =
   </details>
 
   <figcaption class="armap-cap">
-    Arrastrá para explorar, hacé zoom con los botones y tocá una provincia, un polígono de alerta o una
-    estación para ver el detalle. En escritorio, la rueda del mouse no secuestra el scroll de la página.
+    Arrastrá para explorar (clic derecho o dos dedos para inclinar y girar), usá "Ir a" para ver cada
+    región en relieve y tocá una provincia, un área de alerta o una estación para ver el detalle. En
+    escritorio, la rueda del mouse no secuestra el scroll de la página.
     <span class="armap-attr">
       Mapa: MapLibre GL · Datos: OpenFreeMap / OpenStreetMap · Relieve: Mapterhorn · Provincias: Natural
       Earth · Alertas: SMN / INA.
@@ -177,6 +202,12 @@ const defaultStatus =
     const pitchBtn = root.querySelector<HTMLButtonElement>("[data-map-pitch]");
     const globeBtn = root.querySelector<HTMLButtonElement>("[data-map-globe]");
     const resetBtn = root.querySelector<HTMLButtonElement>("[data-map-reset]");
+    const tipEl = root.querySelector<HTMLElement>("[data-map-tip]");
+    const flyBtns = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-map-fly]"));
+    const layerBtns = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-map-layer]"));
+    const legendItems = Array.from(root.querySelectorAll<HTMLElement>(".leg[data-region]"));
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    const layerVisible: Record<string, boolean> = { alertas: true, estaciones: true };
     const defaultStatus = root.dataset.defaultStatus ?? "";
     const regionNames: Record<string, string> = JSON.parse(
       root.dataset.regionNames ?? "{}",
@@ -189,6 +220,11 @@ const defaultStatus =
     let appliedTheme: "light" | "dark" | null = null;
     let hoveredSlug: string | null = null;
     let launched = false;
+    let openPopup: import("maplibre-gl").Popup | null = null;
+    const closePopup = () => {
+      openPopup?.remove();
+      openPopup = null;
+    };
 
     const setStatus = (text: string) => {
       if (statusText) statusText.textContent = text;
@@ -345,13 +381,18 @@ const defaultStatus =
             customAttribution:
               'Base: <a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
           },
-          canvasContextAttributes: { antialias: true },
+          // Suavizado solo con puntero fino (escritorio) y resolución tope 2x:
+          // en celulares y pantallas 3x el costo de GPU se dispara sin ganancia visible.
+          canvasContextAttributes: { antialias: finePointer },
+          pixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+          fadeDuration: 150,
         });
 
         map.addControl(
           new ml.NavigationControl({ visualizePitch: true, showCompass: true }),
           "top-right",
         );
+        map.addControl(new ml.FullscreenControl({ container: root.querySelector<HTMLElement>(".armap-canvas") ?? undefined }), "top-right");
         map.addControl(
           new ml.ScaleControl({ unit: "metric", maxWidth: 110 }),
           "bottom-left",
@@ -365,7 +406,7 @@ const defaultStatus =
         const applyTerrain = () => {
           if (!map) return;
           if (is3D) {
-            map.setTerrain({ source: "terrain", exaggeration: 1.35 });
+            map.setTerrain({ source: "terrain", exaggeration: 1.6 });
           } else {
             map.setTerrain(null);
           }
@@ -385,6 +426,26 @@ const defaultStatus =
             });
           } catch {
             /* estilos sin soporte de cielo */
+          }
+        };
+
+        const layerGroups: Record<string, string[]> = {
+          alertas: ["alert-fill", "alert-line"],
+          estaciones: ["station-pulse", "station-dot"],
+        };
+
+        const applyLayerVisibility = () => {
+          if (!map) return;
+          for (const [group, ids] of Object.entries(layerGroups)) {
+            for (const id of ids) {
+              if (map.getLayer(id)) {
+                map.setLayoutProperty(id, "visibility", layerVisible[group] ? "visible" : "none");
+              }
+            }
+          }
+          for (const btn of layerBtns) {
+            const group = btn.dataset.mapLayer ?? "";
+            btn.setAttribute("aria-pressed", String(Boolean(layerVisible[group])));
           }
         };
 
@@ -412,23 +473,6 @@ const defaultStatus =
 
           const firstLineOrSymbol = firstLayerOfType(["line", "symbol"]);
           const firstSymbol = firstLayerOfType(["symbol"]);
-
-          if (!map.getLayer("hillshade")) {
-            map.addLayer(
-              {
-                id: "hillshade",
-                type: "hillshade",
-                source: "hillshade-dem",
-                paint: {
-                  "hillshade-exaggeration": 0.32,
-                  "hillshade-shadow-color": "#1c2c3a",
-                  "hillshade-highlight-color": "#fffdf6",
-                  "hillshade-accent-color": "#6b7b8a",
-                },
-              },
-              firstLineOrSymbol,
-            );
-          }
 
           if (!map.getSource("provincias")) {
             map.addSource("provincias", {
@@ -463,9 +507,35 @@ const defaultStatus =
                   "fill-opacity": [
                     "case",
                     ["boolean", ["feature-state", "hover"], false],
-                    0.58,
-                    0.36,
+                    0.55,
+                    ["boolean", ["feature-state", "focus"], false],
+                    0.5,
+                    ["boolean", ["feature-state", "dim"], false],
+                    0.07,
+                    0.26,
                   ],
+                  "fill-opacity-transition": { duration: 220 },
+                },
+              },
+              firstLineOrSymbol,
+            );
+          }
+
+          // El sombreado va ENCIMA del color de las provincias para que el relieve
+          // (Andes, sierras) se lea aun a escala país.
+          if (!map.getLayer("hillshade")) {
+            const dark = appliedTheme === "dark";
+            map.addLayer(
+              {
+                id: "hillshade",
+                type: "hillshade",
+                source: "hillshade-dem",
+                paint: {
+                  "hillshade-exaggeration": dark ? 0.6 : 0.5,
+                  "hillshade-shadow-color": dark ? "#000000" : "#16232f",
+                  "hillshade-highlight-color": dark ? "#5f7f9c" : "#ffffff",
+                  "hillshade-accent-color": dark ? "#0b1c2e" : "#55616d",
+                  "hillshade-illumination-direction": 315,
                 },
               },
               firstLineOrSymbol,
@@ -501,11 +571,13 @@ const defaultStatus =
           if (alertFeatures.length && !map.getLayer("alert-fill")) {
             map.addLayer(
               {
+                // Áreas planas apoyadas sobre el relieve: las extrusiones de decenas de km
+                // tapaban el mapa y eran lo más caro de dibujar.
                 id: "alert-fill",
-                type: "fill-extrusion",
+                type: "fill",
                 source: "alertas",
                 paint: {
-                  "fill-extrusion-color": [
+                  "fill-color": [
                     "match",
                     ["get", "level"],
                     "rojo",
@@ -516,18 +588,15 @@ const defaultStatus =
                     "#e9b400",
                     "#9fb0c0",
                   ],
-                  "fill-extrusion-height": [
+                  "fill-opacity": [
                     "match",
                     ["get", "level"],
                     "rojo",
-                    62000,
+                    0.3,
                     "naranja",
-                    46000,
-                    "amarillo",
-                    30000,
-                    18000,
+                    0.18,
+                    0.08,
                   ],
-                  "fill-extrusion-opacity": 0.34,
                 },
               },
               firstSymbol,
@@ -549,7 +618,7 @@ const defaultStatus =
                     "naranja",
                     "#ffc27a",
                     "amarillo",
-                    "#ffe08a",
+                    "#d4a400",
                     "#c7d6e4",
                   ],
                   "line-width": 1.3,
@@ -586,8 +655,11 @@ const defaultStatus =
                   "#e08a1e",
                   "#2e86c1",
                 ],
-                "circle-radius": 10,
-                "circle-opacity": 0.25,
+                // Halo fijo: antes se animaba en cada cuadro y obligaba a redibujar
+                // todo el mapa (con relieve) 60 veces por segundo.
+                "circle-radius": ["match", ["get", "alert"], "evacuacion", 15, 12],
+                "circle-opacity": 0.22,
+                "circle-blur": 0.45,
                 "circle-pitch-alignment": "viewport",
               },
             });
@@ -629,6 +701,11 @@ const defaultStatus =
 
           applyTerrain();
           applySky();
+          applyLayerVisibility();
+          // La atribución arranca plegada (botón "i"); se despliega al tocarla.
+          root
+            .querySelector(".maplibregl-ctrl-attrib.maplibregl-compact-show")
+            ?.classList.remove("maplibregl-compact-show");
 
           root.classList.remove("map-loading", "map-failed");
           root.classList.add("map-ready");
@@ -693,16 +770,41 @@ const defaultStatus =
           hoveredSlug = slug;
         };
 
-        map.on("mousemove", (event) => {
-          const feature = pickFeature(event.point);
+        const hideTip = () => {
+          if (tipEl) tipEl.hidden = true;
+        };
+
+        const showTip = (point: { x: number; y: number }, title: string, detail: string) => {
+          if (!tipEl || !finePointer) return;
+          tipEl.innerHTML = `<strong>${escapeHtml(title)}</strong>${detail ? `<span>${escapeHtml(detail)}</span>` : ""}`;
+          tipEl.hidden = false;
+          const canvas = map?.getCanvas();
+          const maxX = (canvas?.clientWidth ?? 0) - tipEl.offsetWidth - 8;
+          const x = Math.max(8, Math.min(point.x + 14, maxX));
+          const y = Math.max(8, point.y - tipEl.offsetHeight - 12);
+          tipEl.style.transform = `translate(${x}px, ${y}px)`;
+        };
+
+        // Hover limitado a una consulta por cuadro y pausado mientras se arrastra:
+        // queryRenderedFeatures con relieve activo es caro.
+        let pendingPoint: { x: number; y: number } | null = null;
+        let hoverFrame = 0;
+
+        const resolveHover = () => {
+          hoverFrame = 0;
+          const point = pendingPoint;
+          pendingPoint = null;
+          if (!map || !point) return;
+          const feature = pickFeature(point);
           if (!feature) {
             setProvinceHover(null);
-            if (map) map.getCanvas().style.cursor = "";
+            map.getCanvas().style.cursor = "";
             setStatus(defaultStatus);
+            hideTip();
             return;
           }
 
-          if (map) map.getCanvas().style.cursor = "pointer";
+          map.getCanvas().style.cursor = "pointer";
           const props = feature.properties ?? {};
 
           if (feature.layer.id === "station-dot") {
@@ -710,22 +812,37 @@ const defaultStatus =
             setStatus(
               `INA · ${props.station} (${props.river}): ${thumb(props.value, props.unit)} · ${props.status} — clic para detalles`,
             );
+            showTip(point, `${props.station} · río ${props.river}`, `${thumb(props.value, props.unit)} · ${props.status}`);
           } else if (feature.layer.id === "alert-fill") {
             setProvinceHover(null);
             setStatus(
               `SMN · ${props.event} · alerta ${props.levelLabel} · ${props.area} — clic para detalles`,
             );
+            showTip(point, `${props.event}`, `Alerta ${props.levelLabel} · ${props.area}`);
           } else {
             const slug = String(props.slug ?? "");
             setProvinceHover(slug || null);
-            setStatus(
-              `${props.name} · ${regionNames[props.region] ?? props.region} — clic para abrir la ficha provincial`,
-            );
+            const regionName = regionNames[props.region] ?? props.region;
+            setStatus(`${props.name} · ${regionName} — clic para ver el resumen`);
+            showTip(point, String(props.name), String(regionName));
           }
+        };
+
+        map.on("mousemove", (event) => {
+          if (map?.isMoving()) {
+            hideTip();
+            return;
+          }
+          pendingPoint = event.point;
+          if (!hoverFrame) hoverFrame = requestAnimationFrame(resolveHover);
         });
 
+        map.on("movestart", hideTip);
+
         map.getCanvas().addEventListener("mouseleave", () => {
+          pendingPoint = null;
           setProvinceHover(null);
+          hideTip();
           if (map) map.getCanvas().style.cursor = "";
           setStatus(defaultStatus);
         });
@@ -736,15 +853,21 @@ const defaultStatus =
           if (!feature) return;
           const props = feature.properties ?? {};
 
-          if (feature.layer.id === "prov-fill") {
-            const slug = String(props.slug ?? "");
-            if (slug) window.location.assign(`/impactos/provincia/${slug}/`);
-            return;
-          }
-
+          hideTip();
           let html = "";
 
-          if (feature.layer.id === "station-dot") {
+          if (feature.layer.id === "prov-fill") {
+            const slug = String(props.slug ?? "");
+            const regionSlug = String(props.region ?? "");
+            html = `
+              <div class="map-popup">
+                <p class="map-popup-kicker">Provincia · ${escapeHtml(regionNames[regionSlug] ?? regionSlug)}</p>
+                <strong>${escapeHtml(props.name)}</strong>
+                <p>Cómo la afectan El Niño y La Niña: lluvias, ríos y producción.</p>
+                ${slug ? `<a href="/impactos/provincia/${escapeHtml(slug)}/">Ver ficha provincial →</a>` : ""}
+                ${regionSlug ? `<a class="map-popup-secondary" href="/impactos/${escapeHtml(regionSlug)}/">Ver ${escapeHtml(regionNames[regionSlug] ?? regionSlug)} →</a>` : ""}
+              </div>`;
+          } else if (feature.layer.id === "station-dot") {
             html = `
               <div class="map-popup">
                 <p class="map-popup-kicker">INA · ${escapeHtml(props.kind)}</p>
@@ -780,7 +903,8 @@ const defaultStatus =
           }
 
           if (html) {
-            new maplibregl.Popup({
+            closePopup();
+            openPopup = new maplibregl.Popup({
               closeButton: true,
               maxWidth: "320px",
               className: "armap-popup",
@@ -834,6 +958,9 @@ const defaultStatus =
         globeBtn?.addEventListener("click", () => setGlobe(!isGlobe));
         resetBtn?.addEventListener("click", () => {
           if (!map) return;
+          closePopup();
+          focusedRegion = null;
+          setRegionFocus(null);
           map.fitBounds(
             [
               [-73.6, -55.25],
@@ -848,27 +975,121 @@ const defaultStatus =
           );
         });
 
-        const reduceMotion = window.matchMedia(
-          "(prefers-reduced-motion: reduce)",
-        );
-        let pulseFrame = 0;
-        const animatePulse = (time: number) => {
-          if (!reduceMotion.matches && map?.getLayer("station-pulse")) {
-            const wave = (Math.sin(time / 520) + 1) / 2;
-            map.setPaintProperty(
-              "station-pulse",
-              "circle-radius",
-              8 + wave * 13,
-            );
-            map.setPaintProperty(
-              "station-pulse",
-              "circle-opacity",
-              0.32 - wave * 0.2,
-            );
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        // Límites de cada región calculados a partir de la geometría provincial.
+        type Bounds = [[number, number], [number, number]];
+        const regionBounds: Record<string, Bounds> = {};
+        const regionSlugs: Record<string, string[]> = {};
+        for (const feature of provincesGeo.features ?? []) {
+          const region = feature.properties?.region;
+          if (!region) continue;
+          (regionSlugs[region] ??= []).push(feature.properties.slug);
+          const rings: number[][][] =
+            feature.geometry.type === "Polygon"
+              ? feature.geometry.coordinates
+              : feature.geometry.coordinates.flat();
+          const b = (regionBounds[region] ??= [
+            [Infinity, Infinity],
+            [-Infinity, -Infinity],
+          ]);
+          for (const ring of rings) {
+            for (const [lon, lat] of ring) {
+              b[0][0] = Math.min(b[0][0], lon);
+              b[0][1] = Math.min(b[0][1], lat);
+              b[1][0] = Math.max(b[1][0], lon);
+              b[1][1] = Math.max(b[1][1], lat);
+            }
           }
-          pulseFrame = requestAnimationFrame(animatePulse);
+        }
+
+        const setRegionFocus = (region: string | null) => {
+          if (!map || !map.getSource("provincias")) return;
+          for (const [slugRegion, slugs] of Object.entries(regionSlugs)) {
+            for (const slug of slugs) {
+              map.setFeatureState(
+                { source: "provincias", id: slug },
+                {
+                  focus: region !== null && slugRegion === region,
+                  dim: region !== null && slugRegion !== region,
+                },
+              );
+            }
+          }
+          for (const btn of flyBtns) {
+            btn.setAttribute("aria-pressed", String(btn.dataset.mapFly === region));
+          }
         };
-        pulseFrame = requestAnimationFrame(animatePulse);
+
+        let focusedRegion: string | null = null;
+
+        const flyToRegion = (region: string) => {
+          if (!map) return;
+          const bounds = regionBounds[region];
+          if (!bounds) return;
+          if (isGlobe) {
+            isGlobe = false;
+            map.setProjection({ type: "mercator" });
+          }
+          if (!is3D) {
+            is3D = true;
+            applyTerrain();
+          }
+          syncButtons();
+          closePopup();
+          focusedRegion = region;
+          setRegionFocus(region);
+          // Más inclinación en regiones con cordillera para que el relieve se vea.
+          const mountainous = region === "cuyo" || region === "noa" || region === "patagonia";
+          map.fitBounds(bounds, {
+            padding: finePointer
+              ? { top: 48, bottom: 36, left: 36, right: 64 }
+              : { top: 56, bottom: 24, left: 16, right: 52 },
+            pitch: mountainous ? 58 : 45,
+            bearing: mountainous ? -18 : -8,
+            duration: reduceMotion.matches ? 0 : 1800,
+            essential: true,
+          });
+          setStatus(
+            `${regionNames[region] ?? region}: ${finePointer ? "arrastrá con clic derecho para girar e inclinar" : "usá dos dedos para girar e inclinar"}`,
+          );
+        };
+
+        flyBtns.forEach((btn) =>
+          btn.addEventListener("click", () => {
+            const region = btn.dataset.mapFly ?? "";
+            if (focusedRegion === region) {
+              focusedRegion = null;
+              setRegionFocus(null);
+              resetBtn?.click();
+            } else {
+              flyToRegion(region);
+            }
+          }),
+        );
+
+        layerBtns.forEach((btn) =>
+          btn.addEventListener("click", () => {
+            const group = btn.dataset.mapLayer ?? "";
+            layerVisible[group] = !layerVisible[group];
+            closePopup();
+            applyLayerVisibility();
+          }),
+        );
+
+        // La leyenda resalta su región en el mapa al pasar el mouse o enfocar.
+        legendItems.forEach((item) => {
+          const region = item.dataset.region ?? "";
+          const enter = () => setRegionFocus(region);
+          const leave = () => setRegionFocus(focusedRegion);
+          item.addEventListener("mouseenter", enter);
+          item.addEventListener("mouseleave", leave);
+          item.addEventListener("focusin", enter);
+          item.addEventListener("focusout", leave);
+        });
+
+        // Al cambiar de tema se recarga el estilo: restaurar el foco de región.
+        map.on("style.load", () => setRegionFocus(focusedRegion));
 
         const themeObserver = new MutationObserver(() => {
           if (!map) return;
@@ -885,7 +1106,7 @@ const defaultStatus =
         window.addEventListener(
           "pagehide",
           () => {
-            cancelAnimationFrame(pulseFrame);
+            cancelAnimationFrame(hoverFrame);
             themeObserver.disconnect();
             map?.remove();
             map = null;

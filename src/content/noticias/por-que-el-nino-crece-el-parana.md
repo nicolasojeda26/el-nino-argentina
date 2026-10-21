@@ -1,6 +1,6 @@
 ---
 title: "Por qué El Niño hace crecer el río Paraná"
-description: "La crecida del río Paraná no depende solo de las lluvias locales: gran parte del agua nace a miles de kilómetros, en el sur de Brasil. Te explicamos la conexión."
+description: "La crecida del Paraná no depende solo de las lluvias locales: gran parte del agua nace a miles de kilómetros, en el sur de Brasil. Te explicamos por qué."
 date: 2026-09-28
 tag: "Ríos"
 ---

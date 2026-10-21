@@ -1,5 +1,6 @@
 ---
 title: "La 'Niña triple' (2020-2022): la sequía que marcó al agro argentino"
+seoTitle: "La Niña triple 2020-2022: la sequía que marcó al agro"
 description: "Tres veranos consecutivos de La Niña dejaron una bajante histórica del río Paraná y una de las peores sequías del campo argentino. Repasamos qué fue y qué dejó."
 date: 2026-09-20
 tag: "Historia"

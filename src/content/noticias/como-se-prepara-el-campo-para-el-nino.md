@@ -1,6 +1,6 @@
 ---
 title: "Cómo se prepara el campo para un año de El Niño"
-description: "Con la llegada de El Niño, los productores planifican la campaña con más agua disponible, pero también con riesgo de excesos. Repasamos qué miran y cómo se anticipan."
+description: "Con El Niño, los productores planifican una campaña con más agua disponible pero con riesgo de excesos. Qué miran y cómo se anticipan."
 date: 2026-10-05
 tag: "Agro"
 ---

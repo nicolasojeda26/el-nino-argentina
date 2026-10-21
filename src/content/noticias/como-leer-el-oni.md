@@ -1,6 +1,6 @@
 ---
 title: "Cómo leer el ONI: guía práctica para entender la fase ENSO"
-description: "El ONI es el termómetro oficial de El Niño y La Niña. Te enseñamos a leerlo: qué significa cada valor, los umbrales de ±0,5 °C y por qué se usan trimestres móviles."
+description: "El ONI es el termómetro oficial de El Niño y La Niña. Cómo leerlo: qué significa cada valor, los umbrales de ±0,5 °C y por qué usa trimestres móviles."
 date: 2026-10-12
 tag: "Conceptos"
 ---

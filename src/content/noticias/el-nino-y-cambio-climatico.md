@@ -1,5 +1,6 @@
 ---
 title: "El Niño y el cambio climático no son lo mismo: claves para no confundirlos"
+seoTitle: "El Niño y el cambio climático: en qué se diferencian"
 description: "Es común mezclar el fenómeno de El Niño con el cambio climático. Son dos cosas distintas que, sin embargo, interactúan. Te explicamos la diferencia."
 date: 2026-09-15
 tag: "Conceptos"

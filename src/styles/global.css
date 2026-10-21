@@ -4022,3 +4022,204 @@ html[data-theme="dark"] .admin-kpi small[data-trend="up"] {
     gap: 2px;
   }
 }
+
+/* ---------- Mapa 3D: navegación por región, capas y etiqueta flotante ---------- */
+.armap-3d .armap-canvas {
+  height: clamp(420px, 58vw, 680px);
+}
+
+.armap-subbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  margin-bottom: 12px;
+}
+
+.armap-regions,
+.armap-layers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.armap-subbar-label {
+  margin-right: 4px;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-ink-muted);
+}
+
+.armap-chip {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border: 1px solid var(--rule-ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--on-ink-soft);
+  font-family: var(--font);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.armap-chip:hover {
+  border-color: rgba(234, 242, 249, 0.45);
+  color: var(--on-ink);
+}
+
+.armap-chip:focus-visible {
+  outline: 2px solid var(--celeste-soft);
+  outline-offset: 2px;
+}
+
+.armap-chip[aria-pressed="true"] {
+  border-color: rgba(234, 242, 249, 0.6);
+  background: rgba(234, 242, 249, 0.12);
+  color: var(--on-ink);
+}
+
+.armap-layers .armap-chip::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+}
+
+.armap-layers .armap-chip[aria-pressed="true"]::before {
+  background: var(--sol);
+  border-color: var(--sol);
+}
+
+.armap-chip-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--neutral);
+}
+
+.armap-chip[data-region="litoral"] .armap-chip-dot { background: var(--region-litoral); }
+.armap-chip[data-region="pampeana"] .armap-chip-dot { background: var(--region-pampeana); }
+.armap-chip[data-region="cuyo"] .armap-chip-dot { background: var(--region-cuyo); }
+.armap-chip[data-region="noa"] .armap-chip-dot { background: var(--region-noa); }
+.armap-chip[data-region="patagonia"] .armap-chip-dot { background: var(--region-patagonia); }
+
+.armap-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  max-width: 260px;
+  padding: 7px 10px;
+  border: 1px solid rgba(234, 242, 249, 0.2);
+  border-radius: 2px;
+  background: rgba(4, 13, 24, 0.88);
+  color: #eaf2f9;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  will-change: transform;
+}
+
+.armap-tip[hidden] {
+  display: none;
+}
+
+.armap-tip strong {
+  display: block;
+  font-weight: 700;
+}
+
+.armap-tip span {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #a8bccd;
+}
+
+.map-popup a.map-popup-secondary {
+  display: block;
+  margin-top: 2px;
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--ink-soft, var(--text-soft));
+}
+
+.armap-3d .armap-canvas:fullscreen {
+  height: 100%;
+  border: 0;
+}
+
+.armap-3d .leg {
+  cursor: default;
+}
+
+@media (max-width: 900px) {
+  .armap-3d .armap-canvas {
+    height: min(72vh, 560px);
+  }
+}
+
+@media (max-width: 680px) {
+  .armap-3d .armap-canvas {
+    height: min(70vh, 480px);
+  }
+
+  .armap-subbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .armap-regions,
+  .armap-layers {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .armap-regions::-webkit-scrollbar,
+  .armap-layers::-webkit-scrollbar {
+    display: none;
+  }
+
+  .armap-chip {
+    flex: none;
+  }
+}
+
+.armap-subbar,
+.armap-regions,
+.armap-layers {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.armap-subbar-label {
+  flex: none;
+  white-space: nowrap;
+}
+
+@media (max-width: 680px) {
+  .armap-3d .armap-live {
+    max-width: calc(100% - 64px);
+  }
+}

@@ -2,7 +2,7 @@
 
 **Sitio:** https://elniño.net.ar · (punycode: https://xn--elnio-rta.net.ar)
 **Repositorio:** https://github.com/nicolasojeda26/el-nino-argentina (rama `main`)
-**Documento actualizado:** 16 de octubre de 2026
+**Documento actualizado:** 20 de octubre de 2026
 
 ---
 
@@ -150,8 +150,15 @@ WEBMONE/
 - `/rss.xml` para las notas.
 - `/admin/` se genera con `robots="noindex, nofollow"`, cabecera
   `X-Robots-Tag: noindex, nofollow` y queda excluido del sitemap.
-- Search Console: falta verificar la propiedad y enviar `/sitemap-index.xml`; el soporte de
-  verificación por meta ya está implementado.
+- **Search Console** (propiedad prefijo de URL `https://xn--elnio-rta.net.ar/`, cuenta
+  `adolfonicolasojeda@gmail.com`): verificada el 20/10/2026 por etiqueta HTML
+  (`site.googleSiteVerification`), `sitemap-index.xml` enviado e indexación solicitada para
+  `/`, `/pronostico/`, `/noticias/` y dos notas. No borrar la meta: se pierde la verificación.
+- Títulos: el sufijo ` | El Niño Argentina` solo se agrega si el título completo entra en
+  65 caracteres (`Layout.astro`). Las notas aceptan `seoTitle` opcional en el frontmatter
+  para un `<title>` más corto que el H1.
+- Enlazado interno: "Para seguir leyendo" en `/el-nino/` y `/la-nina/`, y enlace a
+  preguntas frecuentes y glosario al pie de cada nota.
 
 ### 2.7 Publicidad (AdSense)
 
@@ -181,8 +188,14 @@ WEBMONE/
 - Páginas de privacidad, cookies, términos, acerca y seguridad.
 - Sin cuentas propias, formularios ni base de datos. El panel `/admin/` usa OAuth de Google
   y solo lee métricas agregadas de GA4.
-- Analítica: **Google Analytics 4** con cookies `_ga`/`_ga_*`, IP anonimizada y panel de
-  administración client-side.
+- Analítica: **Google Analytics 4** (`G-4LXNS9PBZ4`, propiedad `559848852`) con
+  **Consent Mode v2**: `analytics_storage` arranca en `denied` y solo pasa a `granted`
+  si el visitante acepta en el aviso (`ConsentBanner.astro`). La elección se guarda en
+  `localStorage` (`enso-consent-analytics`); al rechazar se borran `_ga`/`_ga_*`. Solo
+  se controla la analítica: la configuración de AdSense no se modifica. Enlace
+  "Preferencias de cookies" en el pie y botón en `/cookies/#preferencias`.
+- Cloudflare inyecta el beacon de **Cloudflare Web Analytics**
+  (`static.cloudflareinsights.com`), que no usa cookies.
 - Páginas legales y CSP documentadas en el propio sitio (`/seguridad/`).
 
 ### 2.9 Panel de tráfico (`/admin/`)
@@ -195,6 +208,11 @@ WEBMONE/
   dispositivos y usuarios en tiempo real.
 - Configuración en `site.analytics`: `gaMeasurementId`, `gaPropertyId` y
   `googleOAuthClientId`. Sin Property ID y Client ID, el panel muestra una guía de setup.
+- OAuth: proyecto de Google Cloud `el-nino-argentina-web`, Data API habilitada, pantalla
+  de consentimiento externa en **modo prueba** con `adolfonicolasojeda@gmail.com` como
+  usuario de prueba, cliente web "Panel admin elnino.net.ar" con origen
+  `https://xn--elnio-rta.net.ar`. Para dar acceso a otra cuenta: agregarla como usuario de
+  prueba y como lector en la propiedad GA4. El client secret no se usa ni se guarda.
 - No hay backend ni secretos: el Client ID de OAuth es público y el acceso lo controla
   la cuenta de Google con permiso sobre la propiedad GA4.
 - El panel se renderiza con `analytics={false}` para no cargar GA4 ni contaminar la
@@ -314,7 +332,9 @@ tag, resumen, autor). Aparece automáticamente en `/noticias/`, el RSS y el site
 4. Alternativa sin código: activar **Anuncios automáticos** en AdSense (el script ya está
    en todas las páginas).
 
-### 5.5 Activar analítica y Search Console
+### 5.5 Analítica y Search Console (configurado el 20/10/2026)
+
+Pasos usados (sirven para rehacerlo o migrar de cuenta):
 
 1. Crear una propiedad **GA4** y copiar el Measurement ID (`G-...`) y el Property ID
    (número) en `site.analytics` (`src/data/content.ts`).
@@ -343,18 +363,19 @@ tag, resumen, autor). Aparece automáticamente en `/noticias/`, el RSS y el site
 
 **Funcionando:** sitio completo (53 páginas), datos ONI en vivo con respaldo y workflow
 automático, alertas SMN/INA cada 30 minutos, mapa MapLibre con fallback SVG, SEO técnico,
-herramientas, API JSON/CSV, widget, políticas legales, cabeceras de seguridad y
-`security.txt`.
+herramientas, API JSON/CSV, widget, políticas legales, cabeceras de seguridad,
+`security.txt`, GA4 con Consent Mode v2, panel `/admin/` y Search Console verificada.
 
 **Pendientes (requieren dashboard de Google/Cloudflare):**
 
 1. AdSense: en Sitios → `xn--elnio-rta.net.ar` → **Buscar actualizaciones** para refrescar
    el ads.txt y luego **Solicitar revisión**. La revisión puede tardar de días a semanas.
 2. AdSense: crear unidades y pegar IDs en `site.adsSlots` (o activar Auto ads).
-3. GA4: crear propiedad, OAuth Client ID y pegar IDs en `site.analytics`.
-4. Search Console: verificar dominio, pegar token y enviar el sitemap.
-5. Cloudflare: activar **Always Use HTTPS** (hoy `http://` responde 200 sin redirigir).
-6. Cloudflare: decidir si `www` redirige al apex (hoy ambos responden).
+3. Search Console: revisar en unos días el informe "Páginas" (indexadas y excluidas).
+4. Cloudflare: activar **Always Use HTTPS** (hoy `http://` responde 200 sin redirigir).
+5. Cloudflare: redirigir `www` al apex con 301 (hoy ambos responden).
+6. AdSense en el EEE/Reino Unido: activar un mensaje de consentimiento certificado (TCF)
+   en AdSense → Privacidad y mensajes si se quiere monetizar ese tráfico.
 
 ---
 

@@ -1,24 +1,24 @@
 {
-  "generatedAt": "2026-10-25T06:43:47.080Z",
+  "generatedAt": "2026-10-25T12:26:04.237Z",
   "sources": {
     "smn": "https://ssl.smn.gob.ar/feeds/CAP/rss_alertaCAP_nuevo_2026.xml",
     "ina": "https://alerta.ina.gob.ar/"
   },
   "counts": {
-    "smn": 5,
+    "smn": 8,
     "smnRed": 0,
     "smnOrange": 0,
-    "smnYellow": 5,
+    "smnYellow": 8,
     "inaAlerts": 9,
     "inaEvacuation": 7,
     "inaStations": 30
   },
   "smn": [
     {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.24.20.36.13.1",
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.30.1",
       "event": "Nevadas",
       "headline": "Nevadas",
-      "description": "El área será afectada por nevadas, chaparrones de nieve y algunas tormentas. Se prevén valores de nieve acumulada entre 10 y 20 centímetros, que pueden ser superados de forma local.",
+      "description": "El área será afectada por nevadas, chaparrones de nieve y algunas tormentas. Se prevén valores de nieve acumulada entre 10 y 30 centímetros, que pueden ser superados de forma local.",
       "instruction": "1- Evitá salir. 2- Circulá con vehículos adecuados y preparados para hielo y nieve. Llevá siempre una pala 3- Revisá el estado de los techos, canaletas y desagües para asegurarte de que estén en buen estado y puedan soportar la acumulación de nieve. 4- Ventilá para evitar acumulación de monóxido de carbono. 5- Asegurate de tener suficientes alimentos no perecederos y agua potable para al menos tres días. Incluí alimentos fáciles de preparar en caso de que haya cortes de energía. 6- Prepará un kit de emergencia que incluya linternas, pilas adicionales, velas, fósforos, mantas térmicas, un botiquín de primeros auxilios y cualquier medicamento necesario.",
       "severity": "Moderate",
       "level": "amarillo",
@@ -28,7 +28,7 @@
       "areaDesc": "",
       "onset": "2026-10-26T09:00:00-03:00",
       "expires": "2026-10-26T20:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261024203630_Nevada_Cordillera_alertas_alertas_1.xml",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Nevada_Cordillera_alertas_alertas_1.xml",
       "polygons": [
         [
           [
@@ -255,314 +255,10 @@
       ]
     },
     {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.24.20.36.13.2",
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.30.4",
       "event": "Nevadas",
       "headline": "Nevadas",
-      "description": "El área será afectada por nevadas, chaparrones de nieve y algunas tormentas. Se prevén valores de nieve acumulada entre 10 y 20 centímetros, que pueden ser superados de forma local.",
-      "instruction": "1- Evitá salir. 2- Circulá con vehículos adecuados y preparados para hielo y nieve. Llevá siempre una pala 3- Revisá el estado de los techos, canaletas y desagües para asegurarte de que estén en buen estado y puedan soportar la acumulación de nieve. 4- Ventilá para evitar acumulación de monóxido de carbono. 5- Asegurate de tener suficientes alimentos no perecederos y agua potable para al menos tres días. Incluí alimentos fáciles de preparar en caso de que haya cortes de energía. 6- Prepará un kit de emergencia que incluya linternas, pilas adicionales, velas, fósforos, mantas térmicas, un botiquín de primeros auxilios y cualquier medicamento necesario.",
-      "severity": "Moderate",
-      "level": "amarillo",
-      "levelLabel": "Amarillo",
-      "rank": 2,
-      "area": "Cordillera",
-      "areaDesc": "",
-      "onset": "2026-10-26T09:00:00-03:00",
-      "expires": "2026-10-26T20:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261024203630_Nevada_Cordillera_alertas_alertas_2.xml",
-      "polygons": [
-        [
-          [
-            -69.48597,
-            -32.12179
-          ],
-          [
-            -69.5,
-            -32.22
-          ],
-          [
-            -69.48,
-            -32.28
-          ],
-          [
-            -69.5,
-            -32.38
-          ],
-          [
-            -69.46,
-            -32.42
-          ],
-          [
-            -69.48,
-            -32.48
-          ],
-          [
-            -69.52,
-            -32.56
-          ],
-          [
-            -69.54,
-            -32.66
-          ],
-          [
-            -69.52,
-            -32.68
-          ],
-          [
-            -69.46,
-            -32.68
-          ],
-          [
-            -69.32,
-            -32.82
-          ],
-          [
-            -69.36,
-            -33.02
-          ],
-          [
-            -69.4,
-            -33.14
-          ],
-          [
-            -69.46,
-            -33.24
-          ],
-          [
-            -69.52,
-            -33.3
-          ],
-          [
-            -69.52,
-            -33.38
-          ],
-          [
-            -69.76,
-            -33.38
-          ],
-          [
-            -69.8,
-            -33.32
-          ],
-          [
-            -69.8,
-            -33.28
-          ],
-          [
-            -69.9,
-            -33.28
-          ],
-          [
-            -69.92,
-            -33.24
-          ],
-          [
-            -69.98,
-            -33.32
-          ],
-          [
-            -70.02,
-            -33.32
-          ],
-          [
-            -70.02,
-            -33.28
-          ],
-          [
-            -70.04,
-            -33.28
-          ],
-          [
-            -70.04,
-            -33.24
-          ],
-          [
-            -70.06,
-            -33.24
-          ],
-          [
-            -70.06,
-            -33.14
-          ],
-          [
-            -70.08,
-            -33.12
-          ],
-          [
-            -70.06,
-            -33.1
-          ],
-          [
-            -70.08,
-            -33.06
-          ],
-          [
-            -70.1,
-            -33.06
-          ],
-          [
-            -70.08,
-            -33.04
-          ],
-          [
-            -70.04,
-            -33.04
-          ],
-          [
-            -70.02,
-            -32.96
-          ],
-          [
-            -70,
-            -32.96
-          ],
-          [
-            -70,
-            -32.9
-          ],
-          [
-            -70.02,
-            -32.9
-          ],
-          [
-            -70.06,
-            -32.86
-          ],
-          [
-            -70.06,
-            -32.82
-          ],
-          [
-            -70.08,
-            -32.82
-          ],
-          [
-            -70.1,
-            -32.8
-          ],
-          [
-            -70.12,
-            -32.76
-          ],
-          [
-            -70.14,
-            -32.76
-          ],
-          [
-            -70.14,
-            -32.66
-          ],
-          [
-            -70.16,
-            -32.62
-          ],
-          [
-            -70.18,
-            -32.62
-          ],
-          [
-            -70.16,
-            -32.6
-          ],
-          [
-            -70.16,
-            -32.58
-          ],
-          [
-            -70.12,
-            -32.58
-          ],
-          [
-            -70.04,
-            -32.62
-          ],
-          [
-            -70.04,
-            -32.56
-          ],
-          [
-            -70.02,
-            -32.54
-          ],
-          [
-            -69.92,
-            -32.54
-          ],
-          [
-            -69.86,
-            -32.56
-          ],
-          [
-            -69.84,
-            -32.56
-          ],
-          [
-            -69.82,
-            -32.54
-          ],
-          [
-            -69.76,
-            -32.54
-          ],
-          [
-            -69.76,
-            -32.52
-          ],
-          [
-            -69.7,
-            -32.5
-          ],
-          [
-            -69.7,
-            -32.4
-          ],
-          [
-            -69.72,
-            -32.4
-          ],
-          [
-            -69.72,
-            -32.32
-          ],
-          [
-            -69.68,
-            -32.3
-          ],
-          [
-            -69.66,
-            -32.28
-          ],
-          [
-            -69.64,
-            -32.26
-          ],
-          [
-            -69.6,
-            -32.18
-          ],
-          [
-            -69.6,
-            -32.14
-          ],
-          [
-            -69.52,
-            -32.14
-          ],
-          [
-            -69.5,
-            -32.12
-          ],
-          [
-            -69.48597,
-            -32.12179
-          ]
-        ]
-      ]
-    },
-    {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.24.20.36.13.3",
-      "event": "Nevadas",
-      "headline": "Nevadas",
-      "description": "El área será afectada por nevadas, chaparrones de nieve y algunas tormentas. Se prevén valores de nieve acumulada entre 10 y 20 centímetros, que pueden ser superados de forma local.",
+      "description": "El área será afectada por nevadas, chaparrones de nieve y algunas tormentas. Se prevén valores de nieve acumulada entre 10 y 30 centímetros, que pueden ser superados de forma local.",
       "instruction": "1- Evitá salir. 2- Circulá con vehículos adecuados y preparados para hielo y nieve. Llevá siempre una pala 3- Revisá el estado de los techos, canaletas y desagües para asegurarte de que estén en buen estado y puedan soportar la acumulación de nieve. 4- Ventilá para evitar acumulación de monóxido de carbono. 5- Asegurate de tener suficientes alimentos no perecederos y agua potable para al menos tres días. Incluí alimentos fáciles de preparar en caso de que haya cortes de energía. 6- Prepará un kit de emergencia que incluya linternas, pilas adicionales, velas, fósforos, mantas térmicas, un botiquín de primeros auxilios y cualquier medicamento necesario.",
       "severity": "Moderate",
       "level": "amarillo",
@@ -572,7 +268,7 @@
       "areaDesc": "",
       "onset": "2026-10-26T15:00:00-03:00",
       "expires": "2026-10-26T20:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261024203630_Nevada_Cordillera_alertas_alertas_3.xml",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Nevada_Cordillera_alertas_alertas_4.xml",
       "polygons": [
         [
           [
@@ -1011,10 +707,862 @@
       ]
     },
     {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.24.20.36.07.2",
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.30.2",
+      "event": "Nevadas",
+      "headline": "Nevadas",
+      "description": "El área será afectada por nevadas, chaparrones de nieve y algunas tormentas. Se prevén valores de nieve acumulada entre 10 y 30 centímetros, que pueden ser superados de forma local.",
+      "instruction": "1- Evitá salir. 2- Circulá con vehículos adecuados y preparados para hielo y nieve. Llevá siempre una pala 3- Revisá el estado de los techos, canaletas y desagües para asegurarte de que estén en buen estado y puedan soportar la acumulación de nieve. 4- Ventilá para evitar acumulación de monóxido de carbono. 5- Asegurate de tener suficientes alimentos no perecederos y agua potable para al menos tres días. Incluí alimentos fáciles de preparar en caso de que haya cortes de energía. 6- Prepará un kit de emergencia que incluya linternas, pilas adicionales, velas, fósforos, mantas térmicas, un botiquín de primeros auxilios y cualquier medicamento necesario.",
+      "severity": "Moderate",
+      "level": "amarillo",
+      "levelLabel": "Amarillo",
+      "rank": 2,
+      "area": "Cordillera",
+      "areaDesc": "",
+      "onset": "2026-10-26T09:00:00-03:00",
+      "expires": "2026-10-26T20:59:59-03:00",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Nevada_Cordillera_alertas_alertas_2.xml",
+      "polygons": [
+        [
+          [
+            -69.54,
+            -30.68
+          ],
+          [
+            -69.58,
+            -30.8
+          ],
+          [
+            -69.72,
+            -30.82
+          ],
+          [
+            -69.68,
+            -30.9
+          ],
+          [
+            -69.7,
+            -31.26
+          ],
+          [
+            -69.78,
+            -31.46
+          ],
+          [
+            -69.72,
+            -31.58
+          ],
+          [
+            -69.74,
+            -31.72
+          ],
+          [
+            -69.88,
+            -31.94
+          ],
+          [
+            -69.86,
+            -32.14
+          ],
+          [
+            -69.7,
+            -32.06
+          ],
+          [
+            -69.56,
+            -32
+          ],
+          [
+            -69.48,
+            -32.08
+          ],
+          [
+            -69.48597,
+            -32.12179
+          ],
+          [
+            -69.48597,
+            -32.12179
+          ],
+          [
+            -69.5,
+            -32.12
+          ],
+          [
+            -69.52,
+            -32.14
+          ],
+          [
+            -69.6,
+            -32.14
+          ],
+          [
+            -69.6,
+            -32.18
+          ],
+          [
+            -69.64,
+            -32.26
+          ],
+          [
+            -69.66,
+            -32.28
+          ],
+          [
+            -69.68,
+            -32.3
+          ],
+          [
+            -69.72,
+            -32.32
+          ],
+          [
+            -69.72,
+            -32.4
+          ],
+          [
+            -69.7,
+            -32.4
+          ],
+          [
+            -69.7,
+            -32.5
+          ],
+          [
+            -69.76,
+            -32.52
+          ],
+          [
+            -69.76,
+            -32.54
+          ],
+          [
+            -69.82,
+            -32.54
+          ],
+          [
+            -69.84,
+            -32.56
+          ],
+          [
+            -69.86,
+            -32.56
+          ],
+          [
+            -69.92,
+            -32.54
+          ],
+          [
+            -70.02,
+            -32.54
+          ],
+          [
+            -70.04,
+            -32.56
+          ],
+          [
+            -70.04,
+            -32.62
+          ],
+          [
+            -70.12,
+            -32.58
+          ],
+          [
+            -70.14,
+            -32.5
+          ],
+          [
+            -70.14,
+            -32.48
+          ],
+          [
+            -70.18,
+            -32.46
+          ],
+          [
+            -70.2,
+            -32.46
+          ],
+          [
+            -70.22,
+            -32.42
+          ],
+          [
+            -70.24,
+            -32.42
+          ],
+          [
+            -70.22,
+            -32.4
+          ],
+          [
+            -70.24,
+            -32.36
+          ],
+          [
+            -70.22,
+            -32.32
+          ],
+          [
+            -70.24,
+            -32.32
+          ],
+          [
+            -70.3,
+            -32.28
+          ],
+          [
+            -70.32,
+            -32.28
+          ],
+          [
+            -70.32,
+            -32.14
+          ],
+          [
+            -70.3,
+            -32.14
+          ],
+          [
+            -70.34,
+            -32.12
+          ],
+          [
+            -70.34,
+            -32.06
+          ],
+          [
+            -70.4,
+            -32.06
+          ],
+          [
+            -70.38,
+            -32.02
+          ],
+          [
+            -70.36,
+            -32.02
+          ],
+          [
+            -70.32,
+            -32.06
+          ],
+          [
+            -70.28,
+            -32.06
+          ],
+          [
+            -70.28,
+            -32.04
+          ],
+          [
+            -70.26,
+            -32.02
+          ],
+          [
+            -70.26,
+            -31.98
+          ],
+          [
+            -70.22,
+            -31.98
+          ],
+          [
+            -70.22,
+            -31.96
+          ],
+          [
+            -70.24,
+            -31.92
+          ],
+          [
+            -70.26,
+            -31.92
+          ],
+          [
+            -70.28,
+            -31.88
+          ],
+          [
+            -70.4,
+            -31.88
+          ],
+          [
+            -70.42,
+            -31.86
+          ],
+          [
+            -70.46,
+            -31.84
+          ],
+          [
+            -70.46,
+            -31.8
+          ],
+          [
+            -70.48,
+            -31.74
+          ],
+          [
+            -70.46,
+            -31.74
+          ],
+          [
+            -70.48,
+            -31.7
+          ],
+          [
+            -70.52,
+            -31.7
+          ],
+          [
+            -70.5,
+            -31.66
+          ],
+          [
+            -70.54,
+            -31.64
+          ],
+          [
+            -70.54,
+            -31.6
+          ],
+          [
+            -70.56,
+            -31.6
+          ],
+          [
+            -70.56,
+            -31.4
+          ],
+          [
+            -70.54,
+            -31.4
+          ],
+          [
+            -70.54,
+            -31.28
+          ],
+          [
+            -70.52,
+            -31.2
+          ],
+          [
+            -70.52,
+            -31.18
+          ],
+          [
+            -70.5,
+            -31.12
+          ],
+          [
+            -70.48,
+            -31.12
+          ],
+          [
+            -70.46,
+            -31.08
+          ],
+          [
+            -70.44,
+            -31.1
+          ],
+          [
+            -70.42,
+            -31.14
+          ],
+          [
+            -70.42,
+            -31.16
+          ],
+          [
+            -70.38,
+            -31.16
+          ],
+          [
+            -70.38,
+            -31.12
+          ],
+          [
+            -70.32,
+            -31.06
+          ],
+          [
+            -70.32,
+            -31.04
+          ],
+          [
+            -70.28,
+            -31.04
+          ],
+          [
+            -70.28,
+            -31.02
+          ],
+          [
+            -70.3,
+            -31.02
+          ],
+          [
+            -70.3,
+            -30.96
+          ],
+          [
+            -70.32,
+            -30.96
+          ],
+          [
+            -70.32,
+            -30.9
+          ],
+          [
+            -70.3,
+            -30.88
+          ],
+          [
+            -70.28,
+            -30.84
+          ],
+          [
+            -70.28,
+            -30.74
+          ],
+          [
+            -70.26,
+            -30.74
+          ],
+          [
+            -70.26,
+            -30.68
+          ],
+          [
+            -70.24,
+            -30.62
+          ],
+          [
+            -70.22,
+            -30.6
+          ],
+          [
+            -70.22,
+            -30.56
+          ],
+          [
+            -70.2,
+            -30.56
+          ],
+          [
+            -70.2,
+            -30.48
+          ],
+          [
+            -70.14,
+            -30.46
+          ],
+          [
+            -70.12,
+            -30.42
+          ],
+          [
+            -70.14,
+            -30.4
+          ],
+          [
+            -70.16,
+            -30.34
+          ],
+          [
+            -70.14,
+            -30.34
+          ],
+          [
+            -70.1,
+            -30.36
+          ],
+          [
+            -70.08,
+            -30.4
+          ],
+          [
+            -70.02,
+            -30.4
+          ],
+          [
+            -70,
+            -30.38
+          ],
+          [
+            -69.96,
+            -30.38
+          ],
+          [
+            -69.94,
+            -30.36
+          ],
+          [
+            -69.9,
+            -30.36
+          ],
+          [
+            -69.9,
+            -30.3
+          ],
+          [
+            -69.88,
+            -30.26
+          ],
+          [
+            -69.86,
+            -30.3
+          ],
+          [
+            -69.86,
+            -30.34
+          ],
+          [
+            -69.84,
+            -30.4
+          ],
+          [
+            -69.78,
+            -30.44
+          ],
+          [
+            -69.78,
+            -30.5
+          ],
+          [
+            -69.74,
+            -30.56
+          ],
+          [
+            -69.72,
+            -30.62
+          ],
+          [
+            -69.68,
+            -30.62
+          ],
+          [
+            -69.6,
+            -30.68
+          ],
+          [
+            -69.54,
+            -30.68
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.30.3",
+      "event": "Nevadas",
+      "headline": "Nevadas",
+      "description": "El área será afectada por nevadas, chaparrones de nieve y algunas tormentas. Se prevén valores de nieve acumulada entre 10 y 30 centímetros, que pueden ser superados de forma local.",
+      "instruction": "1- Evitá salir. 2- Circulá con vehículos adecuados y preparados para hielo y nieve. Llevá siempre una pala 3- Revisá el estado de los techos, canaletas y desagües para asegurarte de que estén en buen estado y puedan soportar la acumulación de nieve. 4- Ventilá para evitar acumulación de monóxido de carbono. 5- Asegurate de tener suficientes alimentos no perecederos y agua potable para al menos tres días. Incluí alimentos fáciles de preparar en caso de que haya cortes de energía. 6- Prepará un kit de emergencia que incluya linternas, pilas adicionales, velas, fósforos, mantas térmicas, un botiquín de primeros auxilios y cualquier medicamento necesario.",
+      "severity": "Moderate",
+      "level": "amarillo",
+      "levelLabel": "Amarillo",
+      "rank": 2,
+      "area": "Cordillera",
+      "areaDesc": "",
+      "onset": "2026-10-26T09:00:00-03:00",
+      "expires": "2026-10-26T20:59:59-03:00",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Nevada_Cordillera_alertas_alertas_3.xml",
+      "polygons": [
+        [
+          [
+            -69.48597,
+            -32.12179
+          ],
+          [
+            -69.5,
+            -32.22
+          ],
+          [
+            -69.48,
+            -32.28
+          ],
+          [
+            -69.5,
+            -32.38
+          ],
+          [
+            -69.46,
+            -32.42
+          ],
+          [
+            -69.48,
+            -32.48
+          ],
+          [
+            -69.52,
+            -32.56
+          ],
+          [
+            -69.54,
+            -32.66
+          ],
+          [
+            -69.52,
+            -32.68
+          ],
+          [
+            -69.46,
+            -32.68
+          ],
+          [
+            -69.32,
+            -32.82
+          ],
+          [
+            -69.36,
+            -33.02
+          ],
+          [
+            -69.4,
+            -33.14
+          ],
+          [
+            -69.46,
+            -33.24
+          ],
+          [
+            -69.52,
+            -33.3
+          ],
+          [
+            -69.52,
+            -33.38
+          ],
+          [
+            -69.76,
+            -33.38
+          ],
+          [
+            -69.8,
+            -33.32
+          ],
+          [
+            -69.8,
+            -33.28
+          ],
+          [
+            -69.9,
+            -33.28
+          ],
+          [
+            -69.92,
+            -33.24
+          ],
+          [
+            -69.98,
+            -33.32
+          ],
+          [
+            -70.02,
+            -33.32
+          ],
+          [
+            -70.02,
+            -33.28
+          ],
+          [
+            -70.04,
+            -33.28
+          ],
+          [
+            -70.04,
+            -33.24
+          ],
+          [
+            -70.06,
+            -33.24
+          ],
+          [
+            -70.06,
+            -33.14
+          ],
+          [
+            -70.08,
+            -33.12
+          ],
+          [
+            -70.06,
+            -33.1
+          ],
+          [
+            -70.08,
+            -33.06
+          ],
+          [
+            -70.1,
+            -33.06
+          ],
+          [
+            -70.08,
+            -33.04
+          ],
+          [
+            -70.04,
+            -33.04
+          ],
+          [
+            -70.02,
+            -32.96
+          ],
+          [
+            -70,
+            -32.96
+          ],
+          [
+            -70,
+            -32.9
+          ],
+          [
+            -70.02,
+            -32.9
+          ],
+          [
+            -70.06,
+            -32.86
+          ],
+          [
+            -70.06,
+            -32.82
+          ],
+          [
+            -70.08,
+            -32.82
+          ],
+          [
+            -70.1,
+            -32.8
+          ],
+          [
+            -70.12,
+            -32.76
+          ],
+          [
+            -70.14,
+            -32.76
+          ],
+          [
+            -70.14,
+            -32.66
+          ],
+          [
+            -70.16,
+            -32.62
+          ],
+          [
+            -70.18,
+            -32.62
+          ],
+          [
+            -70.16,
+            -32.6
+          ],
+          [
+            -70.16,
+            -32.58
+          ],
+          [
+            -70.12,
+            -32.58
+          ],
+          [
+            -70.04,
+            -32.62
+          ],
+          [
+            -70.04,
+            -32.56
+          ],
+          [
+            -70.02,
+            -32.54
+          ],
+          [
+            -69.92,
+            -32.54
+          ],
+          [
+            -69.86,
+            -32.56
+          ],
+          [
+            -69.84,
+            -32.56
+          ],
+          [
+            -69.82,
+            -32.54
+          ],
+          [
+            -69.76,
+            -32.54
+          ],
+          [
+            -69.76,
+            -32.52
+          ],
+          [
+            -69.7,
+            -32.5
+          ],
+          [
+            -69.7,
+            -32.4
+          ],
+          [
+            -69.72,
+            -32.4
+          ],
+          [
+            -69.72,
+            -32.32
+          ],
+          [
+            -69.68,
+            -32.3
+          ],
+          [
+            -69.66,
+            -32.28
+          ],
+          [
+            -69.64,
+            -32.26
+          ],
+          [
+            -69.6,
+            -32.18
+          ],
+          [
+            -69.6,
+            -32.14
+          ],
+          [
+            -69.52,
+            -32.14
+          ],
+          [
+            -69.5,
+            -32.12
+          ],
+          [
+            -69.48597,
+            -32.12179
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.27.2",
       "event": "Tormentas",
       "headline": "Tormentas",
-      "description": "El área será afectada por tormentas de variada intensidad. Las mismas podrían estar acompañadas principalmente por lluvias abundantes en cortos períodos, granizo ocasional y ráfagas fuertes. Se esperan valores de precipitación acumulada entre 15 y 30 mm, que pueden ser superados localmente.",
+      "description": "El área será afectada por tormentas de variada intensidad. Las mismas podrían estar acompañadas principalmente por lluvias abundantes en cortos períodos y ocasionalmente por granizo y ráfagas fuertes. Se esperan valores de precipitación acumulada entre 15 y 30 mm, que pueden ser superados localmente.",
       "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
       "severity": "Moderate",
       "level": "amarillo",
@@ -1023,8 +1571,580 @@
       "area": "Patagonia",
       "areaDesc": "",
       "onset": "2026-10-26T21:00:00-03:00",
-      "expires": "2026-10-27T08:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261024203627_Tormenta_Patagonia_alertas_alertas_2.xml",
+      "expires": "2026-10-27T02:59:59-03:00",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Tormenta_Patagonia_alertas_alertas_2.xml",
+      "polygons": [
+        [
+          [
+            -67.1,
+            -48.54
+          ],
+          [
+            -67.24,
+            -48.64
+          ],
+          [
+            -67.26,
+            -48.66
+          ],
+          [
+            -67.28,
+            -48.72
+          ],
+          [
+            -67.3,
+            -48.74
+          ],
+          [
+            -67.32,
+            -48.78
+          ],
+          [
+            -67.46,
+            -48.82
+          ],
+          [
+            -67.56,
+            -48.9
+          ],
+          [
+            -67.66,
+            -48.96
+          ],
+          [
+            -67.7,
+            -49.02
+          ],
+          [
+            -67.72,
+            -49.06
+          ],
+          [
+            -67.76,
+            -49.1
+          ],
+          [
+            -67.78,
+            -49.16
+          ],
+          [
+            -67.82,
+            -49.2
+          ],
+          [
+            -67.84,
+            -49.26
+          ],
+          [
+            -67.88,
+            -49.34
+          ],
+          [
+            -67.86,
+            -49.46
+          ],
+          [
+            -68.82,
+            -49.46
+          ],
+          [
+            -68.84,
+            -49.32
+          ],
+          [
+            -69.76,
+            -49.32
+          ],
+          [
+            -69.76,
+            -49.2
+          ],
+          [
+            -69.66,
+            -46
+          ],
+          [
+            -67.74,
+            -46
+          ],
+          [
+            -67.76,
+            -46.06
+          ],
+          [
+            -67.74,
+            -46.22
+          ],
+          [
+            -67.7,
+            -46.34
+          ],
+          [
+            -67.56,
+            -46.6
+          ],
+          [
+            -67.48,
+            -46.68
+          ],
+          [
+            -67.4,
+            -46.72
+          ],
+          [
+            -67.36,
+            -46.72
+          ],
+          [
+            -67.24,
+            -46.78
+          ],
+          [
+            -67.16,
+            -46.86
+          ],
+          [
+            -66.9,
+            -47.06
+          ],
+          [
+            -66.74,
+            -47.12
+          ],
+          [
+            -66.66,
+            -47.14
+          ],
+          [
+            -66.5,
+            -47.14
+          ],
+          [
+            -66.24,
+            -47.18
+          ],
+          [
+            -66.12,
+            -47.18
+          ],
+          [
+            -66,
+            -47.16
+          ],
+          [
+            -65.98,
+            -47.18
+          ],
+          [
+            -65.92,
+            -47.22
+          ],
+          [
+            -65.88,
+            -47.28
+          ],
+          [
+            -65.86,
+            -47.44
+          ],
+          [
+            -65.88,
+            -47.5
+          ],
+          [
+            -65.94,
+            -47.66
+          ],
+          [
+            -66.08,
+            -47.66
+          ],
+          [
+            -66.2,
+            -47.82
+          ],
+          [
+            -66.18,
+            -47.82
+          ],
+          [
+            -66,
+            -47.86
+          ],
+          [
+            -66.06,
+            -47.9
+          ],
+          [
+            -66.08,
+            -47.94
+          ],
+          [
+            -66.08,
+            -48
+          ],
+          [
+            -66.12,
+            -48.04
+          ],
+          [
+            -66.2,
+            -48.06
+          ],
+          [
+            -66.24,
+            -48.08
+          ],
+          [
+            -66.28,
+            -48.12
+          ],
+          [
+            -66.32,
+            -48.14
+          ],
+          [
+            -66.46,
+            -48.24
+          ],
+          [
+            -66.48,
+            -48.28
+          ],
+          [
+            -66.58,
+            -48.3
+          ],
+          [
+            -66.62,
+            -48.34
+          ],
+          [
+            -66.74,
+            -48.38
+          ],
+          [
+            -66.9,
+            -48.44
+          ],
+          [
+            -66.96,
+            -48.48
+          ],
+          [
+            -67,
+            -48.52
+          ],
+          [
+            -67.04,
+            -48.54
+          ],
+          [
+            -67.1,
+            -48.54
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.27.3",
+      "event": "Tormentas",
+      "headline": "Tormentas",
+      "description": "El área será afectada por tormentas de variada intensidad. Las mismas podrían estar acompañadas principalmente por lluvias abundantes en cortos períodos y ocasionalmente por granizo y ráfagas fuertes. Se esperan valores de precipitación acumulada entre 15 y 30 mm, que pueden ser superados localmente.",
+      "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
+      "severity": "Moderate",
+      "level": "amarillo",
+      "levelLabel": "Amarillo",
+      "rank": 2,
+      "area": "Patagonia",
+      "areaDesc": "",
+      "onset": "2026-10-26T21:00:00-03:00",
+      "expires": "2026-10-27T02:59:59-03:00",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Tormenta_Patagonia_alertas_alertas_3.xml",
+      "polygons": [
+        [
+          [
+            -68.36,
+            -50.15998
+          ],
+          [
+            -68.36,
+            -50.16
+          ],
+          [
+            -68.36002,
+            -50.16001
+          ],
+          [
+            -68.36005,
+            -50.16003
+          ],
+          [
+            -68.36007,
+            -50.16002
+          ],
+          [
+            -68.42,
+            -50.18
+          ],
+          [
+            -68.52,
+            -50.22
+          ],
+          [
+            -68.62,
+            -50.24
+          ],
+          [
+            -68.68,
+            -50.26
+          ],
+          [
+            -68.68,
+            -50.28
+          ],
+          [
+            -68.74,
+            -50.3
+          ],
+          [
+            -68.78,
+            -50.28
+          ],
+          [
+            -68.8,
+            -50.32
+          ],
+          [
+            -68.86,
+            -50.32
+          ],
+          [
+            -68.88,
+            -50.36
+          ],
+          [
+            -68.9,
+            -50.36
+          ],
+          [
+            -68.98,
+            -50.44
+          ],
+          [
+            -69.02,
+            -50.48
+          ],
+          [
+            -69.04,
+            -50.5
+          ],
+          [
+            -69.04,
+            -50.52
+          ],
+          [
+            -69.08,
+            -50.56
+          ],
+          [
+            -69.08,
+            -50.6
+          ],
+          [
+            -69.12,
+            -50.66
+          ],
+          [
+            -69.14,
+            -50.74
+          ],
+          [
+            -69.14,
+            -50.76
+          ],
+          [
+            -69.28,
+            -50.76
+          ],
+          [
+            -69.28,
+            -50.7
+          ],
+          [
+            -69.26,
+            -50.64
+          ],
+          [
+            -69.22,
+            -50.56
+          ],
+          [
+            -69.16,
+            -50.46
+          ],
+          [
+            -69,
+            -50.28
+          ],
+          [
+            -68.9,
+            -50.24
+          ],
+          [
+            -68.72,
+            -50.18
+          ],
+          [
+            -68.62,
+            -50.14
+          ],
+          [
+            -68.64,
+            -50.08
+          ],
+          [
+            -68.7,
+            -50.04
+          ],
+          [
+            -68.72,
+            -49.98
+          ],
+          [
+            -68.62,
+            -49.84
+          ],
+          [
+            -68.52,
+            -49.84
+          ],
+          [
+            -68.46,
+            -49.86
+          ],
+          [
+            -68.42,
+            -49.92
+          ],
+          [
+            -68.36,
+            -49.94
+          ],
+          [
+            -68.28,
+            -50.02
+          ],
+          [
+            -68.26,
+            -50.04
+          ],
+          [
+            -68.16,
+            -50
+          ],
+          [
+            -68.02,
+            -49.94
+          ],
+          [
+            -67.96,
+            -49.9
+          ],
+          [
+            -67.88,
+            -49.76
+          ],
+          [
+            -67.86,
+            -49.62
+          ],
+          [
+            -67.84,
+            -49.5
+          ],
+          [
+            -67.86,
+            -49.46
+          ],
+          [
+            -67.68,
+            -49.46
+          ],
+          [
+            -67.7,
+            -49.62
+          ],
+          [
+            -67.72,
+            -49.64
+          ],
+          [
+            -67.72,
+            -49.78
+          ],
+          [
+            -67.82,
+            -49.92
+          ],
+          [
+            -67.88,
+            -50
+          ],
+          [
+            -67.96,
+            -50.02
+          ],
+          [
+            -68.04,
+            -50.08
+          ],
+          [
+            -68.06,
+            -50.08
+          ],
+          [
+            -68.14,
+            -50.1
+          ],
+          [
+            -68.22,
+            -50.12
+          ],
+          [
+            -68.32,
+            -50.12
+          ],
+          [
+            -68.34,
+            -50.14
+          ],
+          [
+            -68.34001,
+            -50.13999
+          ],
+          [
+            -68.36,
+            -50.15998
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.27.1",
+      "event": "Tormentas",
+      "headline": "Tormentas",
+      "description": "El área será afectada por tormentas de variada intensidad. Las mismas podrían estar acompañadas principalmente por lluvias abundantes en cortos períodos y ocasionalmente por granizo y ráfagas fuertes. Se esperan valores de precipitación acumulada entre 15 y 30 mm, que pueden ser superados localmente.",
+      "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
+      "severity": "Moderate",
+      "level": "amarillo",
+      "levelLabel": "Amarillo",
+      "rank": 2,
+      "area": "Patagonia",
+      "areaDesc": "",
+      "onset": "2026-10-26T21:00:00-03:00",
+      "expires": "2026-10-27T02:59:59-03:00",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Tormenta_Patagonia_alertas_alertas_1.xml",
       "polygons": [
         [
           [
@@ -1411,10 +2531,10 @@
       ]
     },
     {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.24.20.36.07.1",
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.27.4",
       "event": "Tormentas",
       "headline": "Tormentas",
-      "description": "El área será afectada por tormentas de variada intensidad. Las mismas podrían estar acompañadas principalmente por lluvias abundantes en cortos períodos, granizo ocasional y ráfagas fuertes. Se esperan valores de precipitación acumulada entre 15 y 30 mm, que pueden ser superados localmente.",
+      "description": "El área será afectada por tormentas de variada intensidad. Las mismas podrían estar acompañadas principalmente por lluvias abundantes en cortos períodos y ocasionalmente por granizo y ráfagas fuertes. Se esperan valores de precipitación acumulada entre 15 y 30 mm, que pueden ser superados localmente.",
       "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
       "severity": "Moderate",
       "level": "amarillo",
@@ -1423,277 +2543,297 @@
       "area": "Patagonia",
       "areaDesc": "",
       "onset": "2026-10-26T21:00:00-03:00",
-      "expires": "2026-10-27T08:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261024203627_Tormenta_Patagonia_alertas_alertas_1.xml",
+      "expires": "2026-10-27T02:59:59-03:00",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Tormenta_Patagonia_alertas_alertas_4.xml",
       "polygons": [
         [
           [
-            -67.1,
-            -48.54
+            -69.02,
+            -51.6
           ],
           [
-            -67.24,
-            -48.64
+            -68.98,
+            -51.62
           ],
           [
-            -67.26,
-            -48.66
+            -68.86,
+            -51.78
           ],
           [
-            -67.28,
-            -48.72
+            -68.74,
+            -51.94
           ],
           [
-            -67.3,
-            -48.74
+            -68.68,
+            -52.02
           ],
           [
-            -67.32,
-            -48.78
+            -68.56,
+            -52.16
           ],
           [
-            -67.46,
-            -48.82
+            -68.42,
+            -52.26
           ],
           [
-            -67.56,
-            -48.9
+            -68.36,
+            -52.32
           ],
           [
-            -67.66,
-            -48.96
+            -68.42,
+            -52.4
           ],
           [
-            -67.7,
-            -49.02
+            -68.42,
+            -52.34
           ],
           [
-            -67.72,
-            -49.06
+            -68.58,
+            -52.32
           ],
           [
-            -67.76,
-            -49.1
+            -68.58,
+            -52.3
           ],
           [
-            -67.78,
-            -49.16
-          ],
-          [
-            -67.82,
-            -49.2
-          ],
-          [
-            -67.84,
-            -49.26
-          ],
-          [
-            -67.88,
-            -49.34
-          ],
-          [
-            -67.86,
-            -49.46
-          ],
-          [
-            -68.82,
-            -49.46
+            -68.72,
+            -52.3
           ],
           [
             -68.84,
-            -49.32
+            -52.28
           ],
           [
-            -69.76,
-            -49.32
+            -69,
+            -52.22
           ],
           [
-            -69.76,
-            -49.2
+            -69.08,
+            -52.18
           ],
           [
-            -69.66,
-            -46
+            -69.2,
+            -52.16
           ],
           [
-            -67.74,
-            -46
+            -69.48,
+            -52.16
           ],
           [
-            -67.76,
-            -46.06
+            -69.54,
+            -52.14
           ],
           [
-            -67.74,
-            -46.22
+            -69.42,
+            -52.12
           ],
           [
-            -67.7,
-            -46.34
+            -69.26,
+            -52.08
           ],
           [
-            -67.56,
-            -46.6
+            -69.14,
+            -52.08
           ],
           [
-            -67.48,
-            -46.68
+            -69,
+            -52.14
           ],
           [
-            -67.4,
-            -46.72
+            -68.82,
+            -52.18
           ],
           [
-            -67.36,
-            -46.72
+            -68.72,
+            -52.22
           ],
           [
-            -67.24,
-            -46.78
+            -68.68,
+            -52.22
           ],
           [
-            -67.16,
-            -46.86
+            -68.68,
+            -52.2
           ],
           [
-            -66.9,
-            -47.06
+            -68.8,
+            -52.06
           ],
           [
-            -66.74,
-            -47.12
+            -69.06,
+            -51.74
           ],
           [
-            -66.66,
-            -47.14
+            -69.24,
+            -51.74
           ],
           [
-            -66.5,
-            -47.14
+            -69.34,
+            -51.68
           ],
           [
-            -66.24,
-            -47.18
+            -69.44,
+            -51.7
           ],
           [
-            -66.12,
-            -47.18
+            -69.48,
+            -51.64
           ],
           [
-            -66,
-            -47.16
+            -69.5,
+            -51.6
           ],
           [
-            -65.98,
-            -47.18
+            -69.48,
+            -51.6
           ],
           [
-            -65.92,
-            -47.22
+            -69.42,
+            -51.52
           ],
           [
-            -65.88,
-            -47.28
+            -69.4,
+            -51.5
           ],
           [
-            -65.86,
-            -47.44
+            -69.16,
+            -51.52
           ],
           [
-            -65.88,
-            -47.5
+            -69.12,
+            -51.5
           ],
           [
-            -65.94,
-            -47.66
+            -69.22,
+            -51.26
           ],
           [
-            -66.08,
-            -47.66
+            -69.28,
+            -51.14
           ],
           [
-            -66.2,
-            -47.82
+            -69.34,
+            -51.18
           ],
           [
-            -66.18,
-            -47.82
+            -69.46,
+            -51.18
           ],
           [
-            -66,
-            -47.86
+            -69.5,
+            -51.14
           ],
           [
-            -66.06,
-            -47.9
+            -69.52,
+            -51.06
           ],
           [
-            -66.08,
-            -47.94
+            -69.52,
+            -51
           ],
           [
-            -66.08,
-            -48
+            -69.44,
+            -50.94
           ],
           [
-            -66.12,
-            -48.04
+            -69.32,
+            -50.9
           ],
           [
-            -66.2,
-            -48.06
+            -69.28,
+            -50.84
           ],
           [
-            -66.24,
-            -48.08
+            -69.28,
+            -50.76
           ],
           [
-            -66.28,
-            -48.12
+            -69.14,
+            -50.76
           ],
           [
-            -66.32,
-            -48.14
+            -69.14,
+            -50.9
           ],
           [
-            -66.46,
-            -48.24
+            -69.16,
+            -50.9
           ],
           [
-            -66.48,
-            -48.28
+            -69.22,
+            -50.94
           ],
           [
-            -66.58,
-            -48.3
+            -69.24,
+            -50.96
           ],
           [
-            -66.62,
-            -48.34
+            -69.32,
+            -50.98
           ],
           [
-            -66.74,
-            -48.38
+            -69.38,
+            -51.04
           ],
           [
-            -66.9,
-            -48.44
+            -69.4,
+            -51.08
           ],
           [
-            -66.96,
-            -48.48
+            -69.32,
+            -51.04
           ],
           [
-            -67,
-            -48.52
+            -69.3,
+            -51.02
           ],
           [
-            -67.04,
-            -48.54
+            -69.26,
+            -51
           ],
           [
-            -67.1,
-            -48.54
+            -69.2,
+            -50.98
+          ],
+          [
+            -69.16,
+            -50.98
+          ],
+          [
+            -69.12,
+            -51.18
+          ],
+          [
+            -69.08,
+            -51.22
+          ],
+          [
+            -69.06,
+            -51.32
+          ],
+          [
+            -69.04,
+            -51.36
+          ],
+          [
+            -69,
+            -51.46
+          ],
+          [
+            -68.94,
+            -51.54
+          ],
+          [
+            -68.96,
+            -51.58
+          ],
+          [
+            -68.98,
+            -51.6
+          ],
+          [
+            -69.02,
+            -51.6
           ]
         ]
       ]

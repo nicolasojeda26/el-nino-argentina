@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T16:43:14.579Z",
+  "generatedAt": "2026-10-25T19:29:24.958Z",
   "sources": {
     "smn": "https://ssl.smn.gob.ar/feeds/CAP/rss_alertaCAP_nuevo_2026.xml",
     "ina": "https://alerta.ina.gob.ar/"
@@ -10,314 +10,10 @@
     "smnOrange": 0,
     "smnYellow": 8,
     "inaAlerts": 9,
-    "inaEvacuation": 7,
+    "inaEvacuation": 8,
     "inaStations": 30
   },
   "smn": [
-    {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.30.3",
-      "event": "Nevadas",
-      "headline": "Nevadas",
-      "description": "El área será afectada por nevadas, chaparrones de nieve y algunas tormentas. Se prevén valores de nieve acumulada entre 10 y 30 centímetros, que pueden ser superados de forma local.",
-      "instruction": "1- Evitá salir. 2- Circulá con vehículos adecuados y preparados para hielo y nieve. Llevá siempre una pala 3- Revisá el estado de los techos, canaletas y desagües para asegurarte de que estén en buen estado y puedan soportar la acumulación de nieve. 4- Ventilá para evitar acumulación de monóxido de carbono. 5- Asegurate de tener suficientes alimentos no perecederos y agua potable para al menos tres días. Incluí alimentos fáciles de preparar en caso de que haya cortes de energía. 6- Prepará un kit de emergencia que incluya linternas, pilas adicionales, velas, fósforos, mantas térmicas, un botiquín de primeros auxilios y cualquier medicamento necesario.",
-      "severity": "Moderate",
-      "level": "amarillo",
-      "levelLabel": "Amarillo",
-      "rank": 2,
-      "area": "Cordillera",
-      "areaDesc": "",
-      "onset": "2026-10-26T09:00:00-03:00",
-      "expires": "2026-10-26T20:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Nevada_Cordillera_alertas_alertas_3.xml",
-      "polygons": [
-        [
-          [
-            -69.48597,
-            -32.12179
-          ],
-          [
-            -69.5,
-            -32.22
-          ],
-          [
-            -69.48,
-            -32.28
-          ],
-          [
-            -69.5,
-            -32.38
-          ],
-          [
-            -69.46,
-            -32.42
-          ],
-          [
-            -69.48,
-            -32.48
-          ],
-          [
-            -69.52,
-            -32.56
-          ],
-          [
-            -69.54,
-            -32.66
-          ],
-          [
-            -69.52,
-            -32.68
-          ],
-          [
-            -69.46,
-            -32.68
-          ],
-          [
-            -69.32,
-            -32.82
-          ],
-          [
-            -69.36,
-            -33.02
-          ],
-          [
-            -69.4,
-            -33.14
-          ],
-          [
-            -69.46,
-            -33.24
-          ],
-          [
-            -69.52,
-            -33.3
-          ],
-          [
-            -69.52,
-            -33.38
-          ],
-          [
-            -69.76,
-            -33.38
-          ],
-          [
-            -69.8,
-            -33.32
-          ],
-          [
-            -69.8,
-            -33.28
-          ],
-          [
-            -69.9,
-            -33.28
-          ],
-          [
-            -69.92,
-            -33.24
-          ],
-          [
-            -69.98,
-            -33.32
-          ],
-          [
-            -70.02,
-            -33.32
-          ],
-          [
-            -70.02,
-            -33.28
-          ],
-          [
-            -70.04,
-            -33.28
-          ],
-          [
-            -70.04,
-            -33.24
-          ],
-          [
-            -70.06,
-            -33.24
-          ],
-          [
-            -70.06,
-            -33.14
-          ],
-          [
-            -70.08,
-            -33.12
-          ],
-          [
-            -70.06,
-            -33.1
-          ],
-          [
-            -70.08,
-            -33.06
-          ],
-          [
-            -70.1,
-            -33.06
-          ],
-          [
-            -70.08,
-            -33.04
-          ],
-          [
-            -70.04,
-            -33.04
-          ],
-          [
-            -70.02,
-            -32.96
-          ],
-          [
-            -70,
-            -32.96
-          ],
-          [
-            -70,
-            -32.9
-          ],
-          [
-            -70.02,
-            -32.9
-          ],
-          [
-            -70.06,
-            -32.86
-          ],
-          [
-            -70.06,
-            -32.82
-          ],
-          [
-            -70.08,
-            -32.82
-          ],
-          [
-            -70.1,
-            -32.8
-          ],
-          [
-            -70.12,
-            -32.76
-          ],
-          [
-            -70.14,
-            -32.76
-          ],
-          [
-            -70.14,
-            -32.66
-          ],
-          [
-            -70.16,
-            -32.62
-          ],
-          [
-            -70.18,
-            -32.62
-          ],
-          [
-            -70.16,
-            -32.6
-          ],
-          [
-            -70.16,
-            -32.58
-          ],
-          [
-            -70.12,
-            -32.58
-          ],
-          [
-            -70.04,
-            -32.62
-          ],
-          [
-            -70.04,
-            -32.56
-          ],
-          [
-            -70.02,
-            -32.54
-          ],
-          [
-            -69.92,
-            -32.54
-          ],
-          [
-            -69.86,
-            -32.56
-          ],
-          [
-            -69.84,
-            -32.56
-          ],
-          [
-            -69.82,
-            -32.54
-          ],
-          [
-            -69.76,
-            -32.54
-          ],
-          [
-            -69.76,
-            -32.52
-          ],
-          [
-            -69.7,
-            -32.5
-          ],
-          [
-            -69.7,
-            -32.4
-          ],
-          [
-            -69.72,
-            -32.4
-          ],
-          [
-            -69.72,
-            -32.32
-          ],
-          [
-            -69.68,
-            -32.3
-          ],
-          [
-            -69.66,
-            -32.28
-          ],
-          [
-            -69.64,
-            -32.26
-          ],
-          [
-            -69.6,
-            -32.18
-          ],
-          [
-            -69.6,
-            -32.14
-          ],
-          [
-            -69.52,
-            -32.14
-          ],
-          [
-            -69.5,
-            -32.12
-          ],
-          [
-            -69.48597,
-            -32.12179
-          ]
-        ]
-      ]
-    },
     {
       "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.30.1",
       "event": "Nevadas",
@@ -1559,6 +1255,310 @@
       ]
     },
     {
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.30.3",
+      "event": "Nevadas",
+      "headline": "Nevadas",
+      "description": "El área será afectada por nevadas, chaparrones de nieve y algunas tormentas. Se prevén valores de nieve acumulada entre 10 y 30 centímetros, que pueden ser superados de forma local.",
+      "instruction": "1- Evitá salir. 2- Circulá con vehículos adecuados y preparados para hielo y nieve. Llevá siempre una pala 3- Revisá el estado de los techos, canaletas y desagües para asegurarte de que estén en buen estado y puedan soportar la acumulación de nieve. 4- Ventilá para evitar acumulación de monóxido de carbono. 5- Asegurate de tener suficientes alimentos no perecederos y agua potable para al menos tres días. Incluí alimentos fáciles de preparar en caso de que haya cortes de energía. 6- Prepará un kit de emergencia que incluya linternas, pilas adicionales, velas, fósforos, mantas térmicas, un botiquín de primeros auxilios y cualquier medicamento necesario.",
+      "severity": "Moderate",
+      "level": "amarillo",
+      "levelLabel": "Amarillo",
+      "rank": 2,
+      "area": "Cordillera",
+      "areaDesc": "",
+      "onset": "2026-10-26T09:00:00-03:00",
+      "expires": "2026-10-26T20:59:59-03:00",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Nevada_Cordillera_alertas_alertas_3.xml",
+      "polygons": [
+        [
+          [
+            -69.48597,
+            -32.12179
+          ],
+          [
+            -69.5,
+            -32.22
+          ],
+          [
+            -69.48,
+            -32.28
+          ],
+          [
+            -69.5,
+            -32.38
+          ],
+          [
+            -69.46,
+            -32.42
+          ],
+          [
+            -69.48,
+            -32.48
+          ],
+          [
+            -69.52,
+            -32.56
+          ],
+          [
+            -69.54,
+            -32.66
+          ],
+          [
+            -69.52,
+            -32.68
+          ],
+          [
+            -69.46,
+            -32.68
+          ],
+          [
+            -69.32,
+            -32.82
+          ],
+          [
+            -69.36,
+            -33.02
+          ],
+          [
+            -69.4,
+            -33.14
+          ],
+          [
+            -69.46,
+            -33.24
+          ],
+          [
+            -69.52,
+            -33.3
+          ],
+          [
+            -69.52,
+            -33.38
+          ],
+          [
+            -69.76,
+            -33.38
+          ],
+          [
+            -69.8,
+            -33.32
+          ],
+          [
+            -69.8,
+            -33.28
+          ],
+          [
+            -69.9,
+            -33.28
+          ],
+          [
+            -69.92,
+            -33.24
+          ],
+          [
+            -69.98,
+            -33.32
+          ],
+          [
+            -70.02,
+            -33.32
+          ],
+          [
+            -70.02,
+            -33.28
+          ],
+          [
+            -70.04,
+            -33.28
+          ],
+          [
+            -70.04,
+            -33.24
+          ],
+          [
+            -70.06,
+            -33.24
+          ],
+          [
+            -70.06,
+            -33.14
+          ],
+          [
+            -70.08,
+            -33.12
+          ],
+          [
+            -70.06,
+            -33.1
+          ],
+          [
+            -70.08,
+            -33.06
+          ],
+          [
+            -70.1,
+            -33.06
+          ],
+          [
+            -70.08,
+            -33.04
+          ],
+          [
+            -70.04,
+            -33.04
+          ],
+          [
+            -70.02,
+            -32.96
+          ],
+          [
+            -70,
+            -32.96
+          ],
+          [
+            -70,
+            -32.9
+          ],
+          [
+            -70.02,
+            -32.9
+          ],
+          [
+            -70.06,
+            -32.86
+          ],
+          [
+            -70.06,
+            -32.82
+          ],
+          [
+            -70.08,
+            -32.82
+          ],
+          [
+            -70.1,
+            -32.8
+          ],
+          [
+            -70.12,
+            -32.76
+          ],
+          [
+            -70.14,
+            -32.76
+          ],
+          [
+            -70.14,
+            -32.66
+          ],
+          [
+            -70.16,
+            -32.62
+          ],
+          [
+            -70.18,
+            -32.62
+          ],
+          [
+            -70.16,
+            -32.6
+          ],
+          [
+            -70.16,
+            -32.58
+          ],
+          [
+            -70.12,
+            -32.58
+          ],
+          [
+            -70.04,
+            -32.62
+          ],
+          [
+            -70.04,
+            -32.56
+          ],
+          [
+            -70.02,
+            -32.54
+          ],
+          [
+            -69.92,
+            -32.54
+          ],
+          [
+            -69.86,
+            -32.56
+          ],
+          [
+            -69.84,
+            -32.56
+          ],
+          [
+            -69.82,
+            -32.54
+          ],
+          [
+            -69.76,
+            -32.54
+          ],
+          [
+            -69.76,
+            -32.52
+          ],
+          [
+            -69.7,
+            -32.5
+          ],
+          [
+            -69.7,
+            -32.4
+          ],
+          [
+            -69.72,
+            -32.4
+          ],
+          [
+            -69.72,
+            -32.32
+          ],
+          [
+            -69.68,
+            -32.3
+          ],
+          [
+            -69.66,
+            -32.28
+          ],
+          [
+            -69.64,
+            -32.26
+          ],
+          [
+            -69.6,
+            -32.18
+          ],
+          [
+            -69.6,
+            -32.14
+          ],
+          [
+            -69.52,
+            -32.14
+          ],
+          [
+            -69.5,
+            -32.12
+          ],
+          [
+            -69.48597,
+            -32.12179
+          ]
+        ]
+      ]
+    },
+    {
       "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.27.2",
       "event": "Tormentas",
       "headline": "Tormentas",
@@ -2131,314 +2131,6 @@
       ]
     },
     {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.27.4",
-      "event": "Tormentas",
-      "headline": "Tormentas",
-      "description": "El área será afectada por tormentas de variada intensidad. Las mismas podrían estar acompañadas principalmente por lluvias abundantes en cortos períodos y ocasionalmente por granizo y ráfagas fuertes. Se esperan valores de precipitación acumulada entre 15 y 30 mm, que pueden ser superados localmente.",
-      "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
-      "severity": "Moderate",
-      "level": "amarillo",
-      "levelLabel": "Amarillo",
-      "rank": 2,
-      "area": "Patagonia",
-      "areaDesc": "",
-      "onset": "2026-10-26T21:00:00-03:00",
-      "expires": "2026-10-27T02:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Tormenta_Patagonia_alertas_alertas_4.xml",
-      "polygons": [
-        [
-          [
-            -69.02,
-            -51.6
-          ],
-          [
-            -68.98,
-            -51.62
-          ],
-          [
-            -68.86,
-            -51.78
-          ],
-          [
-            -68.74,
-            -51.94
-          ],
-          [
-            -68.68,
-            -52.02
-          ],
-          [
-            -68.56,
-            -52.16
-          ],
-          [
-            -68.42,
-            -52.26
-          ],
-          [
-            -68.36,
-            -52.32
-          ],
-          [
-            -68.42,
-            -52.4
-          ],
-          [
-            -68.42,
-            -52.34
-          ],
-          [
-            -68.58,
-            -52.32
-          ],
-          [
-            -68.58,
-            -52.3
-          ],
-          [
-            -68.72,
-            -52.3
-          ],
-          [
-            -68.84,
-            -52.28
-          ],
-          [
-            -69,
-            -52.22
-          ],
-          [
-            -69.08,
-            -52.18
-          ],
-          [
-            -69.2,
-            -52.16
-          ],
-          [
-            -69.48,
-            -52.16
-          ],
-          [
-            -69.54,
-            -52.14
-          ],
-          [
-            -69.42,
-            -52.12
-          ],
-          [
-            -69.26,
-            -52.08
-          ],
-          [
-            -69.14,
-            -52.08
-          ],
-          [
-            -69,
-            -52.14
-          ],
-          [
-            -68.82,
-            -52.18
-          ],
-          [
-            -68.72,
-            -52.22
-          ],
-          [
-            -68.68,
-            -52.22
-          ],
-          [
-            -68.68,
-            -52.2
-          ],
-          [
-            -68.8,
-            -52.06
-          ],
-          [
-            -69.06,
-            -51.74
-          ],
-          [
-            -69.24,
-            -51.74
-          ],
-          [
-            -69.34,
-            -51.68
-          ],
-          [
-            -69.44,
-            -51.7
-          ],
-          [
-            -69.48,
-            -51.64
-          ],
-          [
-            -69.5,
-            -51.6
-          ],
-          [
-            -69.48,
-            -51.6
-          ],
-          [
-            -69.42,
-            -51.52
-          ],
-          [
-            -69.4,
-            -51.5
-          ],
-          [
-            -69.16,
-            -51.52
-          ],
-          [
-            -69.12,
-            -51.5
-          ],
-          [
-            -69.22,
-            -51.26
-          ],
-          [
-            -69.28,
-            -51.14
-          ],
-          [
-            -69.34,
-            -51.18
-          ],
-          [
-            -69.46,
-            -51.18
-          ],
-          [
-            -69.5,
-            -51.14
-          ],
-          [
-            -69.52,
-            -51.06
-          ],
-          [
-            -69.52,
-            -51
-          ],
-          [
-            -69.44,
-            -50.94
-          ],
-          [
-            -69.32,
-            -50.9
-          ],
-          [
-            -69.28,
-            -50.84
-          ],
-          [
-            -69.28,
-            -50.76
-          ],
-          [
-            -69.14,
-            -50.76
-          ],
-          [
-            -69.14,
-            -50.9
-          ],
-          [
-            -69.16,
-            -50.9
-          ],
-          [
-            -69.22,
-            -50.94
-          ],
-          [
-            -69.24,
-            -50.96
-          ],
-          [
-            -69.32,
-            -50.98
-          ],
-          [
-            -69.38,
-            -51.04
-          ],
-          [
-            -69.4,
-            -51.08
-          ],
-          [
-            -69.32,
-            -51.04
-          ],
-          [
-            -69.3,
-            -51.02
-          ],
-          [
-            -69.26,
-            -51
-          ],
-          [
-            -69.2,
-            -50.98
-          ],
-          [
-            -69.16,
-            -50.98
-          ],
-          [
-            -69.12,
-            -51.18
-          ],
-          [
-            -69.08,
-            -51.22
-          ],
-          [
-            -69.06,
-            -51.32
-          ],
-          [
-            -69.04,
-            -51.36
-          ],
-          [
-            -69,
-            -51.46
-          ],
-          [
-            -68.94,
-            -51.54
-          ],
-          [
-            -68.96,
-            -51.58
-          ],
-          [
-            -68.98,
-            -51.6
-          ],
-          [
-            -69.02,
-            -51.6
-          ]
-        ]
-      ]
-    },
-    {
       "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.27.1",
       "event": "Tormentas",
       "headline": "Tormentas",
@@ -2837,6 +2529,314 @@
           ]
         ]
       ]
+    },
+    {
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.25.08.54.27.4",
+      "event": "Tormentas",
+      "headline": "Tormentas",
+      "description": "El área será afectada por tormentas de variada intensidad. Las mismas podrían estar acompañadas principalmente por lluvias abundantes en cortos períodos y ocasionalmente por granizo y ráfagas fuertes. Se esperan valores de precipitación acumulada entre 15 y 30 mm, que pueden ser superados localmente.",
+      "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
+      "severity": "Moderate",
+      "level": "amarillo",
+      "levelLabel": "Amarillo",
+      "rank": 2,
+      "area": "Patagonia",
+      "areaDesc": "",
+      "onset": "2026-10-26T21:00:00-03:00",
+      "expires": "2026-10-27T02:59:59-03:00",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261025085538_Tormenta_Patagonia_alertas_alertas_4.xml",
+      "polygons": [
+        [
+          [
+            -69.02,
+            -51.6
+          ],
+          [
+            -68.98,
+            -51.62
+          ],
+          [
+            -68.86,
+            -51.78
+          ],
+          [
+            -68.74,
+            -51.94
+          ],
+          [
+            -68.68,
+            -52.02
+          ],
+          [
+            -68.56,
+            -52.16
+          ],
+          [
+            -68.42,
+            -52.26
+          ],
+          [
+            -68.36,
+            -52.32
+          ],
+          [
+            -68.42,
+            -52.4
+          ],
+          [
+            -68.42,
+            -52.34
+          ],
+          [
+            -68.58,
+            -52.32
+          ],
+          [
+            -68.58,
+            -52.3
+          ],
+          [
+            -68.72,
+            -52.3
+          ],
+          [
+            -68.84,
+            -52.28
+          ],
+          [
+            -69,
+            -52.22
+          ],
+          [
+            -69.08,
+            -52.18
+          ],
+          [
+            -69.2,
+            -52.16
+          ],
+          [
+            -69.48,
+            -52.16
+          ],
+          [
+            -69.54,
+            -52.14
+          ],
+          [
+            -69.42,
+            -52.12
+          ],
+          [
+            -69.26,
+            -52.08
+          ],
+          [
+            -69.14,
+            -52.08
+          ],
+          [
+            -69,
+            -52.14
+          ],
+          [
+            -68.82,
+            -52.18
+          ],
+          [
+            -68.72,
+            -52.22
+          ],
+          [
+            -68.68,
+            -52.22
+          ],
+          [
+            -68.68,
+            -52.2
+          ],
+          [
+            -68.8,
+            -52.06
+          ],
+          [
+            -69.06,
+            -51.74
+          ],
+          [
+            -69.24,
+            -51.74
+          ],
+          [
+            -69.34,
+            -51.68
+          ],
+          [
+            -69.44,
+            -51.7
+          ],
+          [
+            -69.48,
+            -51.64
+          ],
+          [
+            -69.5,
+            -51.6
+          ],
+          [
+            -69.48,
+            -51.6
+          ],
+          [
+            -69.42,
+            -51.52
+          ],
+          [
+            -69.4,
+            -51.5
+          ],
+          [
+            -69.16,
+            -51.52
+          ],
+          [
+            -69.12,
+            -51.5
+          ],
+          [
+            -69.22,
+            -51.26
+          ],
+          [
+            -69.28,
+            -51.14
+          ],
+          [
+            -69.34,
+            -51.18
+          ],
+          [
+            -69.46,
+            -51.18
+          ],
+          [
+            -69.5,
+            -51.14
+          ],
+          [
+            -69.52,
+            -51.06
+          ],
+          [
+            -69.52,
+            -51
+          ],
+          [
+            -69.44,
+            -50.94
+          ],
+          [
+            -69.32,
+            -50.9
+          ],
+          [
+            -69.28,
+            -50.84
+          ],
+          [
+            -69.28,
+            -50.76
+          ],
+          [
+            -69.14,
+            -50.76
+          ],
+          [
+            -69.14,
+            -50.9
+          ],
+          [
+            -69.16,
+            -50.9
+          ],
+          [
+            -69.22,
+            -50.94
+          ],
+          [
+            -69.24,
+            -50.96
+          ],
+          [
+            -69.32,
+            -50.98
+          ],
+          [
+            -69.38,
+            -51.04
+          ],
+          [
+            -69.4,
+            -51.08
+          ],
+          [
+            -69.32,
+            -51.04
+          ],
+          [
+            -69.3,
+            -51.02
+          ],
+          [
+            -69.26,
+            -51
+          ],
+          [
+            -69.2,
+            -50.98
+          ],
+          [
+            -69.16,
+            -50.98
+          ],
+          [
+            -69.12,
+            -51.18
+          ],
+          [
+            -69.08,
+            -51.22
+          ],
+          [
+            -69.06,
+            -51.32
+          ],
+          [
+            -69.04,
+            -51.36
+          ],
+          [
+            -69,
+            -51.46
+          ],
+          [
+            -68.94,
+            -51.54
+          ],
+          [
+            -68.96,
+            -51.58
+          ],
+          [
+            -68.98,
+            -51.6
+          ],
+          [
+            -69.02,
+            -51.6
+          ]
+        ]
+      ]
     }
   ],
   "ina": [
@@ -2859,13 +2859,13 @@
       "station": "Puerto Iguazú",
       "river": "Paraná",
       "kind": "nivel",
-      "value": 28.2,
+      "value": 28,
       "unit": "m",
       "status": "aguas altas",
       "trend": "baja",
       "alert": "evacuacion",
       "percentile": 5,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -25.58333333,
       "lon": -54.56666667,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=9"
@@ -2874,13 +2874,13 @@
       "station": "Corrientes",
       "river": "Paraná",
       "kind": "nivel",
-      "value": 7.37,
+      "value": 7.36,
       "unit": "m",
       "status": "aguas altas",
       "trend": "baja",
       "alert": "evacuacion",
       "percentile": 5,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -27.46364349,
       "lon": -58.8388696,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=19"
@@ -2889,16 +2889,31 @@
       "station": "Barranqueras",
       "river": "Paraná",
       "kind": "nivel",
-      "value": 7.23,
+      "value": 7.22,
       "unit": "m",
       "status": "aguas altas",
       "trend": "baja",
       "alert": "evacuacion",
       "percentile": 5,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -27.48333333,
       "lon": -58.93333333,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=20"
+    },
+    {
+      "station": "Reconquista",
+      "river": "Paraná",
+      "kind": "nivel",
+      "value": 5.33,
+      "unit": "m",
+      "status": "aguas medias altas",
+      "trend": "crece",
+      "alert": "evacuacion",
+      "percentile": 25,
+      "updated": "25/10/2026 00:00",
+      "lat": -29.23756092,
+      "lon": -59.58115833,
+      "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=24"
     },
     {
       "station": "Yacyretá afluente",
@@ -2949,43 +2964,28 @@
       "station": "Goya",
       "river": "Paraná",
       "kind": "nivel",
-      "value": 5.61,
+      "value": 5.63,
       "unit": "m",
       "status": "aguas medias altas",
       "trend": "crece",
       "alert": "alerta",
       "percentile": 25,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -29.14376844,
       "lon": -59.27303952,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=23"
     },
     {
-      "station": "Reconquista",
-      "river": "Paraná",
-      "kind": "nivel",
-      "value": 5.29,
-      "unit": "m",
-      "status": "aguas medias altas",
-      "trend": "crece",
-      "alert": "alerta",
-      "percentile": 25,
-      "updated": "24/10/2026 00:00",
-      "lat": -29.23756092,
-      "lon": -59.58115833,
-      "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=24"
-    },
-    {
       "station": "Puerto Pilcomayo",
       "river": "Paraguay",
       "kind": "nivel",
-      "value": 3.57,
+      "value": 3.58,
       "unit": "m",
       "status": "aguas medias",
       "trend": "crece",
       "alert": "ok",
       "percentile": 75,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -25.36666667,
       "lon": -57.65,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=55"
@@ -2994,13 +2994,13 @@
       "station": "Puerto Formosa",
       "river": "Paraguay",
       "kind": "nivel",
-      "value": 5.25,
+      "value": 5.4,
       "unit": "m",
       "status": "aguas medias",
-      "trend": "permanece",
+      "trend": "crece",
       "alert": "ok",
       "percentile": 50,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -26.18333333,
       "lon": -58.18333333,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=57"
@@ -3009,13 +3009,13 @@
       "station": "La Paz",
       "river": "Paraná",
       "kind": "nivel",
-      "value": 5.54,
+      "value": 5.61,
       "unit": "m",
       "status": "aguas medias altas",
       "trend": "crece",
       "alert": "ok",
       "percentile": 25,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -30.73419972,
       "lon": -59.6381167,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=26"
@@ -3024,13 +3024,13 @@
       "station": "Paraná",
       "river": "Paraná",
       "kind": "nivel",
-      "value": 3.99,
+      "value": 4.06,
       "unit": "m",
       "status": "aguas medias",
       "trend": "crece",
       "alert": "ok",
       "percentile": 50,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -31.71823786,
       "lon": -60.52256978,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=29"
@@ -3039,13 +3039,13 @@
       "station": "Santa Fe",
       "river": "Paraná",
       "kind": "nivel",
-      "value": 4,
+      "value": 4.07,
       "unit": "m",
       "status": "aguas medias",
       "trend": "crece",
       "alert": "ok",
       "percentile": 50,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -31.65147722,
       "lon": -60.70023192,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=30"
@@ -3057,10 +3057,10 @@
       "value": 3.63,
       "unit": "m",
       "status": "aguas medias",
-      "trend": "crece",
+      "trend": "permanece",
       "alert": "ok",
       "percentile": 50,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -32.94326994,
       "lon": -60.6308206,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=34"
@@ -3069,13 +3069,13 @@
       "station": "San Pedro",
       "river": "Paraná",
       "kind": "nivel",
-      "value": 1.75,
+      "value": 2.09,
       "unit": "m",
       "status": "aguas medias",
-      "trend": "baja",
+      "trend": "crece",
       "alert": "ok",
-      "percentile": 75,
-      "updated": "24/10/2026 00:00",
+      "percentile": 50,
+      "updated": "25/10/2026 00:00",
       "lat": -33.67452673,
       "lon": -59.64971833,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=38"
@@ -3099,13 +3099,13 @@
       "station": "Victoria",
       "river": "Paraná/Delta",
       "kind": "nivel",
-      "value": 3.87,
+      "value": 3.88,
       "unit": "m",
       "status": "aguas medias",
       "trend": "crece",
       "alert": "ok",
       "percentile": 50,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -32.65584564,
       "lon": -60.21958494,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=32"
@@ -3114,13 +3114,13 @@
       "station": "Zárate",
       "river": "PARANADELASPALMAS",
       "kind": "nivel",
-      "value": 0.6,
+      "value": 1.49,
       "unit": "m",
-      "status": "aguas medias",
-      "trend": "baja",
+      "status": "aguas medias altas",
+      "trend": "crece",
       "alert": "ok",
-      "percentile": 75,
-      "updated": "24/10/2026 00:00",
+      "percentile": 25,
+      "updated": "25/10/2026 00:00",
       "lat": -34.09878183,
       "lon": -59.01086576,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=40"
@@ -3129,13 +3129,13 @@
       "station": "San Javier",
       "river": "Uruguay",
       "kind": "nivel",
-      "value": 3.62,
+      "value": 7,
       "unit": "m",
-      "status": "aguas medias altas",
+      "status": "aguas altas",
       "trend": "crece",
       "alert": "ok",
-      "percentile": 25,
-      "updated": "24/10/2026 00:00",
+      "percentile": 5,
+      "updated": "25/10/2026 00:00",
       "lat": -27.88333333,
       "lon": -55.13333333,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=65"
@@ -3144,13 +3144,13 @@
       "station": "Santo Tomé",
       "river": "Uruguay",
       "kind": "nivel",
-      "value": 5.28,
+      "value": 7,
       "unit": "m",
-      "status": "aguas medias",
-      "trend": "baja",
+      "status": "aguas medias altas",
+      "trend": "crece",
       "alert": "ok",
-      "percentile": 50,
-      "updated": "24/10/2026 00:00",
+      "percentile": 25,
+      "updated": "25/10/2026 00:00",
       "lat": -28.55,
       "lon": -56.03333333,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=68"
@@ -3159,13 +3159,13 @@
       "station": "Paso de los Libres",
       "river": "Uruguay",
       "kind": "nivel",
-      "value": 6.69,
+      "value": 6.24,
       "unit": "m",
       "status": "aguas medias altas",
       "trend": "baja",
       "alert": "ok",
       "percentile": 25,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -29.71666667,
       "lon": -57.08333333,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=72"
@@ -3174,13 +3174,13 @@
       "station": "Concordia",
       "river": "Uruguay",
       "kind": "nivel",
-      "value": 10.06,
+      "value": 9.56,
       "unit": "m",
       "status": "aguas medias altas",
       "trend": "baja",
       "alert": "ok",
       "percentile": 25,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -31.4,
       "lon": -58.01666667,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=79"
@@ -3189,13 +3189,13 @@
       "station": "Colón",
       "river": "Uruguay",
       "kind": "nivel",
-      "value": 6.58,
+      "value": 6.3,
       "unit": "m",
       "status": "aguas medias altas",
       "trend": "baja",
       "alert": "ok",
       "percentile": 25,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -32.23333333,
       "lon": -58.11666667,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=80"
@@ -3204,13 +3204,13 @@
       "station": "Concepción del Uruguay",
       "river": "Uruguay",
       "kind": "nivel",
-      "value": 5.12,
+      "value": 5.02,
       "unit": "m",
       "status": "aguas medias altas",
       "trend": "baja",
       "alert": "ok",
       "percentile": 25,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -32.48333333,
       "lon": -58.23333333,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=81"
@@ -3219,13 +3219,13 @@
       "station": "Boca Gualeguaychú",
       "river": "Uruguay",
       "kind": "nivel",
-      "value": 2.5,
+      "value": 2.74,
       "unit": "m",
       "status": "aguas medias altas",
-      "trend": "baja",
+      "trend": "crece",
       "alert": "ok",
       "percentile": 25,
-      "updated": "24/10/2026 00:00",
+      "updated": "25/10/2026 00:00",
       "lat": -33.06666667,
       "lon": -58.41666667,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=84"

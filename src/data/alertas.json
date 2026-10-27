@@ -1,815 +1,19 @@
 {
-  "generatedAt": "2026-10-27T14:51:04.714Z",
+  "generatedAt": "2026-10-27T19:57:10.063Z",
   "sources": {
     "smn": "https://ssl.smn.gob.ar/feeds/CAP/rss_alertaCAP_nuevo_2026.xml",
     "ina": "https://alerta.ina.gob.ar/"
   },
   "counts": {
-    "smn": 12,
+    "smn": 9,
     "smnRed": 0,
     "smnOrange": 0,
-    "smnYellow": 12,
+    "smnYellow": 9,
     "inaAlerts": 9,
     "inaEvacuation": 7,
     "inaStations": 30
   },
   "smn": [
-    {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.27.08.47.59.10",
-      "event": "Tormentas",
-      "headline": "Tormentas",
-      "description": "El área será afectada por lluvias y tormentas de variada intensidad, algunas localmente fuertes. Las mismas podrán estar acompañadas por abundantes precipitaciones en cortos periodos, ocasional granizo, ráfagas intensas y actividad eléctrica frecuente. Se esperan valores de precipitación acumulada entre 20 y 40 mm.",
-      "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
-      "severity": "Moderate",
-      "level": "amarillo",
-      "levelLabel": "Amarillo",
-      "rank": 2,
-      "area": "Llanura",
-      "areaDesc": "",
-      "onset": "2026-10-27T09:00:00-03:00",
-      "expires": "2026-10-27T14:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261027084829_Tormenta_Llanura_alertas_alertas_10.xml",
-      "polygons": [
-        [
-          [
-            -64.68,
-            -31.9
-          ],
-          [
-            -64.64,
-            -31.9
-          ],
-          [
-            -64.68,
-            -31.94
-          ],
-          [
-            -64.6,
-            -31.96
-          ],
-          [
-            -64.64,
-            -32.02
-          ],
-          [
-            -64.72,
-            -32.02
-          ],
-          [
-            -64.7,
-            -32.06
-          ],
-          [
-            -64.66,
-            -32.1
-          ],
-          [
-            -64.72,
-            -32.2
-          ],
-          [
-            -64.66,
-            -32.3
-          ],
-          [
-            -64.7,
-            -32.38
-          ],
-          [
-            -64.64,
-            -32.42
-          ],
-          [
-            -64.66,
-            -32.48
-          ],
-          [
-            -64.7,
-            -32.54
-          ],
-          [
-            -64.64,
-            -32.6
-          ],
-          [
-            -64.66,
-            -32.64
-          ],
-          [
-            -64.72,
-            -32.7
-          ],
-          [
-            -64.78,
-            -32.74
-          ],
-          [
-            -64.84,
-            -32.94
-          ],
-          [
-            -64.88,
-            -33.04
-          ],
-          [
-            -64.9,
-            -33.1
-          ],
-          [
-            -65,
-            -33.18
-          ],
-          [
-            -65.06,
-            -33.18
-          ],
-          [
-            -65.1,
-            -33.16
-          ],
-          [
-            -65.06,
-            -33.1
-          ],
-          [
-            -65.04,
-            -33.06
-          ],
-          [
-            -65,
-            -33.02
-          ],
-          [
-            -65,
-            -33
-          ],
-          [
-            -65.02,
-            -32.98
-          ],
-          [
-            -65,
-            -32.96
-          ],
-          [
-            -65,
-            -32.92
-          ],
-          [
-            -64.96,
-            -32.86
-          ],
-          [
-            -64.98,
-            -32.8
-          ],
-          [
-            -64.96,
-            -32.78
-          ],
-          [
-            -64.96,
-            -32.72
-          ],
-          [
-            -64.92,
-            -32.68
-          ],
-          [
-            -64.92,
-            -32.62
-          ],
-          [
-            -64.88,
-            -32.58
-          ],
-          [
-            -64.9,
-            -32.52
-          ],
-          [
-            -64.9,
-            -32.48
-          ],
-          [
-            -64.92,
-            -32.48
-          ],
-          [
-            -64.92,
-            -32.36
-          ],
-          [
-            -64.94,
-            -32.32
-          ],
-          [
-            -64.96,
-            -32.26
-          ],
-          [
-            -64.96,
-            -32.14
-          ],
-          [
-            -64.94,
-            -32.08
-          ],
-          [
-            -64.94,
-            -31.92
-          ],
-          [
-            -64.92,
-            -31.9
-          ],
-          [
-            -64.78,
-            -31.88
-          ],
-          [
-            -64.68,
-            -31.9
-          ]
-        ]
-      ]
-    },
-    {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.27.08.47.59.11",
-      "event": "Tormentas",
-      "headline": "Tormentas",
-      "description": "El área será afectada por lluvias y tormentas de variada intensidad, algunas localmente fuertes. Las mismas podrán estar acompañadas por abundantes precipitaciones en cortos periodos, ocasional granizo, ráfagas intensas y actividad eléctrica frecuente. Se esperan valores de precipitación acumulada entre 20 y 40 mm.",
-      "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
-      "severity": "Moderate",
-      "level": "amarillo",
-      "levelLabel": "Amarillo",
-      "rank": 2,
-      "area": "Llanura",
-      "areaDesc": "",
-      "onset": "2026-10-27T09:00:00-03:00",
-      "expires": "2026-10-27T14:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261027084829_Tormenta_Llanura_alertas_alertas_11.xml",
-      "polygons": [
-        [
-          [
-            -63.56,
-            -32.82
-          ],
-          [
-            -63.52,
-            -32.82
-          ],
-          [
-            -63.52,
-            -32.88
-          ],
-          [
-            -63.42,
-            -32.9
-          ],
-          [
-            -63.4,
-            -32.84
-          ],
-          [
-            -63.34,
-            -32.86
-          ],
-          [
-            -63.36,
-            -32.96
-          ],
-          [
-            -63.4,
-            -33.04
-          ],
-          [
-            -63.46,
-            -33.04
-          ],
-          [
-            -63.48,
-            -33.12
-          ],
-          [
-            -63.38,
-            -33.14
-          ],
-          [
-            -63.32,
-            -33.14
-          ],
-          [
-            -63.3,
-            -33.1
-          ],
-          [
-            -63.2,
-            -33.1
-          ],
-          [
-            -63.22,
-            -33.2
-          ],
-          [
-            -63.22,
-            -33.24
-          ],
-          [
-            -63.12,
-            -33.26
-          ],
-          [
-            -63.08,
-            -33.28
-          ],
-          [
-            -63.1,
-            -33.34
-          ],
-          [
-            -63.14,
-            -33.52
-          ],
-          [
-            -63.18,
-            -33.66
-          ],
-          [
-            -63.22,
-            -33.82
-          ],
-          [
-            -63.24,
-            -33.84
-          ],
-          [
-            -64.04,
-            -33.84
-          ],
-          [
-            -64.04,
-            -34.18
-          ],
-          [
-            -64.08,
-            -34.18
-          ],
-          [
-            -64.1,
-            -34.2
-          ],
-          [
-            -64.16,
-            -34.22
-          ],
-          [
-            -64.2,
-            -34.24
-          ],
-          [
-            -64.26,
-            -34.24
-          ],
-          [
-            -64.28,
-            -34.22
-          ],
-          [
-            -64.46,
-            -34.22
-          ],
-          [
-            -64.5,
-            -34.2
-          ],
-          [
-            -64.56,
-            -34.2
-          ],
-          [
-            -64.56,
-            -34.18
-          ],
-          [
-            -64.62,
-            -34.18
-          ],
-          [
-            -64.66,
-            -34.14
-          ],
-          [
-            -64.72,
-            -34.14
-          ],
-          [
-            -64.72,
-            -34.12
-          ],
-          [
-            -64.76,
-            -34.08
-          ],
-          [
-            -64.82,
-            -34.08
-          ],
-          [
-            -64.82,
-            -34.06
-          ],
-          [
-            -64.86,
-            -34.08
-          ],
-          [
-            -64.9,
-            -34.06
-          ],
-          [
-            -64.9,
-            -34.04
-          ],
-          [
-            -65,
-            -34.04
-          ],
-          [
-            -65.02,
-            -34
-          ],
-          [
-            -65.08,
-            -34
-          ],
-          [
-            -65.12,
-            -33.94
-          ],
-          [
-            -65.14,
-            -33.26
-          ],
-          [
-            -65.14,
-            -33.2
-          ],
-          [
-            -65.16,
-            -33.18
-          ],
-          [
-            -65.1,
-            -33.16
-          ],
-          [
-            -65.06,
-            -33.18
-          ],
-          [
-            -65,
-            -33.18
-          ],
-          [
-            -64.9,
-            -33.1
-          ],
-          [
-            -64.88,
-            -33.04
-          ],
-          [
-            -64.84,
-            -32.94
-          ],
-          [
-            -64.78,
-            -32.74
-          ],
-          [
-            -64.72,
-            -32.7
-          ],
-          [
-            -64.66,
-            -32.64
-          ],
-          [
-            -64.64,
-            -32.62
-          ],
-          [
-            -64.6,
-            -32.62
-          ],
-          [
-            -64.58,
-            -32.64
-          ],
-          [
-            -64.54,
-            -32.62
-          ],
-          [
-            -64.52,
-            -32.56
-          ],
-          [
-            -64.5,
-            -32.54
-          ],
-          [
-            -64.48,
-            -32.48
-          ],
-          [
-            -64.44,
-            -32.48
-          ],
-          [
-            -64.44,
-            -32.38
-          ],
-          [
-            -64.32,
-            -32.4
-          ],
-          [
-            -64.32,
-            -32.38
-          ],
-          [
-            -64.28,
-            -32.38
-          ],
-          [
-            -64.26,
-            -32.34
-          ],
-          [
-            -64.24,
-            -32.36
-          ],
-          [
-            -64.24,
-            -32.3
-          ],
-          [
-            -64.08,
-            -32.3
-          ],
-          [
-            -64.04,
-            -32.34
-          ],
-          [
-            -63.98,
-            -32.34
-          ],
-          [
-            -64,
-            -32.36
-          ],
-          [
-            -63.92,
-            -32.38
-          ],
-          [
-            -63.94,
-            -32.44
-          ],
-          [
-            -63.94,
-            -32.46
-          ],
-          [
-            -63.98,
-            -32.48
-          ],
-          [
-            -64,
-            -32.56
-          ],
-          [
-            -64.02,
-            -32.62
-          ],
-          [
-            -64.04,
-            -32.76
-          ],
-          [
-            -63.98,
-            -32.72
-          ],
-          [
-            -63.98,
-            -32.74
-          ],
-          [
-            -63.92,
-            -32.7
-          ],
-          [
-            -63.82,
-            -32.7
-          ],
-          [
-            -63.7,
-            -32.72
-          ],
-          [
-            -63.72,
-            -32.8
-          ],
-          [
-            -63.66,
-            -32.8
-          ],
-          [
-            -63.6,
-            -32.82
-          ],
-          [
-            -63.56,
-            -32.82
-          ]
-        ]
-      ]
-    },
-    {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.27.08.47.59.12",
-      "event": "Tormentas",
-      "headline": "Tormentas",
-      "description": "El área será afectada por lluvias y tormentas de variada intensidad, algunas localmente fuertes. Las mismas podrán estar acompañadas por abundantes precipitaciones en cortos periodos, ocasional granizo, ráfagas intensas y actividad eléctrica frecuente. Se esperan valores de precipitación acumulada entre 20 y 40 mm.",
-      "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
-      "severity": "Moderate",
-      "level": "amarillo",
-      "levelLabel": "Amarillo",
-      "rank": 2,
-      "area": "Llanura",
-      "areaDesc": "",
-      "onset": "2026-10-27T09:00:00-03:00",
-      "expires": "2026-10-27T14:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261027084829_Tormenta_Llanura_alertas_alertas_12.xml",
-      "polygons": [
-        [
-          [
-            -65.1,
-            -33.16
-          ],
-          [
-            -65.16,
-            -33.18
-          ],
-          [
-            -65.26,
-            -33.2
-          ],
-          [
-            -65.42,
-            -33.3
-          ],
-          [
-            -65.54,
-            -33.26
-          ],
-          [
-            -65.52,
-            -33.18
-          ],
-          [
-            -65.52,
-            -33.1
-          ],
-          [
-            -65.5,
-            -33.08
-          ],
-          [
-            -65.4,
-            -33.04
-          ],
-          [
-            -65.22,
-            -33.04
-          ],
-          [
-            -65.2,
-            -33.02
-          ],
-          [
-            -65.12,
-            -32.96
-          ],
-          [
-            -65.04,
-            -32.84
-          ],
-          [
-            -65.06,
-            -32.76
-          ],
-          [
-            -65.04,
-            -32.58
-          ],
-          [
-            -65.04,
-            -32.48
-          ],
-          [
-            -65.06,
-            -32.42
-          ],
-          [
-            -65.06,
-            -32.32
-          ],
-          [
-            -64.94,
-            -32.32
-          ],
-          [
-            -64.92,
-            -32.36
-          ],
-          [
-            -64.92,
-            -32.48
-          ],
-          [
-            -64.9,
-            -32.48
-          ],
-          [
-            -64.9,
-            -32.52
-          ],
-          [
-            -64.88,
-            -32.58
-          ],
-          [
-            -64.92,
-            -32.62
-          ],
-          [
-            -64.92,
-            -32.68
-          ],
-          [
-            -64.96,
-            -32.72
-          ],
-          [
-            -64.96,
-            -32.78
-          ],
-          [
-            -64.98,
-            -32.8
-          ],
-          [
-            -64.96,
-            -32.86
-          ],
-          [
-            -65,
-            -32.92
-          ],
-          [
-            -65,
-            -32.96
-          ],
-          [
-            -65.02,
-            -32.98
-          ],
-          [
-            -65,
-            -33
-          ],
-          [
-            -65,
-            -33.02
-          ],
-          [
-            -65.04,
-            -33.06
-          ],
-          [
-            -65.06,
-            -33.1
-          ],
-          [
-            -65.1,
-            -33.16
-          ]
-        ]
-      ]
-    },
     {
       "id": "urn:oid:2.49.0.1.32.0.2026.10.27.08.47.59.1",
       "event": "Tormentas",
@@ -1198,170 +402,6 @@
           [
             -61.72,
             -38.72
-          ]
-        ]
-      ]
-    },
-    {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.27.08.47.59.2",
-      "event": "Tormentas",
-      "headline": "Tormentas",
-      "description": "El área será afectada por lluvias y tormentas de variada intensidad, algunas localmente fuertes. Las mismas podrán estar acompañadas por abundantes precipitaciones en cortos periodos, ocasional granizo, ráfagas intensas y actividad eléctrica frecuente. Se esperan valores de precipitación acumulada entre 20 y 40 mm.",
-      "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
-      "severity": "Moderate",
-      "level": "amarillo",
-      "levelLabel": "Amarillo",
-      "rank": 2,
-      "area": "Llanura",
-      "areaDesc": "",
-      "onset": "2026-10-28T15:00:00-03:00",
-      "expires": "2026-10-28T20:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261027084829_Tormenta_Llanura_alertas_alertas_2.xml",
-      "polygons": [
-        [
-          [
-            -58.24,
-            -38.44
-          ],
-          [
-            -58.34,
-            -38.5
-          ],
-          [
-            -58.44,
-            -38.52
-          ],
-          [
-            -58.5,
-            -38.54
-          ],
-          [
-            -58.74,
-            -38.6
-          ],
-          [
-            -58.8,
-            -38.62
-          ],
-          [
-            -58.84,
-            -38.64
-          ],
-          [
-            -58.92,
-            -38.64
-          ],
-          [
-            -58.94,
-            -38.66
-          ],
-          [
-            -59.08,
-            -38.7
-          ],
-          [
-            -59.24,
-            -38.72
-          ],
-          [
-            -59.5,
-            -38.78
-          ],
-          [
-            -59.7,
-            -38.8
-          ],
-          [
-            -59.74,
-            -38.8
-          ],
-          [
-            -59.8,
-            -38.84
-          ],
-          [
-            -60.12,
-            -38.86
-          ],
-          [
-            -60.42,
-            -38.92
-          ],
-          [
-            -60.52,
-            -38.94
-          ],
-          [
-            -60.54,
-            -38.92
-          ],
-          [
-            -60.52,
-            -38.9
-          ],
-          [
-            -60.54,
-            -38.8
-          ],
-          [
-            -60.56,
-            -38.78
-          ],
-          [
-            -60.6,
-            -38.66
-          ],
-          [
-            -60.46,
-            -38.64
-          ],
-          [
-            -60.18,
-            -38.6
-          ],
-          [
-            -59.8,
-            -38.54
-          ],
-          [
-            -59.74,
-            -38.52
-          ],
-          [
-            -59.44,
-            -38.48
-          ],
-          [
-            -59.14,
-            -38.44
-          ],
-          [
-            -58.82,
-            -38.32
-          ],
-          [
-            -58.34,
-            -38.16
-          ],
-          [
-            -58.34,
-            -38.26
-          ],
-          [
-            -58.3,
-            -38.3
-          ],
-          [
-            -58.28,
-            -38.36
-          ],
-          [
-            -58.28,
-            -38.38
-          ],
-          [
-            -58.24,
-            -38.44
           ]
         ]
       ]
@@ -1807,102 +847,6 @@
       ]
     },
     {
-      "id": "urn:oid:2.49.0.1.32.0.2026.10.27.08.47.59.7",
-      "event": "Tormentas",
-      "headline": "Tormentas",
-      "description": "El área será afectada por lluvias y tormentas de variada intensidad, algunas localmente fuertes. Las mismas podrán estar acompañadas por abundantes precipitaciones en cortos periodos, ocasional granizo, ráfagas intensas y actividad eléctrica frecuente. Se esperan valores de precipitación acumulada entre 20 y 40 mm.",
-      "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
-      "severity": "Moderate",
-      "level": "amarillo",
-      "levelLabel": "Amarillo",
-      "rank": 2,
-      "area": "Llanura",
-      "areaDesc": "",
-      "onset": "2026-10-28T15:00:00-03:00",
-      "expires": "2026-10-28T20:59:59-03:00",
-      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261027084829_Tormenta_Llanura_alertas_alertas_7.xml",
-      "polygons": [
-        [
-          [
-            -58.82,
-            -37.58
-          ],
-          [
-            -58.62,
-            -37.74
-          ],
-          [
-            -58.5,
-            -37.82
-          ],
-          [
-            -58.62,
-            -37.84
-          ],
-          [
-            -58.76,
-            -37.9
-          ],
-          [
-            -59.04,
-            -37.88
-          ],
-          [
-            -59.12,
-            -37.82
-          ],
-          [
-            -59.34,
-            -37.74
-          ],
-          [
-            -59.58,
-            -37.62
-          ],
-          [
-            -59.56,
-            -37.4
-          ],
-          [
-            -59.34,
-            -37.2
-          ],
-          [
-            -59.22,
-            -37.18
-          ],
-          [
-            -59.06,
-            -37.2
-          ],
-          [
-            -58.98,
-            -37.24
-          ],
-          [
-            -58.94,
-            -37.3
-          ],
-          [
-            -58.92,
-            -37.36
-          ],
-          [
-            -58.9,
-            -37.44
-          ],
-          [
-            -58.9,
-            -37.5
-          ],
-          [
-            -58.82,
-            -37.58
-          ]
-        ]
-      ]
-    },
-    {
       "id": "urn:oid:2.49.0.1.32.0.2026.10.27.08.47.59.6",
       "event": "Tormentas",
       "headline": "Tormentas",
@@ -1994,6 +938,102 @@
           [
             -62.04,
             -37.84
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.27.08.47.59.7",
+      "event": "Tormentas",
+      "headline": "Tormentas",
+      "description": "El área será afectada por lluvias y tormentas de variada intensidad, algunas localmente fuertes. Las mismas podrán estar acompañadas por abundantes precipitaciones en cortos periodos, ocasional granizo, ráfagas intensas y actividad eléctrica frecuente. Se esperan valores de precipitación acumulada entre 20 y 40 mm.",
+      "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
+      "severity": "Moderate",
+      "level": "amarillo",
+      "levelLabel": "Amarillo",
+      "rank": 2,
+      "area": "Llanura",
+      "areaDesc": "",
+      "onset": "2026-10-28T15:00:00-03:00",
+      "expires": "2026-10-28T20:59:59-03:00",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261027084829_Tormenta_Llanura_alertas_alertas_7.xml",
+      "polygons": [
+        [
+          [
+            -58.82,
+            -37.58
+          ],
+          [
+            -58.62,
+            -37.74
+          ],
+          [
+            -58.5,
+            -37.82
+          ],
+          [
+            -58.62,
+            -37.84
+          ],
+          [
+            -58.76,
+            -37.9
+          ],
+          [
+            -59.04,
+            -37.88
+          ],
+          [
+            -59.12,
+            -37.82
+          ],
+          [
+            -59.34,
+            -37.74
+          ],
+          [
+            -59.58,
+            -37.62
+          ],
+          [
+            -59.56,
+            -37.4
+          ],
+          [
+            -59.34,
+            -37.2
+          ],
+          [
+            -59.22,
+            -37.18
+          ],
+          [
+            -59.06,
+            -37.2
+          ],
+          [
+            -58.98,
+            -37.24
+          ],
+          [
+            -58.94,
+            -37.3
+          ],
+          [
+            -58.92,
+            -37.36
+          ],
+          [
+            -58.9,
+            -37.44
+          ],
+          [
+            -58.9,
+            -37.5
+          ],
+          [
+            -58.82,
+            -37.58
           ]
         ]
       ]
@@ -2482,6 +1522,170 @@
           [
             -59.34,
             -37.74
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "urn:oid:2.49.0.1.32.0.2026.10.27.08.47.59.2",
+      "event": "Tormentas",
+      "headline": "Tormentas",
+      "description": "El área será afectada por lluvias y tormentas de variada intensidad, algunas localmente fuertes. Las mismas podrán estar acompañadas por abundantes precipitaciones en cortos periodos, ocasional granizo, ráfagas intensas y actividad eléctrica frecuente. Se esperan valores de precipitación acumulada entre 20 y 40 mm.",
+      "instruction": "1- Evitá salir. 2- No saques la basura y limpiá desagües y sumideros. 3- Desconectá los electrodomésticos y cortá el suministro eléctrico si ingresa agua 4- Cerrá y alejate de puertas y ventanas. 5- Retirá o asegurá objetos que puedan ser arrastrados por el viento. 6- Si estás al aire libre, buscá refugio inmediato en un edificio, casa o vehículo cerrado.",
+      "severity": "Moderate",
+      "level": "amarillo",
+      "levelLabel": "Amarillo",
+      "rank": 2,
+      "area": "Llanura",
+      "areaDesc": "",
+      "onset": "2026-10-28T15:00:00-03:00",
+      "expires": "2026-10-28T20:59:59-03:00",
+      "url": "https://ssl.smn.gob.ar/feeds/CAP/xml_generados/CAP_20261027084829_Tormenta_Llanura_alertas_alertas_2.xml",
+      "polygons": [
+        [
+          [
+            -58.24,
+            -38.44
+          ],
+          [
+            -58.34,
+            -38.5
+          ],
+          [
+            -58.44,
+            -38.52
+          ],
+          [
+            -58.5,
+            -38.54
+          ],
+          [
+            -58.74,
+            -38.6
+          ],
+          [
+            -58.8,
+            -38.62
+          ],
+          [
+            -58.84,
+            -38.64
+          ],
+          [
+            -58.92,
+            -38.64
+          ],
+          [
+            -58.94,
+            -38.66
+          ],
+          [
+            -59.08,
+            -38.7
+          ],
+          [
+            -59.24,
+            -38.72
+          ],
+          [
+            -59.5,
+            -38.78
+          ],
+          [
+            -59.7,
+            -38.8
+          ],
+          [
+            -59.74,
+            -38.8
+          ],
+          [
+            -59.8,
+            -38.84
+          ],
+          [
+            -60.12,
+            -38.86
+          ],
+          [
+            -60.42,
+            -38.92
+          ],
+          [
+            -60.52,
+            -38.94
+          ],
+          [
+            -60.54,
+            -38.92
+          ],
+          [
+            -60.52,
+            -38.9
+          ],
+          [
+            -60.54,
+            -38.8
+          ],
+          [
+            -60.56,
+            -38.78
+          ],
+          [
+            -60.6,
+            -38.66
+          ],
+          [
+            -60.46,
+            -38.64
+          ],
+          [
+            -60.18,
+            -38.6
+          ],
+          [
+            -59.8,
+            -38.54
+          ],
+          [
+            -59.74,
+            -38.52
+          ],
+          [
+            -59.44,
+            -38.48
+          ],
+          [
+            -59.14,
+            -38.44
+          ],
+          [
+            -58.82,
+            -38.32
+          ],
+          [
+            -58.34,
+            -38.16
+          ],
+          [
+            -58.34,
+            -38.26
+          ],
+          [
+            -58.3,
+            -38.3
+          ],
+          [
+            -58.28,
+            -38.36
+          ],
+          [
+            -58.28,
+            -38.38
+          ],
+          [
+            -58.24,
+            -38.44
           ]
         ]
       ]
@@ -3260,13 +2464,13 @@
       "station": "Andresito",
       "river": "IGUAZU",
       "kind": "caudal",
-      "value": 18054,
+      "value": 15005,
       "unit": "m³/s",
       "status": "aguas altas",
-      "trend": "crece",
+      "trend": "baja",
       "alert": "evacuacion",
       "percentile": 5,
-      "updated": "26/10/2026 00:00",
+      "updated": "27/10/2026 00:00",
       "lat": -25.58333333,
       "lon": -53.98333333,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=857"
@@ -3338,10 +2542,10 @@
       "value": 34500,
       "unit": "m³/s",
       "status": "aguas altas",
-      "trend": "baja",
+      "trend": "permanece",
       "alert": "evacuacion",
       "percentile": 5,
-      "updated": "26/10/2026 00:00",
+      "updated": "27/10/2026 00:00",
       "lat": -27.482557,
       "lon": -56.727244,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=936"
@@ -3350,13 +2554,13 @@
       "station": "Yacyretá efluente",
       "river": "Paraná",
       "kind": "caudal",
-      "value": 35000,
+      "value": 33900,
       "unit": "m³/s",
       "status": "aguas altas",
       "trend": "baja",
       "alert": "evacuacion",
       "percentile": 5,
-      "updated": "26/10/2026 00:00",
+      "updated": "27/10/2026 00:00",
       "lat": -27.482557,
       "lon": -56.727244,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=937"
@@ -3380,13 +2584,13 @@
       "station": "Confluencia",
       "river": "Paraná",
       "kind": "caudal",
-      "value": 29654,
+      "value": 26605,
       "unit": "m³/s",
       "status": "aguas altas",
-      "trend": "crece",
+      "trend": "baja",
       "alert": "alerta",
       "percentile": 5,
-      "updated": "26/10/2026 00:00",
+      "updated": "27/10/2026 00:00",
       "lat": -25.592701,
       "lon": -54.593363,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=942"
@@ -3503,10 +2707,10 @@
       "value": 33218,
       "unit": "m³/s",
       "status": "aguas altas",
-      "trend": "baja",
+      "trend": "permanece",
       "alert": "ok",
       "percentile": 5,
-      "updated": "26/10/2026 00:00",
+      "updated": "27/10/2026 00:00",
       "lat": -27.46364349,
       "lon": -58.8388696,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=868"
@@ -3650,13 +2854,13 @@
       "station": "San Javier",
       "river": "Uruguay",
       "kind": "caudal",
-      "value": 17039,
+      "value": 11655,
       "unit": "m³/s",
       "status": "aguas altas",
-      "trend": "crece",
+      "trend": "baja",
       "alert": "ok",
       "percentile": 5,
-      "updated": "26/10/2026 00:00",
+      "updated": "27/10/2026 00:00",
       "lat": -27.88333333,
       "lon": -55.13333333,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=914"
@@ -3665,13 +2869,13 @@
       "station": "Santo Tomé",
       "river": "Uruguay",
       "kind": "caudal",
-      "value": 11804,
+      "value": 13780,
       "unit": "m³/s",
       "status": "aguas altas",
       "trend": "crece",
       "alert": "ok",
       "percentile": 5,
-      "updated": "26/10/2026 00:00",
+      "updated": "27/10/2026 00:00",
       "lat": -28.55,
       "lon": -56.03333333,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=917"
@@ -3680,13 +2884,13 @@
       "station": "Paso de los Libres",
       "river": "Uruguay",
       "kind": "caudal",
-      "value": 9424,
+      "value": 10974,
       "unit": "m³/s",
       "status": "aguas medias altas",
       "trend": "crece",
       "alert": "ok",
       "percentile": 25,
-      "updated": "26/10/2026 00:00",
+      "updated": "27/10/2026 00:00",
       "lat": -29.71666667,
       "lon": -57.08333333,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=921"
@@ -3695,13 +2899,13 @@
       "station": "Salto Grande Abajo",
       "river": "Uruguay",
       "kind": "caudal",
-      "value": 12720,
+      "value": 12388,
       "unit": "m³/s",
       "status": "aguas medias altas",
       "trend": "baja",
       "alert": "ok",
       "percentile": 25,
-      "updated": "26/10/2026 00:00",
+      "updated": "27/10/2026 00:00",
       "lat": -31.27547,
       "lon": -57.936945,
       "url": "https://alerta.ina.gob.ar/a5/secciones?seriesId=927"
